@@ -10,12 +10,19 @@ import {
   Button,
   Typography,
   TextField,
-  IconButton
+  IconButton,
+  Box
 } from '@mui/material';
 import { Container } from '@mui/system';
-import FilterListIcon from '@mui/icons-material/FilterList';
-import DriverRegistrationForm from '@/components/DriverRegistrationForm';
+import DriverRegistrationForm from '@/components/drivers/DriverRegistrationForm';
+import Plus from '@/Svg/Plus';
+import Filter from '@/Svg/Filter';
+import Search from '@/Svg/Search';
+
 import { Chip } from '@mui/material';
+import InputAdornment from '@mui/material/InputAdornment'; // Add this import
+
+
 interface Driver {
   id: string;
   status: string;
@@ -44,7 +51,142 @@ const drivers: Driver[] = [
     phone: '0312343422',
     cccd: '012374422948',
     license: '3241 2342 3245'
-  }
+  },
+  {
+    id: 'TX001',
+    status: 'Online',
+    name: 'Trần Văn A',
+    email: 'tranvana@gmail.com',
+    phone: '0312343422',
+    cccd: '012374422948',
+    license: '3241 2342 3245'
+  },
+  {
+    id: 'TX001',
+    status: 'Online',
+    name: 'Trần Văn A',
+    email: 'tranvana@gmail.com',
+    phone: '0312343422',
+    cccd: '012374422948',
+    license: '3241 2342 3245'
+  },
+  {
+    id: 'TX001',
+    status: 'Online',
+    name: 'Trần Văn A',
+    email: 'tranvana@gmail.com',
+    phone: '0312343422',
+    cccd: '012374422948',
+    license: '3241 2342 3245'
+  },
+  {
+    id: 'TX001',
+    status: 'Online',
+    name: 'Trần Văn A',
+    email: 'tranvana@gmail.com',
+    phone: '0312343422',
+    cccd: '012374422948',
+    license: '3241 2342 3245'
+  },
+  {
+    id: 'TX001',
+    status: 'Online',
+    name: 'Trần Văn A',
+    email: 'tranvana@gmail.com',
+    phone: '0312343422',
+    cccd: '012374422948',
+    license: '3241 2342 3245'
+  },
+  {
+    id: 'TX001',
+    status: 'Online',
+    name: 'Trần Văn A',
+    email: 'tranvana@gmail.com',
+    phone: '0312343422',
+    cccd: '012374422948',
+    license: '3241 2342 3245'
+  },
+  {
+    id: 'TX001',
+    status: 'Online',
+    name: 'Trần Văn A',
+    email: 'tranvana@gmail.com',
+    phone: '0312343422',
+    cccd: '012374422948',
+    license: '3241 2342 3245'
+  },
+  {
+    id: 'TX001',
+    status: 'Online',
+    name: 'Trần Văn A',
+    email: 'tranvana@gmail.com',
+    phone: '0312343422',
+    cccd: '012374422948',
+    license: '3241 2342 3245'
+  },
+  {
+    id: 'TX002',
+    status: 'Offline',
+    name: 'Trần Văn B',
+    email: 'tranvanb@gmail.com',
+    phone: '0312343422',
+    cccd: '012374422948',
+    license: '3241 2342 3245'
+  },
+  {
+    id: 'TX002',
+    status: 'Offline',
+    name: 'Trần Văn B',
+    email: 'tranvanb@gmail.com',
+    phone: '0312343422',
+    cccd: '012374422948',
+    license: '3241 2342 3245'
+  },
+  {
+    id: 'TX002',
+    status: 'Offline',
+    name: 'Trần Văn B',
+    email: 'tranvanb@gmail.com',
+    phone: '0312343422',
+    cccd: '012374422948',
+    license: '3241 2342 3245'
+  },
+  {
+    id: 'TX002',
+    status: 'Offline',
+    name: 'Trần Văn B',
+    email: 'tranvanb@gmail.com',
+    phone: '0312343422',
+    cccd: '012374422948',
+    license: '3241 2342 3245'
+  },
+  {
+    id: 'TX002',
+    status: 'Offline',
+    name: 'Trần Văn B',
+    email: 'tranvanb@gmail.com',
+    phone: '0312343422',
+    cccd: '012374422948',
+    license: '3241 2342 3245'
+  },
+  {
+    id: 'TX002',
+    status: 'Offline',
+    name: 'Trần Văn B',
+    email: 'tranvanb@gmail.com',
+    phone: '0312343422',
+    cccd: '012374422948',
+    license: '3241 2342 3245'
+  },
+  {
+    id: 'TX002',
+    status: 'Offline',
+    name: 'Trần Văn B',
+    email: 'tranvanb@gmail.com',
+    phone: '0312343422',
+    cccd: '012374422948',
+    license: '3241 2342 3245'
+  },
 ];
 
 const DriverListPage: React.FC = () => {
@@ -60,71 +202,92 @@ const DriverListPage: React.FC = () => {
 
   return (
     <Container maxWidth="lg" className="py-6">
-      <div className="flex items-center mb-2 gap-2">
-        <TextField
-          className="w-[443px]"
-          variant="outlined"
-          placeholder="Nhập mã khách hàng / họ tên / email /..."
-          size="small"
-        />
-        <Button
-          variant="contained"
-          onClick={handleOpen}
-          className="whitespace-nowrap"
-          sx={{ backgroundColor: '#EC6E70', borderRadius: '6px' }}
+      <Typography variant="h6" className="flex items-center mb-2 gap-4" sx={{ padding: '24px' }}>
+        <Box
+          sx={{
+            display: 'flex',
+            gap: '16px',
+          }}
         >
-          + Đăng ký tài xế
-        </Button>
-      </div>
-
-      <Typography variant="body2" color="error" mb={2}>
-        Ghi chú: Ấn và khách hàng bất kì để xem hoặc thay đổi thông tin
+          <TextField
+            variant="outlined"
+            placeholder="Nhập mã khách hàng / họ tên / email /..."
+            size="small"
+            sx={{ width: '443px', borderRadius: '6px' }}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <Search/>
+                </InputAdornment>
+              ),
+            }}
+          />
+          <Button
+            variant="contained"
+            onClick={handleOpen}
+            className="whitespace-nowrap"
+            sx={{ backgroundColor: '#EC6E70', borderRadius: '6px' }}
+          >
+            <Plus filter="#fff" />
+            Đăng ký tài xế
+          </Button>
+        </Box>
       </Typography>
 
-      <TableContainer component={Paper} elevation={2}>
-        <Table className="flex flex-col gap-12">
-          <TableHead>
+      <Typography variant="body2" color="error" className="mb-2" sx={{ paddingBottom: '16px' }}>
+        Ghi chú: Ấn vào khách hàng bất kì để xem hoặc thay đổi thông tin
+      </Typography>
+
+      <TableContainer component={Paper} elevation={2} className="mt-3" style={{ maxHeight: '400px', overflowY: 'auto' }} sx={{
+        overflowY: 'scroll',
+        scrollbarWidth: 'none',
+        '&::-webkit-scrollbar': {
+          display: 'none',
+        },
+      }}>
+        <Table stickyHeader>
+          <TableHead style={{ paddingBottom: '70px'}}>
             <TableRow>
-              <TableCell className="flex items-center gap-2">
+              <TableCell className="flex items-center gap-3" sx={{ color: '#696969', fontWeight: 700, fontSize: '16px' }}>
                 STT
-                <IconButton size="small">
-                  <FilterListIcon fontSize="small" />
+                <IconButton size="small" sx={{ marginLeft: '12px', color: '#CBCBCB' }}>
+                  <Filter size="small"/>
                 </IconButton>
               </TableCell>
-              <TableCell className="flex items-center gap-2">
+              <TableCell className="flex items-center gap-2" sx={{ color: '#696969', fontWeight: 700, fontSize: '16px' }}>
                 Trạng thái
-                <IconButton size="small">
-                  <FilterListIcon fontSize="small" />
+                <IconButton size="small" sx={{ marginLeft: '12px' }}>
+                <Filter size="small" />
                 </IconButton>
               </TableCell>
-              <TableCell className="flex items-center gap-2">
+              <TableCell className="flex items-center gap-2" sx={{ color: '#696969', fontWeight: 700, fontSize: '16px' }}>
                 Họ và tên
-                <IconButton size="small">
-                  <FilterListIcon fontSize="small" />
+                <IconButton size="small" sx={{ marginLeft: '12px' }}>
+                  <Filter size="small" />
                 </IconButton>
               </TableCell>
-              <TableCell className="flex items-center gap-2">
+              <TableCell className="flex items-center gap-2" sx={{ color: '#696969', fontWeight: 700, fontSize: '16px' }}>
                 Email
-                <IconButton size="small">
-                  <FilterListIcon fontSize="small" />
+                <IconButton size="small" sx={{ marginLeft: '12px' }}>
+                    <Filter size="small" />
                 </IconButton>
               </TableCell>
-              <TableCell className="flex items-center gap-2">
+              <TableCell className="flex items-center gap-2" sx={{ color: '#696969', fontWeight: 700, fontSize: '16px' }}>
                 Số điện thoại
-                <IconButton size="small">
-                  <FilterListIcon fontSize="small" />
+                <IconButton size="small" sx={{ marginLeft: '12px' }}>
+                      <Filter size="small" />
                 </IconButton>
               </TableCell>
-              <TableCell className="flex items-center gap-2">
+              <TableCell className="flex items-center gap-2" sx={{ color: '#696969', fontWeight: 700, fontSize: '16px' }}>
                 CCCD
-                <IconButton size="small">
-                  <FilterListIcon fontSize="small" />
+                <IconButton size="small" sx={{ marginLeft: '12px' }}>
+                    <Filter size="small" />
                 </IconButton>
               </TableCell>
-              <TableCell className="flex items-center gap-2">
+              <TableCell className="flex items-center gap-2" sx={{ color: '#696969', fontWeight: 700, fontSize: '16px' }}>
                 Giấy phép lái xe
-                <IconButton size="small">
-                  <FilterListIcon fontSize="small" />
+                <IconButton size="small" sx={{ marginLeft: '12px' }}>
+                    <Filter size="small" />
                 </IconButton>
               </TableCell>
             </TableRow>
@@ -132,7 +295,7 @@ const DriverListPage: React.FC = () => {
           <TableBody>
             {drivers.map((driver) => (
               <TableRow key={driver.id} className="gap-3">
-                <TableCell>{driver.id}</TableCell>
+                <TableCell sx={{ color: '#696969' }}>{driver.id}</TableCell>
                 <TableCell>
                   <Chip
                     label={driver.status}
@@ -140,17 +303,18 @@ const DriverListPage: React.FC = () => {
                     size="small"
                   />
                 </TableCell>
-                <TableCell>{driver.name}</TableCell>
-                <TableCell>{driver.email}</TableCell>
-                <TableCell>{driver.phone}</TableCell>
-                <TableCell>{driver.cccd}</TableCell>
-                <TableCell>{driver.license}</TableCell>
+                <TableCell sx={{ color: '#696969' }}>{driver.name}</TableCell>
+                <TableCell sx={{ color: '#696969' }}>{driver.email}</TableCell>
+                <TableCell sx={{ color: '#696969' }}>{driver.phone}</TableCell>
+                <TableCell sx={{ color: '#696969' }}>{driver.cccd}</TableCell>
+                <TableCell sx={{ color: '#696969' }}>{driver.license}</TableCell>
               </TableRow>
             ))}
           </TableBody>
         </Table>
       </TableContainer>
 
+      {/* Include the DriverRegistrationForm component */}
       <DriverRegistrationForm open={open} onClose={handleClose} />
     </Container>
   );
