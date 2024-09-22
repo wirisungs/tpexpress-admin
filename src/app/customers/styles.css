@@ -1,0 +1,102 @@
+.all {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 32px;
+  }
+  
+  .note-container {
+    width: 100%; /* Đặt chiều rộng của .note-container bằng với table-container */
+    max-width: 1029px; /* Khớp với kích thước của bảng */
+    margin-bottom: 12px; /* Khoảng cách giữa ghi chú và bảng */
+    text-align: left; /* Căn trái cho ghi chú */
+  }
+  
+  .note {
+    color: #F61317;
+    font-size: 12px;
+    font-weight: 700;
+    margin: 0; /* Xóa khoảng cách thừa của phần tử p */
+  }
+  
+  .table-container {
+    max-width: 1029px;
+    background-color: white;
+    /* padding: 12px; */
+    border-radius: 8px;
+    box-shadow: 0px 0px 10px #CBCBCB;
+    overflow: hidden;
+  }
+  
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: "Lato", sans-serif;
+  }
+  
+  
+  thead {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    box-shadow: 0 4px 5px #CBCBCB; 
+    
+  }
+  
+  .header-cell {
+    display: flex;
+    align-items: center;
+    background-color: #ffffff;
+    
+  }
+  
+  .downup-icon {
+    width: 16px;
+    height: 16px;
+    margin-left: 8px;
+  }
+  
+  th, td {
+    text-align: left;
+    padding: 12px;
+    border-bottom: 1px solid #ddd;
+    font-size: 16px;
+    color: #696969;
+    
+  }
+  
+  
+  td {
+    color: #696969;
+    font-weight: 400;
+  }
+  
+  .email-cell, .address-cell {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 180px;
+  }
+  
+  tbody {
+    display: block;
+    max-height: 554px;
+    overflow-y: auto;
+    padding: 12px;
+  }
+  
+  tbody::-webkit-scrollbar {
+    display: none;
+  }
+  
+  tr {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+    
+  }
+  
+  tbody tr:hover {
+    background-color: #f1f1f1;
+  }
+  
