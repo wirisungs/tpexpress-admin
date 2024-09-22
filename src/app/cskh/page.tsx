@@ -1,9 +1,14 @@
 import React from 'react';
-import './styles.css';
+import '@/Style/DTri/styles_customers.css';
 import downup from '@/Pictures/images/downup.png';
+import ava1 from '@/Pictures/Images/ava1.png'
 import Image from 'next/image';
+import NavbarTab from '@/components/CommonComponents/Layout/Items/NavbarTab';
+import IconAndText from '@/components/CommonComponents/Layout/Items/IconAndText';
+import Input from '@/components/CommonComponents/Inputs/Inputs';
 
-const cskh: React.FC = () => {
+
+const Customers: React.FC = () => {
   // Tạo một mảng giả lập 10 phần tử
   const cskhData = Array(12).fill({
     stt: '1',
@@ -18,11 +23,19 @@ const cskh: React.FC = () => {
 
   return (
     <div className='all'>
-      {/* <div className="note-container">
-        <p className='note'>Ghi chú: Ấn và khách hàng bất kì để xem hoặc thay đổi thông tin</p>
-      </div> */}
+      <div className='left'>
+          <IconAndText
+            Text={<span className="textnav">Trần Hữu Minh Trí</span>}
+            Icon={<Image src={ava1} alt="Avatar" width={40} height={40} />}
+          />
+          <div className='nav'>
+            <NavbarTab/>
+          </div>
+      </div>
 
-      <div className='table-container'>
+      <div className='right'>
+        <div className='right-bottom'>
+        <div className='table-container'>
         <table>
           <thead>
             <tr>
@@ -92,8 +105,14 @@ const cskh: React.FC = () => {
           </tbody>
         </table>
       </div>
+
+
+        </div>
+        
+      </div>
+      
     </div>
   );
 };
 
-export default cskh;
+export default Customers;

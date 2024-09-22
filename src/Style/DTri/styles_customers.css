@@ -1,0 +1,126 @@
+.all {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+}
+
+.left {
+  width: 203px;
+}
+
+.note-container {
+  width: 100%;
+  max-width: 1029px;
+  margin-bottom: 16px;
+  text-align: left;
+}
+
+.note {
+  color: #F61317;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.table-container {
+  max-width: 1029px;
+  background-color: white;
+  box-shadow: 0px 0px 10px #CBCBCB;
+  overflow: hidden;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: "Lato", sans-serif;
+}
+
+thead {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  box-shadow: 0 4px 5px #CBCBCB;
+}
+
+.header-cell {
+  display: flex;
+  align-items: center;
+}
+
+.downup-icon {
+  width: 16px;
+  height: 16px;
+  margin-left: 8px;
+}
+
+th {
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+  font-size: 16px;
+  color: #696969;
+  padding: 12px 32px;
+}
+
+td {
+  color: #696969;
+  font-weight: 400;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+  font-size: 16px;
+  padding: 12px 32px;
+}
+
+.email-cell, .address-cell {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 200px;
+}
+
+tbody {
+  display: block;  /* Để kích hoạt scroll cho tbody */
+  max-height: 500px;  /* Giới hạn chiều cao tối đa */
+  overflow-y: auto;  /* Cho phép cuộn khi vượt quá chiều cao */
+}
+
+tbody::-webkit-scrollbar {
+  display: none;
+}
+
+tr {
+  display: table;
+  width: 100%;
+  table-layout: fixed; /* Đảm bảo bảng không bị phá vỡ layout */
+}
+
+tbody tr:hover {
+  background-color: #f1f1f1;
+}
+
+.textnav {
+  font-size: 14px;
+  font-weight: 400;
+  color: #1C1C1C;
+}
+
+::placeholder {
+  color: #CBCBCB;
+  font-size: 16px;
+  font-weight: 400;
+}
+
+.inputright {
+  padding: 24px;
+}
+
+.right-bottom {
+  padding: 24px;
+  background-color: #f9faff;
+}
+
+.nav {
+  margin-top: 16px;
+  margin-bottom: 16px;
+}
+
+
+
