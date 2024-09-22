@@ -1,0 +1,8 @@
+.Active{
+    font-weight: bold;
+    background-color: #F9FAFF;
+}
+
+.react-datepicker-wrapper input {
+    width: 100%;
+}
