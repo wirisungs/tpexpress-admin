@@ -1,12 +1,10 @@
 import React from 'react';
 import '@/Style/DTri/styles_customers.css';
-import downup from '@/Pictures/images/downup.png';
-import ava1 from '@/Pictures/Images/ava1.png'
+import downup from '@/Pictures/Images_DT/downup.png';
+import ava1 from '@/Pictures/Images_DT/ava1.png'
 import Image from 'next/image';
 import NavbarTab from '@/components/CommonComponents/Layout/Items/NavbarTab';
 import IconAndText from '@/components/CommonComponents/Layout/Items/IconAndText';
-import Input from '@/components/CommonComponents/Inputs/Inputs';
-
 
 const Customers: React.FC = () => {
   // Tạo một mảng giả lập 10 phần tử
