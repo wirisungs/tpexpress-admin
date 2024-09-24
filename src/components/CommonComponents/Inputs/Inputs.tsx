@@ -13,6 +13,7 @@ type InputPurpose = "search" | "password" | "OnlyEnter";
 interface InputProps {
   placeholder: string;
   type?: string;
+  label?: string;
 }
 
 interface InputIconProps extends InputProps {
@@ -23,22 +24,35 @@ interface InputFunctionProps extends InputProps {
   functionText: string;
 }
 
+interface DatePickerProps {
+  background: string;
+}
+
 interface SelectionInputProps {
   options: string[];
 }
 
-const Input: React.FC<InputProps> = ({ placeholder, type }) => {
+const Input: React.FC<InputProps> = ({ placeholder, type, label }) => {
   return (
-    <input
-      type={type || "text"}
-      className="h-12 w-[342px] rounded-md px-4 py-3 bg-transparent
+    <div className="flex flex-col gap-[6px]">
+      {label ? (
+        <label className="text-base font-bold text-normalText">{label}</label>
+      ) : null}
+      <input
+        type={type || "text"}
+        className="h-12 w-[342px] rounded-md px-4 py-3 bg-transparent
       border-solid border-[1px] outline-none"
-      placeholder={placeholder}
-    />
+        placeholder={placeholder}
+      />
+    </div>
   );
 };
 
-const InputWithIcon: React.FC<InputIconProps> = ({ purpose, placeholder }) => {
+const InputWithIcon: React.FC<InputIconProps> = ({
+  purpose,
+  placeholder,
+  label,
+}) => {
   const type = purpose === "password" ? purpose : "text";
   const [inputType, setInputType] = useState<HTMLInputTypeAttribute>(type);
   const handleIconClick = () => {
@@ -49,24 +63,33 @@ const InputWithIcon: React.FC<InputIconProps> = ({ purpose, placeholder }) => {
     }
   };
   return (
-    <div
-      className="Input flex flex-row h-12 w-[342px] rounded-md px-4 py-3 bg-transparent
+    <div className="flex flex-col w-auto h-auto gap-[6px]">
+      {label ? (
+        <label className="text-base font-bold text-normalText">{label}</label>
+      ) : null}
+      <div
+        className="Input flex flex-row h-12 w-[342px] rounded-md px-4 py-3 bg-transparent
         border-solid border-[1px] items-center justify-around"
-    >
-      <input
-        type={inputType}
-        className="bg-transparent outline-none w-[90%]"
-        placeholder={placeholder}
-      />
-      <button className="icon" onClick={() => handleIconClick()}>
-        {purpose === "password" ? (
-          <EyesIC />
-        ) : purpose === "search" ? (
-          <SearchIC />
-        ) : (
-          ""
-        )}
-      </button>
+      >
+        <input
+          type={inputType}
+          className="bg-transparent outline-none w-[90%]"
+          placeholder={placeholder}
+        />
+        <button
+          className="icon"
+          type="button"
+          onClick={() => handleIconClick()}
+        >
+          {purpose === "password" ? (
+            <EyesIC />
+          ) : purpose === "search" ? (
+            <SearchIC />
+          ) : (
+            ""
+          )}
+        </button>
+      </div>
     </div>
   );
 };
@@ -75,20 +98,26 @@ const InputFunction: React.FC<InputFunctionProps> = ({
   placeholder,
   functionText,
   type,
+  label,
 }) => {
   return (
-    <div
-      className="Input flex flex-row h-12 w-[342px] rounded-md px-4 py-3 bg-transparent
-          border-solid border-[1px] justify-around items-center"
-    >
-      <input
-        type={type}
-        className="bg-transparent outline-none w-[80%]"
-        placeholder={placeholder}
-      />
-      <button className="text-base h-full text-primaryText300">
-        {functionText}
-      </button>
+    <div className="flex flex-col w-auto h-auto gap-[6px]">
+      {label ? (
+        <label className="text-base font-bold text-normalText">{label}</label>
+      ) : null}
+      <div
+        className="Input flex flex-row h-12 w-[342px] rounded-md px-4 py-3 bg-transparent
+          border-solid border-[1px] justify-between items-center"
+      >
+        <input
+          type={type}
+          className="bg-transparent outline-none w-[80%]"
+          placeholder={placeholder}
+        />
+        <button type="button" className="text-base h-full text-primaryText300">
+          {functionText}
+        </button>
+      </div>
     </div>
   );
 };
@@ -120,26 +149,32 @@ const InputSelection: React.FC<SelectionInputProps> = ({ options }) => {
   );
 };
 
-const InputDatePicker: React.FC = ({}) => {
+const InputDatePicker: React.FC<DatePickerProps> = ({ background }) => {
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   return (
     <div
+      style={{
+        background: `${background === "yes" ? "white" : "transparent"}`,
+        border: `${background === "yes" ? "none" : "solid"}`,
+        boxShadow: `${
+          background === "yes" ? "0px 2px 10px rgb(0 0 0 / 0.07)" : "none"
+        }`,
+      }}
       className="DatePicker-Container flex flex-row
-      w-[182px] px-4 py-3 rounded-xl bg-transparent
-      border-solid border-[1px] items-center justify-between gap-3"
+      w-[182px] px-4 py-3 rounded-xl border-[1px] items-center justify-between gap-3"
     >
       <div className="calender w-1/6">
-        <CalendarIC width={"20px"} height={"20px"} />
+        <CalendarIC width={"20px"} height={"20px"} stroke="#696969" />
       </div>
       <DatePicker
-        className="bg-transparent outline-none w-4/6"
+        className="bg-transparent outline-none w-4/6 h-full text-navbarText"
         selected={selectedDate}
         onChange={(date) => setSelectedDate(date)}
         dateFormat="P"
         placeholderText="Ngày"
       />
       <div className="dropdown w-1/6">
-        <DropdownIC />
+        <DropdownIC fill="#696969" />
       </div>
     </div>
   );

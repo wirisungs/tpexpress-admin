@@ -5,7 +5,7 @@ import React from "react";
 interface ButtonProps {
   text: string;
   icon?: React.ReactNode;
-  width?: number;
+  width?: string;
   customColor?: string;
 }
 
@@ -13,7 +13,7 @@ const Button: React.FC<ButtonProps> = ({ text, icon, width, customColor }) => {
   return (
     <button
       style={{
-        width: `${width ? `${width}px` : "152px"}`,
+        width: `${width ? `${width}` : "152px"}`,
         backgroundColor: `${customColor ? `${customColor}` : `#D9D9D9`}`,
       }}
       className="flex flex-row gap-[6px] h-12 rounded-md justify-center items-center"

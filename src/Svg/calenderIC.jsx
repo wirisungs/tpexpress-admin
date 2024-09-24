@@ -8,7 +8,7 @@ const SvgComponent = (props) => (
     {...props}
     viewBox="0 0 26 26"
   >
-    <g stroke="#1C1C1C" strokeWidth={1.5} clipPath="url(#a)">
+    <g stroke={props.stroke | "#1C1C1C"} strokeWidth={1.5} clipPath="url(#a)">
       <path
         strokeLinecap="round"
         strokeLinejoin="round"

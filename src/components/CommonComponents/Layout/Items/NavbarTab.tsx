@@ -8,7 +8,7 @@ import RequestIC from "@/Svg/requestIC";
 
 const NavbarTab = () => {
   return (
-    <div className="container flex flex-col gap-3 w-full">
+    <div className="navbar-container flex flex-col gap-3 w-full">
       <IconAndText
         Icon={<DashboardIC fill={"#696969"} />}
         Text="Tổng quan"
