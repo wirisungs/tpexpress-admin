@@ -1,0 +1,15 @@
+*{
+    box-sizing: border-box;
+}
+.Active{
+    font-weight: bold;
+    background-color: #F9FAFF;
+}
+
+.react-datepicker-wrapper input {
+    width: 100%;
+}
+
+.logoArea{
+    background: linear-gradient(to bottom, #5B5958, #1C1C1C);
+}
