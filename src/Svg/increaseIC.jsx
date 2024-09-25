@@ -1,0 +1,22 @@
+import * as React from "react";
+const SvgComponent = (props) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width={25}
+    height={25}
+    fill="none"
+    {...props}
+  >
+    <path
+      stroke="#1C1C1C"
+      strokeMiterlimit={10}
+      d="m2.246 19.023 7.461-7.46 3.73 3.73 9.317-9.316"
+    />
+    <path
+      stroke="#1C1C1C"
+      strokeMiterlimit={10}
+      d="M18.096 5.977h4.658v4.658"
+    />
+  </svg>
+);
+export default SvgComponent;
