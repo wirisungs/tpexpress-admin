@@ -217,7 +217,7 @@ const DriverListPage: React.FC = () => {
             InputProps={{
               endAdornment: (
                 <InputAdornment position="end">
-                  <Search/>
+                  <Search color={'#696969'}/>
                 </InputAdornment>
               ),
             }}
@@ -314,7 +314,6 @@ const DriverListPage: React.FC = () => {
         </Table>
       </TableContainer>
 
-      {/* Include the DriverRegistrationForm component */}
       <DriverRegistrationForm open={open} onClose={handleClose} />
     </Container>
   );
