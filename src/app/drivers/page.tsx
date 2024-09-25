@@ -33,7 +33,7 @@ const DriverTable: React.FC = () => {
         <SearchInput placeholder="Tìm kiếm tài xế" />
         <RegisterButton text="Đăng ký tài xế" />
       </div>
-      <p className="text-xs font-bold text-red-600 max-md:max-w-full">
+      <p className="text-xs font-bold px text-red-600 max-md:max-w-full">
         Ghi chú: Ấn và khách hàng bất kì để xem hoặc thay đổi thông tin
       </p>
       <div className="flex flex-col flex-1 mt-4 w-full text-base text-stone-500 max-md:max-w-full">
