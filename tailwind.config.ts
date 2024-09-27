@@ -22,6 +22,9 @@ const config: Config = {
         error: "#F61317",
         success: "#0DA651"
       },
+      fontFamily: {
+        lato: ["Lato", "sans-serif"],
+      },
     },
   },
   plugins: [],
