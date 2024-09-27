@@ -8,12 +8,17 @@ import CalendarIC from "@/Svg/calenderIC";
 import DropdownIC from "@/Svg/dropdown";
 import SearchIC from "@/Svg/searchIC";
 
+import "@/Style/MTri.css";
+
 type InputPurpose = "search" | "password" | "OnlyEnter";
 
 interface InputProps {
   placeholder: string;
   type?: string;
   label?: string;
+  value?: string;
+  length?: number;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 interface InputIconProps extends InputProps {
@@ -32,14 +37,26 @@ interface SelectionInputProps {
   options: string[];
 }
 
-const Input: React.FC<InputProps> = ({ placeholder, type, label }) => {
+// Input thông thường
+const Input: React.FC<InputProps> = ({
+  placeholder,
+  type,
+  label,
+  value,
+  onChange,
+  length,
+}) => {
   return (
     <div className="flex flex-col gap-[6px]">
       {label ? (
         <label className="text-base font-bold text-normalText">{label}</label>
       ) : null}
       <input
+        maxLength={length}
+        required
         type={type || "text"}
+        value={value}
+        onChange={onChange}
         className="h-12 w-[342px] rounded-md px-4 py-3 bg-transparent
       border-solid border-[1px] outline-none"
         placeholder={placeholder}
@@ -48,6 +65,7 @@ const Input: React.FC<InputProps> = ({ placeholder, type, label }) => {
   );
 };
 
+// Input chứa icons
 const InputWithIcon: React.FC<InputIconProps> = ({
   purpose,
   placeholder,
@@ -72,6 +90,7 @@ const InputWithIcon: React.FC<InputIconProps> = ({
         border-solid border-[1px] items-center justify-around"
       >
         <input
+          required
           type={inputType}
           className="bg-transparent outline-none w-[90%]"
           placeholder={placeholder}
@@ -82,7 +101,7 @@ const InputWithIcon: React.FC<InputIconProps> = ({
           onClick={() => handleIconClick()}
         >
           {purpose === "password" ? (
-            <EyesIC />
+            <EyesIC fill="#696969" />
           ) : purpose === "search" ? (
             <SearchIC />
           ) : (
@@ -94,11 +113,14 @@ const InputWithIcon: React.FC<InputIconProps> = ({
   );
 };
 
+// Input có chứa hàm
 const InputFunction: React.FC<InputFunctionProps> = ({
   placeholder,
   functionText,
   type,
   label,
+  value,
+  onChange,
 }) => {
   return (
     <div className="flex flex-col w-auto h-auto gap-[6px]">
@@ -110,6 +132,10 @@ const InputFunction: React.FC<InputFunctionProps> = ({
           border-solid border-[1px] justify-between items-center"
       >
         <input
+          required
+          maxLength={length}
+          value={value}
+          onChange={onChange}
           type={type}
           className="bg-transparent outline-none w-[80%]"
           placeholder={placeholder}
@@ -122,6 +148,7 @@ const InputFunction: React.FC<InputFunctionProps> = ({
   );
 };
 
+// Input lựa chọn
 const InputSelection: React.FC<SelectionInputProps> = ({ options }) => {
   const [selectedValue, setSelectedValue] = useState<string | undefined>(
     undefined
@@ -149,6 +176,7 @@ const InputSelection: React.FC<SelectionInputProps> = ({ options }) => {
   );
 };
 
+// Input chọn ngày
 const InputDatePicker: React.FC<DatePickerProps> = ({ background }) => {
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   return (

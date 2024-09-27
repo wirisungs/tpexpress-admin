@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import Input, {
   InputFunction,
   InputWithIcon,
@@ -12,7 +12,13 @@ interface FormProps {
   onSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
 }
 const Form: React.FC<FormProps> = ({ formType, onSubmit }) => {
+  const [phone, setPhone] = useState<string | undefined>();
   const subtitle = "Tinh thần tốc độ - Dịch vụ hoàn hảo";
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setPhone(value); // Cập nhật state
+  };
   return (
     <form
       onSubmit={onSubmit}
@@ -20,6 +26,7 @@ const Form: React.FC<FormProps> = ({ formType, onSubmit }) => {
       style={{ boxShadow: "0px 0px 12px rgb(0 0 0 / 0.2)" }}
       className="form-container px-8 py-16 rounded-xl"
     >
+      {/* Nếu form là Login */}
       {formType === "login" && (
         <div className="login-container flex flex-col gap-4">
           <div className="title flex flex-col gap-[6px]">
@@ -28,7 +35,14 @@ const Form: React.FC<FormProps> = ({ formType, onSubmit }) => {
             </p>
             <p className="subtitle text-yellowText font-medium">{subtitle}</p>
           </div>
-          <Input label="Số điện thoại" placeholder="VD: 0123456789" />
+          <Input
+            value={phone}
+            onChange={(e) => handleChange(e)}
+            length={10}
+            type="text"
+            label="Số điện thoại"
+            placeholder="VD: 0123456789"
+          />
           <InputWithIcon
             label="Mật khẩu"
             purpose="password"
@@ -48,7 +62,13 @@ const Form: React.FC<FormProps> = ({ formType, onSubmit }) => {
             </p>
             <p className="subtitle text-yellowText font-medium">{subtitle}</p>
           </div>
-          <Input label="Số điện thoại" placeholder="VD: 0123456789" />
+          <Input
+            value={phone}
+            onChange={(e) => handleChange(e)}
+            length={10}
+            label="Số điện thoại"
+            placeholder="VD: 0123456789"
+          />
           <Input
             label="Email công ty cấp"
             placeholder="VD: abc@tpexpress.com"

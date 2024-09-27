@@ -13,3 +13,14 @@
 .logoArea{
     background: linear-gradient(to bottom, #5B5958, #1C1C1C);
 }
+/* Ẩn thanh tăng giảm trên Chrome, Safari */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none; /* Ẩn trên Chrome và Safari */
+  margin: 0; /* Đảm bảo không có margin */
+}
+
+/* Ẩn thanh tăng giảm trên Firefox */
+input[type="number"] {
+  -moz-appearance: textfield; /* Ẩn trên Firefox */
+}
