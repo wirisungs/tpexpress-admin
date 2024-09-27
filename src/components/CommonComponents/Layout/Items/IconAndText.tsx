@@ -4,7 +4,7 @@ import "@/Style/MTri.css";
 // Components của 1 Icon và Text
 interface iconAndTextProps {
   Icon: React.ReactNode;
-  Text: string;
+  Text: React.ReactNode;
   isActive?: boolean;
 }
 
