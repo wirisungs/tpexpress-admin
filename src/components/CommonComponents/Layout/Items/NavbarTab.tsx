@@ -58,10 +58,10 @@ const NavbarTab = () => {
 
         {/* Đơn hàng */}
         <Link
-          href={`/orders`}
+          href={`/order`}
           passHref
           className={`${
-            pathname === "/orders" ? "Active" : ""
+            pathname === "/order" ? "Active" : ""
           } flex flex-row pl-8 pr-4 items-center gap-3 py-3`}
         >
           <div className="Icon">
@@ -75,7 +75,7 @@ const NavbarTab = () => {
           href={`/requests`}
           passHref
           className={`${
-            pathname === "/requests" ? "Active" : ""
+            pathname === "/request" ? "Active" : ""
           } flex flex-row pl-8 pr-4 items-center gap-3 py-3`}
         >
           <div className="Icon">
