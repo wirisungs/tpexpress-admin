@@ -19,6 +19,8 @@ import Input, {
 import DropdownIC from '@/Svg/dropdown'
 import ButtonCPN from '@/components/CommonComponents/Buttons/Button'
 
+
+
 const CreateOrderPage = () => {
   return (
     <div>
@@ -78,7 +80,7 @@ const CreateOrderPage = () => {
                       aria-describedby="outlined-weight-helper-text"
                       inputProps={{
                         'aria-label': 'weight',}}
-                      placeholder='1.000.000'/>
+                      placeholder='1 000 000'/>
                   </FormControl>
                 </div>
                 {/* có thể sử dụng autocomplete của mui */}

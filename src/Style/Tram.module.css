@@ -10,7 +10,9 @@
 .trackingPark {
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between;
+    justify-content: space-evenly;
+    /* justify-content: space-between; */
+    align-items:center;
     gap: 16px;
     padding: 24px;
 }
@@ -65,7 +67,7 @@
 .importMap{
     height: 532px;
     width: 100%;
-    background: black;
+    /* background: black; */
 }
 
 .list{
@@ -169,16 +171,6 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
 @media(max-width:846px){
     .trackingPark{
         /* flex-direction: column; */
@@ -186,5 +178,8 @@
     .mapTitle{
         flex-direction: column;
         height: fit-content;
+    }
+    .orderContain{
+        flex-direction: column;
     }
 }
