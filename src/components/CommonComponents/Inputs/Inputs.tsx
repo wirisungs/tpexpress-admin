@@ -62,7 +62,7 @@ const InputWithIcon: React.FC<InputIconProps> = ({ purpose, placeholder }) => {
         {purpose === "password" ? (
           <EyesIC />
         ) : purpose === "search" ? (
-          <SearchIC />
+          <SearchIC fill='#696969' />
         ) : (
           ""
         )}

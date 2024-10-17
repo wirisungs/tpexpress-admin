@@ -1,6 +1,6 @@
 .Active{
     font-weight: bold;
-    background-color: #F9FAFF;
+    background: var(--Color-Background-Background, #F9FAFF);
 }
 
 .react-datepicker-wrapper input {

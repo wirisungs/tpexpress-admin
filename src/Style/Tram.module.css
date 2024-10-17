@@ -10,11 +10,11 @@
 .trackingPark {
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-evenly;
-    /* justify-content: space-between; */
+    /* justify-content: space-evenly; */
+    justify-content: space-between;
     align-items:center;
     gap: 16px;
-    padding: 24px;
+    /* padding: 0px 24px; */
 }
 .card{
     /* background-color: #d9d9d9; */
@@ -24,18 +24,21 @@
     align-items: center;
     gap:12px;
     border-radius: 6px;
-    box-shadow: 0px 2px 5px 0px #CBCBCB;
     flex-basis: 212px;
     padding: 24px 32px;
+    background-color: white;
+    width: fit-content;
+    height: fit-content;
 }
 
 .map{
     display: flex;
     flex-direction: column;
     gap: 16px;
-    padding: 0px 24px;
-    /* background-color: #d9d9d9; */
-    height: 590px;
+    padding: 24px;
+    height: fit-content;
+    border-radius: 6px;
+    background: var(--Color-Basic-White, #FFF);
 }
 .mapTitle{
     display: flex;
@@ -74,7 +77,7 @@
     display: flex;
     flex-direction: column;
     /* background-color: #d9d9d9; */
-    padding: 0px 24px;
+    /* padding: 0px 24px; */
     gap: 16px;
 }
 .tbHead{
@@ -108,37 +111,28 @@
     gap: 10px;
     flex-shrink: 0;
     border-radius: 6px;
-    background: #B8DDFF;
-    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+    /* background: #B8DDFF; */
+    border-radius: 6px;
+    background: var(--Token-Button-background-2, #B8DDFF);
 }
 .form{
     display: flex;
     padding: 24px;
     flex-direction: column;
     justify-content: center;
+    width: 100%;
     align-items: center;
     gap: 16px;
     align-self: stretch;
     border-radius: 6px;
     background: var(--Color-Basic-White, #FFF);
-    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
 }
-.orderPark{
+.personPart,.orderPart{
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: flex-start;
     gap: 12px;
     align-self: stretch;
-    width: 100%;
-    height: fit-content;
-}
-.inputTitle{
-    color: #696969;
-    font-size: 20px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: normal;
 }
 .orderContain{
     display: flex;
@@ -147,7 +141,6 @@
     flex: 2;
     gap: 16px;
     width: 100%;
-
 }
 .containRight {
     display: flex;
@@ -164,6 +157,23 @@
     flex-direction: column;
     width: 100%;
     gap: 12px;
+}
+.orderInput{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 12px;
+    align-self: stretch;
+    width: 100%;
+    height: fit-content;
+}
+.inputTitle{
+    color: #696969;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
 }
 
 
