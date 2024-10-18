@@ -11,11 +11,14 @@ interface LayoutProps {
 const Navbar: React.FC<LayoutProps> = ({ children }) => {
   return (
     <div className="MainContainer flex flex-row h-full w-full">
-      <div className="NavbarContainer flex flex-col w-[20%] gap-3">
+      <div
+        className="NavbarContainer flex flex-col w-[20%] gap-3"
+        style={{ backgroundColor: "#ffffff" }}
+      >
         <Nameplate image={Art} name="Trần Hữu Minh Trí" icon={<DropdownIC />} />
         <NavbarTab />
       </div>
-      <div className="bodyContainer bg-navbarActiveBG w-[80%] h-[1000px]">
+      <div className="bodyContainer bg-navbarActiveBG w-[80%] h-[1000px] p-6">
         {children}
       </div>
     </div>

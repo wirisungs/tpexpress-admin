@@ -6,6 +6,12 @@ import BackSvg from "@/Svg/backIC";
 import { FormControl, InputAdornment, OutlinedInput } from "@mui/material";
 import DropdownIC from "@/Svg/dropdown";
 import ButtonCPN from "@/components/CommonComponents/Buttons/Button";
+import React from "react";
+import Navbar from "@/components/CommonComponents/Layout/Navbar";
+import TramCSS from "@/Style/Tram.module.css";
+import Link from "next/link";
+import BackSvg from "@/Svg/backIC";
+import FormCreate from "@/components/OrderComponents/CreateForm";
 
 const CreateOrderPage = () => {
   return (
@@ -264,6 +270,7 @@ const CreateOrderPage = () => {
             </div>
             <ButtonCPN text={"Lên đơn"} customColor={"#eb455f"} />
           </div>
+          <FormCreate />
         </main>
       </Navbar>
     </div>

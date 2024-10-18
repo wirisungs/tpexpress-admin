@@ -21,7 +21,10 @@ import WarehouseIC from "@/Svg/warehouseIC";
 import BuildingIC from "@/Svg/buildingIC";
 import FlagIC from "@/Svg/flagIC";
 import BoxIC from "@/Svg/boxIC";
-import { InputWithIcon } from "@/components/CommonComponents/Inputs/Inputs";
+import {
+  InputDatePicker,
+  InputWithIcon,
+} from "@/components/CommonComponents/Inputs/Inputs";
 
 interface OrderType {
   Order_ID: string;
@@ -39,7 +42,6 @@ interface OrderType {
   Cus_ID: string;
   Driver_ID: string;
 }
-
 const OrderPage = () => {
   const [orders, setOrders] = useState<OrderType[]>([]);
   const fetchData = async () => {
@@ -66,24 +68,29 @@ const OrderPage = () => {
     <div>
       <Navbar>
         <main className={TramCSS.body}>
+          <InputDatePicker background="none" />
           <div className={TramCSS.trackingPark}>
             <TrackCard
               text="Đơn trong kho"
+              number="122"
               icon={<WarehouseIC />}
               customColor="#FBECDA"
             />
             <TrackCard
               text="Đơn thành phố"
+              number="12"
               icon={<BuildingIC fill="#007AFF" />}
               customColor="#B8DDFF"
             />
             <TrackCard
               text="Đơn toàn quốc"
-              icon={<FlagIC fill="#EB455F" />}
+              number="54"
+              icon={<FlagIC fill="#0DA651" />}
               customColor="#9DEEB9"
             />
             <TrackCard
               text="Đơn đang giao"
+              number="8"
               icon={<BoxIC fill="#FDF7B9" color="#F1E01D" />}
               customColor="#FDF7B9"
             />
@@ -95,7 +102,6 @@ const OrderPage = () => {
               </h1>
               <div className={TramCSS.searchBox}>
                 <InputWithIcon purpose="search" placeholder="Tên / Mã tài xế" />
-                {/* <SearchSvg/> */}
               </div>
             </div>
             <div className={TramCSS.importMap}></div>
