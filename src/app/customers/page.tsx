@@ -1,45 +1,22 @@
-"use client";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import "@/Style/DTri/styles_customers.css";
 import downup from "@/Pictures/Images_DT/downup.png";
+import ava1 from "@/Pictures/Images_DT/ava1.png";
 import Image from "next/image";
+import NavbarTab from "@/components/CommonComponents/Layout/Items/NavbarTab";
+import IconAndText from "@/components/CommonComponents/Layout/Items/IconAndText";
 import Input from "@/components/CommonComponents/Inputs/Inputs";
 import Navbar from "@/components/CommonComponents/Layout/Navbar";
 
-interface CustomerType {
-  cus_ID: string;
-  cus_Name: string;
-  cus_Email: string;
-  cus_Phone: number;
-  cus_Address: string;
-  cus_Gender: number;
-  cus_Birthday: string;
-}
 const Customers: React.FC = () => {
-  const [customers, setCustomers] = useState<CustomerType[]>([]);
-
-  const fetchData = async () => {
-    try {
-      const response = await fetch(
-        "http://localhost:5000/api/customer/Customers",
-        {
-          method: "GET",
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error("Network not ok");
-      }
-
-      const result = await response.json();
-      setCustomers(result);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-  useEffect(() => {
-    fetchData();
-  }, []);
+  // Tạo một mảng giả lập 10 phần tử
+  const customerData = Array(12).fill({
+    id: "KH001",
+    name: "BlueDuck",
+    email: "blueduck974@gmail.com",
+    phone: "0916607059",
+    address: "323 LosLess NewTime",
+  });
 
   return (
     <div className="all">
@@ -114,13 +91,13 @@ const Customers: React.FC = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {customers.map((customer, index) => (
+                  {customerData.map((customer, index) => (
                     <tr key={index}>
-                      <td className="rowdetail">{customer.cus_ID}</td>
-                      <td className="rowdetail">{customer.cus_Name}</td>
-                      <td className="email-cell">{customer.cus_Email}</td>
-                      <td className="rowdetail">{customer.cus_Phone}</td>
-                      <td className="address-cell">{customer.cus_Address}</td>
+                      <td className="rowdetail">{customer.id}</td>
+                      <td className="rowdetail">{customer.name}</td>
+                      <td className="email-cell">{customer.email}</td>
+                      <td className="rowdetail">{customer.phone}</td>
+                      <td className="address-cell">{customer.address}</td>
                     </tr>
                   ))}
                 </tbody>

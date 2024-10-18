@@ -17,6 +17,7 @@ interface InputProps {
   type?: string;
   label?: string;
   value?: string;
+  length?: number;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
@@ -43,6 +44,7 @@ const Input: React.FC<InputProps> = ({
   label,
   value,
   onChange,
+  length,
 }) => {
   return (
     <div className="flex flex-col gap-[6px]">
@@ -50,6 +52,7 @@ const Input: React.FC<InputProps> = ({
         <label className="text-base font-bold text-normalText">{label}</label>
       ) : null}
       <input
+        maxLength={length}
         required
         type={type || "text"}
         value={value}
@@ -130,6 +133,7 @@ const InputFunction: React.FC<InputFunctionProps> = ({
       >
         <input
           required
+          maxLength={length}
           value={value}
           onChange={onChange}
           type={type}

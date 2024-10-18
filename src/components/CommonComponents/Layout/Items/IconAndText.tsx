@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "@/Style/MTri.css";
 
 // Components của 1 Icon và Text
