@@ -38,7 +38,6 @@ const Form: React.FC<FormProps> = ({ formType, onSubmit }) => {
           <Input
             value={phone}
             onChange={(e) => handleChange(e)}
-            length={10}
             type="text"
             label="Số điện thoại"
             placeholder="VD: 0123456789"
@@ -65,7 +64,6 @@ const Form: React.FC<FormProps> = ({ formType, onSubmit }) => {
           <Input
             value={phone}
             onChange={(e) => handleChange(e)}
-            length={10}
             label="Số điện thoại"
             placeholder="VD: 0123456789"
           />

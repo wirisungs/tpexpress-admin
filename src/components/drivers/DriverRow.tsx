@@ -1,8 +1,8 @@
-import React from 'react';
+import React from "react";
 
 interface Driver {
   id: string;
-  status: 'Online' | 'Offline';
+  status: "Online" | "Offline";
   name: string;
   email: string;
   phone: string;
@@ -15,7 +15,8 @@ interface DriverRowProps {
 }
 
 const DriverRow: React.FC<DriverRowProps> = ({ driver }) => {
-  const statusColor = driver.status === 'Online' ? 'text-green-600' : 'text-red-600';
+  const statusColor =
+    driver.status === "Online" ? "text-green-600" : "text-red-600";
 
   return (
     <div className="flex flex-wrap items-center max-md:max-w-full">
@@ -24,7 +25,9 @@ const DriverRow: React.FC<DriverRowProps> = ({ driver }) => {
           <div className="max-w-full w-[122px]">{driver.id}</div>
         </div>
       </div>
-      <div className={`flex overflow-hidden flex-col self-stretch my-auto ${statusColor} whitespace-nowrap border-b border-stone-300 min-h-[51px] w-[122px]`}>
+      <div
+        className={`flex overflow-hidden flex-col self-stretch my-auto ${statusColor} whitespace-nowrap border-b border-stone-300 min-h-[51px] w-[122px]`}
+      >
         <div className="flex overflow-hidden flex-col justify-center py-4 w-full">
           <div className="w-full">{driver.status}</div>
         </div>

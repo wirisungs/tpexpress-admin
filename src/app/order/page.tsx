@@ -1,4 +1,5 @@
-import React from "react";
+"use client";
+import React, { useEffect, useState } from "react";
 import {
   Table,
   TableBody,
@@ -7,7 +8,6 @@ import {
   TableHead,
   TableRow,
   Paper,
-  Chip,
 } from "@mui/material";
 import TrackCard from "@/components/OrderComponents/TrackCard";
 import TramCSS from "@/Style/Tram.module.css";
@@ -23,102 +23,45 @@ import FlagIC from "@/Svg/flagIC";
 import BoxIC from "@/Svg/boxIC";
 import { InputWithIcon } from "@/components/CommonComponents/Inputs/Inputs";
 
-function orderData(
-  id: string,
-  sender: string,
-  sendorreceive: string,
-  receiver: string,
-  driver: string,
-  date: string,
-  status: string
-) {
-  return { id, receiver, sendorreceive, sender, driver, date, status };
+interface OrderType {
+  Order_ID: string;
+  Receiver_Phone: string;
+  Receiver_Name: string;
+  Receiver_Address: string;
+  Order_Note: string;
+  Order_COD: number;
+  Order_TotalPrice: number;
+  Order_Type: string;
+  Order_Status: string;
+  Services_ID: string;
+  Voucher_ID: string;
+  Payment_ID: string;
+  Cus_ID: string;
+  Driver_ID: string;
 }
-const Order = [
-  orderData(
-    "DH001",
-    "Nguyễn Văn B",
-    "Gửi",
-    "Nguyễn Văn C",
-    "Nguyễn Văn A",
-    "24/08/2024",
-    "Đang giao"
-  ),
-  orderData(
-    "DH001",
-    "Nguyễn Văn B",
-    "Nhận",
-    "Nguyễn Văn C",
-    "----",
-    "24/08/2024",
-    "Tại kho"
-  ),
-  orderData(
-    "DH001",
-    "Nguyễn Văn B",
-    "Gửi",
-    "Nguyễn Văn C",
-    "Nguyễn Văn A",
-    "24/08/2024",
-    "Đang giao"
-  ),
-  orderData(
-    "DH001",
-    "Nguyễn Văn B",
-    "Gửi",
-    "Nguyễn Văn C",
-    "Nguyễn Văn A",
-    "24/08/2024",
-    "Đang giao"
-  ),
-  orderData(
-    "DH001",
-    "Nguyễn Văn B",
-    "Gửi",
-    "Nguyễn Văn C",
-    "Nguyễn Văn A",
-    "24/08/2024",
-    "Đang giao"
-  ),
-  orderData(
-    "DH001",
-    "Nguyễn Văn B",
-    "Nhận",
-    "Nguyễn Văn C",
-    "Nguyễn Văn A",
-    "24/08/2024",
-    "Đang giao"
-  ),
-  orderData(
-    "DH001",
-    "Nguyễn Văn B",
-    "Nhận",
-    "Nguyễn Văn C",
-    "----",
-    "24/08/2024",
-    "Tại kho"
-  ),
-  orderData(
-    "DH001",
-    "Nguyễn Văn B",
-    "Gửi",
-    "Nguyễn Văn C",
-    "Nguyễn Văn A",
-    "24/08/2024",
-    "Đang giao"
-  ),
-  orderData(
-    "DH001",
-    "Nguyễn Văn B",
-    "Gửi",
-    "Nguyễn Văn C",
-    "----",
-    "24/08/2024",
-    "Tại kho"
-  ),
-];
 
 const OrderPage = () => {
+  const [orders, setOrders] = useState<OrderType[]>([]);
+  const fetchData = async () => {
+    try {
+      const response = await fetch("http://localhost:5000/api/order/Orders", {
+        method: "GET",
+      });
+
+      if (!response.ok) {
+        throw new Error("Network not ok");
+      }
+
+      const result = await response.json();
+      setOrders(result);
+      // console.log(orders);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  useEffect(() => {
+    fetchData();
+  }, []);
   return (
     <div>
       <Navbar>
@@ -201,38 +144,31 @@ const OrderPage = () => {
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    {Order.map((row) => (
+                    {orders.map((order) => (
                       <TableRow
-                        key={row.id}
+                        key={order.Order_ID}
                         /*sx={{ '&:last-child td, &:last-child th': { border: 0 } }}*/
                       >
                         <TableCell className={TramCSS.tbBody}>
-                          {row.id}
+                          {order.Order_ID}
                         </TableCell>
                         <TableCell className={TramCSS.tbBody}>
-                          {row.sender}
+                          {order.Cus_ID}
                         </TableCell>
                         <TableCell className={TramCSS.tbBody}>
-                          {row.sendorreceive}
+                          {order.Receiver_Name}
                         </TableCell>
                         <TableCell className={TramCSS.tbBody}>
-                          {row.receiver}
+                          {order.Receiver_Address}
                         </TableCell>
                         <TableCell className={TramCSS.tbBody}>
-                          {row.driver}
+                          {order.Driver_ID}
                         </TableCell>
                         <TableCell className={TramCSS.tbBody}>
-                          {row.date}
+                          {order.Order_Status}
                         </TableCell>
                         <TableCell className={TramCSS.tbBody}>
-                          <Chip
-                            variant="outlined"
-                            label={row.status}
-                            color={
-                              row.status === "Đang giao" ? "warning" : "primary"
-                            }
-                            // size="small"
-                          />
+                          {order.Driver_ID}
                         </TableCell>
                       </TableRow>
                     ))}
