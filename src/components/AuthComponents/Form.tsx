@@ -1,113 +1,56 @@
-"use client";
-import React, { useState } from "react";
-import Input, {
-  InputFunction,
-  InputWithIcon,
-} from "../CommonComponents/Inputs/Inputs";
-import Button from "../CommonComponents/Buttons/Button";
+import React from "react";
+import { SSO } from '@htilssu/wowo';
 
-type type = "login" | "forgot" | "changePassword";
-interface FormProps {
-  formType: type;
-  onSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
-}
-const Form: React.FC<FormProps> = ({ formType, onSubmit }) => {
-  const [phone, setPhone] = useState<string | undefined>();
+const Form = () => {
   const subtitle = "Tinh thần tốc độ - Dịch vụ hoàn hảo";
+  const sso = new SSO('TPE');
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    setPhone(value); // Cập nhật state
+  const handleSSOLogin = () => {
+    // Gọi phương thức redirectToLogin với URL callback
+    sso.redirectToLogin('http://172.20.10.2:4000/callback');
   };
+
   return (
     <form
-      onSubmit={onSubmit}
+      onSubmit={(e) => e.preventDefault()} 
       method="POST"
-      style={{ boxShadow: "0px 0px 12px rgb(0 0 0 / 0.2)" }}
-      className="form-container px-8 py-16 rounded-xl"
+      style={{
+        boxShadow: "0px 0px 12px rgba(0, 0, 0, 0.2)",
+        padding: "16px",
+        borderRadius: "12px",
+        margin: "0 auto",
+        maxWidth: "400px", // Giới hạn chiều rộng cho thiết bị di động
+        width: "90%", // Đảm bảo form không chiếm quá 90% chiều rộng màn hình
+      }}
+      className="form-container"
     >
-      {/* Nếu form là Login */}
-      {formType === "login" && (
-        <div className="login-container flex flex-col gap-4">
-          <div className="title flex flex-col gap-[6px]">
-            <p className="titleText text-[32px] font-bold text-primaryText300">
-              Đăng nhập
-            </p>
-            <p className="subtitle text-yellowText font-medium">{subtitle}</p>
-          </div>
-          <Input
-            value={phone}
-            onChange={(e) => handleChange(e)}
-            type="text"
-            label="Số điện thoại"
-            placeholder="VD: 0123456789"
-          />
-          <InputWithIcon
-            label="Mật khẩu"
-            purpose="password"
-            placeholder="VD: Abc@12345678"
-          />
-          <Button text="Đăng nhập" width="100%" customColor="#EB455F" />
-          <a className="text-base font-medium text-yellowText" href="/forgot">
-            Quên mật khẩu?
-          </a>
+      <div className="login-container flex flex-col gap-4">
+        <div className="title flex flex-col gap-[6px] text-center">
+          <p className="titleText text-[24px] font-bold text-primaryText300">
+            Đăng nhập
+          </p>
+          <p className="subtitle text-yellowText font-medium">{subtitle}</p>
         </div>
-      )}
-      {formType === "forgot" && (
-        <div className="login-container flex flex-col gap-4">
-          <div className="title flex flex-col gap-[6px]">
-            <p className="titleText text-[32px] font-bold text-primaryText300">
-              Quên mật khẩu
-            </p>
-            <p className="subtitle text-yellowText font-medium">{subtitle}</p>
-          </div>
-          <Input
-            value={phone}
-            onChange={(e) => handleChange(e)}
-            label="Số điện thoại"
-            placeholder="VD: 0123456789"
-          />
-          <Input
-            label="Email công ty cấp"
-            placeholder="VD: abc@tpexpress.com"
-          />
-          <InputFunction
-            label="Mã xác nhận"
-            placeholder="Mã gồm 6 số được gửi về mail"
-            functionText="Gửi"
-          />
-
-          <Button text="Đổi mật khẩu" width="100%" customColor="#EB455F" />
-          <a className="text-base font-medium text-yellowText" href="/login">
-            Trở về đăng nhập
-          </a>
-        </div>
-      )}
-      {formType === "changePassword" && (
-        <div className="login-container flex flex-col gap-4">
-          <div className="title flex flex-col gap-[6px]">
-            <p className="titleText text-[32px] font-bold text-primaryText300">
-              Quên mật khẩu
-            </p>
-            <p className="subtitle text-yellowText font-medium">{subtitle}</p>
-          </div>
-          <InputWithIcon
-            label="Mật khẩu"
-            purpose="password"
-            placeholder="Nhập lại mật khẩu"
-          />
-          <InputWithIcon
-            label="Nhập lại mật khẩu"
-            purpose="password"
-            placeholder="Nhập lại mật khẩu"
-          />
-
-          <Button text="Thay đổi" width="100%" customColor="#EB455F" />
-          <a className="text-base font-medium text-yellowText" href="/login">
-            Trở về đăng nhập
-          </a>
-        </div>
-      )}
+        <button
+          type="button" // Đảm bảo rằng button không gửi form
+          onClick={handleSSOLogin}
+          style={{
+            width: "100%",
+            backgroundColor: "#EB455F", // Màu sắc tùy chỉnh
+            color: "white", // Màu chữ
+            padding: "12px", // Padding cho nút
+            borderRadius: "8px", // Đường viền nút
+            border: "none", // Không có đường viền
+            cursor: "pointer", // Con trỏ khi hover
+            fontSize: "16px", // Kích thước chữ nút
+          }}
+        >
+          Đăng nhập bằng SSO
+        </button>
+        <a className="text-base font-medium text-yellowText text-center" href="/forgot">
+          Quên mật khẩu?
+        </a>
+      </div>
     </form>
   );
 };
