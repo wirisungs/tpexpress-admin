@@ -16,21 +16,14 @@
 }
 
 .note {
-  color: #F61317;
+  color: #EB455F;
   font-size: 12px;
-  font-weight: 700;
-}
-
-.table-container {
-  max-width: 1029px;
-  background-color: white;
-  box-shadow: 0px 0px 10px #CBCBCB;
-  overflow: hidden;
 }
 
 table {
-  width: 100%;
+  width: full;  
   border-collapse: collapse;
+  box-sizing: border-box;
   font-family: "Lato", sans-serif;
 }
 
@@ -38,35 +31,60 @@ thead {
   position: sticky;
   top: 0;
   z-index: 1;
-  box-shadow: 0 4px 5px #CBCBCB;
+  margin-bottom: 6px;
+}
+thead tr th p {
+  font-size: 14px;
+  color: #696969;
+}
+thead tr th svg {
+  cursor: pointer;
+  color: #696969;
+}
+
+tbody tr td p {
+  font-size: 12px;
+  color: #696969;
+}
+
+tbody tr td svg {
+  color: #696969;
+  cursor: pointer;
+}
+
+tbody::before{
+content: "-";
+display: block;
+line-height: 6px;
+text-indent: -99999px;
+background-color: #F9FAFF;
+}
+tbody tr {
+  border-bottom: thin solid #F9FAFF;
 }
 
 .header-cell {
   display: flex;
   align-items: center;
+  font-size: 14px;
+  height: 42px;
+  font-weight:bold;
+  flex-direction: row;
+  gap: 6px
 }
 
 .downup-icon {
-  width: 16px;
-  height: 16px;
-  margin-left: 8px;
+  width: 12px;
+  height: 12px;
 }
 
-th {
+.th {
   text-align: left;
   border-bottom: 1px solid #ddd;
   font-size: 16px;
   color: #696969;
-  padding: 12px 32px;
-}
-
-td {
-  color: #696969;
-  font-weight: 400;
-  text-align: left;
-  border-bottom: 1px solid #ddd;
-  font-size: 16px;
-  padding: 12px 32px;
+  padding: 12px;
+  box-sizing: border-box;
 }
 
 .email-cell, .address-cell {
@@ -77,9 +95,9 @@ td {
 }
 
 tbody {
-  display: block;  /* Để kích hoạt scroll cho tbody */
-  max-height: 500px;  /* Giới hạn chiều cao tối đa */
-  overflow-y: auto;  /* Cho phép cuộn khi vượt quá chiều cao */
+  display: block;  
+  max-height: 500px;
+  overflow-y: auto;  
 }
 
 tbody::-webkit-scrollbar {
@@ -108,10 +126,6 @@ tbody tr:hover {
   font-weight: 400;
 }
 
-.inputright {
-  padding: 24px;
-}
-
 .right-bottom {
   padding: 24px;
   background-color: #f9faff;
@@ -122,5 +136,34 @@ tbody tr:hover {
   margin-bottom: 16px;
 }
 
+/* Kích thước cột */
+.cusTable th:nth-child(1), .cusTable td:nth-child(1) {
+  width: 5%; /* Cột STT */
+}
 
+.cusTable th:nth-child(2), .cusTable td:nth-child(2) {
+  width: 10%; /* Mã khách hàng */
+}
 
+.cusTable th:nth-child(3), .cusTable td:nth-child(3) {
+  width: 10%; /* Họ */
+}
+
+.cusTable th:nth-child(4), .cusTable td:nth-child(4) {
+  width: 10%; /* Tên */
+}
+
+.cusTable th:nth-child(5), .cusTable td:nth-child(5) {
+  width: 10%; /* Giới tính */
+}
+
+.cusTable th:nth-child(6), .cusTable td:nth-child(6) {
+  width: 10%; /* Số điện thoại */
+}
+.cusTable th:nth-child(7), .cusTable td:nth-child(7) {
+  width: 13%; /* Gmail */
+}
+
+.cusTable th:nth-child(8), .cusTable td:nth-child(8) {
+  width: 22%; /* Địa chỉ */
+}

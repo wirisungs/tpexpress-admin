@@ -14,7 +14,7 @@ const headerItems = [
 
 const TableHeader: React.FC = () => {
   return (
-    <header className="flex overflow-hidden flex-wrap justify-between items-center px-8 py-2.5 max-w-full font-bold bg-white min-h-[48px] shadow-[0px_4px_5px_rgba(203,203,203,1)] w-[1029px] max-md:px-5">
+    <header className="flex overflow-hidden flex-wrap justify-between items-center px-8 py-2.5 max-w-full font-bold bg-white min-h-[42px] shadow-[0px_4px_5px_rgba(203,203,203,1)] w-[1029px] max-md:px-5">
       {headerItems.map((item, index) => (
         <div key={index} className="flex overflow-hidden flex-col self-stretch my-auto bg-white rounded-md">
           <div className="flex items-center py-1.5 w-full bg-white">

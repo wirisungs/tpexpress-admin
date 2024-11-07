@@ -17,8 +17,13 @@ interface InputProps {
   type?: string;
   label?: string;
   value?: string;
+<<<<<<< Updated upstream
   length?: number;
+=======
+  border?: boolean;
+>>>>>>> Stashed changes
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  background?: boolean;
 }
 
 interface InputIconProps extends InputProps {
@@ -30,11 +35,14 @@ interface InputFunctionProps extends InputProps {
 }
 
 interface DatePickerProps {
-  background: string;
+  background: boolean;
+  border: boolean;
 }
 
 interface SelectionInputProps {
-  options: string[];
+  options: { [key: string]: string | boolean | number };
+  label?: string;
+  onChange?: (value: string | number | boolean) => void;
 }
 
 // Input thông thường
@@ -44,13 +52,19 @@ const Input: React.FC<InputProps> = ({
   label,
   value,
   onChange,
+<<<<<<< Updated upstream
   length,
+=======
+  border,
+  background = false,
+>>>>>>> Stashed changes
 }) => {
   return (
-    <div className="flex flex-col gap-[6px]">
+    <div className="flex flex-col gap-[6px] w-full">
       {label ? (
-        <label className="text-base font-bold text-normalText">{label}</label>
+        <label className="text-sm text-navbarText">{label}</label>
       ) : null}
+<<<<<<< Updated upstream
       <input
         maxLength={length}
         required
@@ -61,6 +75,36 @@ const Input: React.FC<InputProps> = ({
       border-solid border-[1px] outline-none"
         placeholder={placeholder}
       />
+=======
+      {border ? (
+        <input
+          style={{
+            backgroundColor: `${background ? "#ffffff" : "transparent"}`,
+          }}
+          required
+          type={type || "text"}
+          value={value}
+          onChange={onChange}
+          className="h-[42px] w-full rounded-md px-4 py-3 border-solid 
+          border-[1px] outline-none border-boxOuline text-xs placeholder:text-xs 
+          focus:border-primaryText300 transition-all duration-300"
+          placeholder={placeholder}
+        />
+      ) : (
+        <input
+          style={{
+            backgroundColor: `${background ? "#ffffff" : "transparent"}`,
+          }}
+          required
+          type={type || "text"}
+          value={value}
+          onChange={onChange}
+          className="h-[42px] w-full rounded-md px-4 py-3 outline-none text-xs placeholder:text-xs
+          focus:border--primaryText300 focus:border-solid focus:border-[1px] transition-all duration-300"
+          placeholder={placeholder}
+        />
+      )}
+>>>>>>> Stashed changes
     </div>
   );
 };
@@ -70,6 +114,8 @@ const InputWithIcon: React.FC<InputIconProps> = ({
   purpose,
   placeholder,
   label,
+  border,
+  background,
 }) => {
   const type = purpose === "password" ? purpose : "text";
   const [inputType, setInputType] = useState<HTMLInputTypeAttribute>(type);
@@ -80,19 +126,27 @@ const InputWithIcon: React.FC<InputIconProps> = ({
       );
     }
   };
+
+  const [isFocused, setIsFocused] = useState(false);
   return (
     <div className="flex flex-col w-auto h-auto gap-[6px]">
       {label ? (
-        <label className="text-base font-bold text-normalText">{label}</label>
+        <label className="text-sm text-normalText">{label}</label>
       ) : null}
       <div
-        className="Input flex flex-row h-12 w-[342px] rounded-md px-4 py-3 bg-transparent
-        border-solid border-[1px] items-center justify-around"
+        className="Input flex flex-row h-[42px] w-[342px] rounded-md px-4 py-3 bg-transparent
+        border-solid border-[1px] outline-none items-center justify-around transition-all0 duration-300"
+        style={{
+          borderColor: `${isFocused ? "#EB455F" : "#CBCBCB"}`,
+          background: `${background ? "#ffffff" : "transparent"}`,
+        }}
       >
         <input
           required
           type={inputType}
-          className="bg-transparent outline-none w-[90%]"
+          onFocus={() => setIsFocused(true)}
+          onBlur={() => setIsFocused(false)}
+          className="bg-transparent outline-none w-[90%] text-xs placeholder:text-xs"
           placeholder={placeholder}
         />
         <button
@@ -103,7 +157,7 @@ const InputWithIcon: React.FC<InputIconProps> = ({
           {purpose === "password" ? (
             <EyesIC fill="#696969" />
           ) : purpose === "search" ? (
-            <SearchIC />
+            <SearchIC fill="#696969" />
           ) : (
             ""
           )}
@@ -122,14 +176,16 @@ const InputFunction: React.FC<InputFunctionProps> = ({
   value,
   onChange,
 }) => {
+  const [isFocused, setIsFocused] = useState(false);
   return (
     <div className="flex flex-col w-auto h-auto gap-[6px]">
       {label ? (
-        <label className="text-base font-bold text-normalText">{label}</label>
+        <label className="text-sm text-normalText">{label}</label>
       ) : null}
       <div
-        className="Input flex flex-row h-12 w-[342px] rounded-md px-4 py-3 bg-transparent
-          border-solid border-[1px] justify-between items-center"
+        style={{ borderColor: `${isFocused ? "#EB455F" : "#CBCBCB"}` }}
+        className="Input flex flex-row h-[42px] w-[342px] rounded-md px-4 py-3 bg-transparent
+          border-solid border-[1px] justify-between items-center "
       >
         <input
           required
@@ -137,10 +193,12 @@ const InputFunction: React.FC<InputFunctionProps> = ({
           value={value}
           onChange={onChange}
           type={type}
-          className="bg-transparent outline-none w-[80%]"
+          onFocus={() => setIsFocused(true)}
+          onBlur={() => setIsFocused(false)}
+          className="bg-transparent outline-none w-[80%] text-xs placeholder:text-xs"
           placeholder={placeholder}
         />
-        <button type="button" className="text-base h-full text-primaryText300">
+        <button type="button" className="text-sm h-full text-primaryText300">
           {functionText}
         </button>
       </div>
@@ -149,53 +207,68 @@ const InputFunction: React.FC<InputFunctionProps> = ({
 };
 
 // Input lựa chọn
-const InputSelection: React.FC<SelectionInputProps> = ({ options }) => {
+const InputSelection: React.FC<SelectionInputProps> = ({
+  options,
+  label,
+  onChange,
+}) => {
   const [selectedValue, setSelectedValue] = useState<string | undefined>(
     undefined
   );
   const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedValue(e.target.value);
+    const value = e.target.value;
+    const abbreviation = options[value];
+    setSelectedValue(value);
+    console.log(selectedValue);
+    if (onChange) {
+      onChange(abbreviation);
+    }
   };
   return (
-    <div
-      className="Input flex flex-row h-12 w-[342px] rounded-md px-4 py-3 bg-transparent
-          border-solid border-[1px] items-center"
-    >
-      <select
-        className="w-full bg-transparent outline-none"
-        value={selectedValue}
-        onChange={handleChange}
+    <div className="flex flex-col gap-[6px] w-full">
+      {label ? (
+        <label className="text-sm text-navbarText">{label}</label>
+      ) : null}
+      <div
+        className="Input flex flex-row h-[42px] w-full rounded-md px-4 py-3 bg-transparent
+          border-solid border-[1px] border-boxOuline items-center"
       >
-        {options?.map((option) => (
-          <option key={option} value={option}>
-            {option}
-          </option>
-        ))}
-      </select>
+        <select
+          className="w-full bg-transparent outline-none  text-navbarText text-xs"
+          value={selectedValue}
+          onChange={handleChange}
+        >
+          {Object.keys(options).map((option) => (
+            <option key={option} value={option}>
+              {option}
+            </option>
+          ))}
+        </select>
+      </div>
     </div>
   );
 };
 
 // Input chọn ngày
-const InputDatePicker: React.FC<DatePickerProps> = ({ background }) => {
+const InputDatePicker: React.FC<DatePickerProps> = ({
+  background = false,
+  border = false,
+}) => {
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   return (
     <div
       style={{
-        background: `${background === "yes" ? "white" : "transparent"}`,
-        border: `${background === "yes" ? "none" : "solid"}`,
-        boxShadow: `${
-          background === "yes" ? "0px 2px 10px rgb(0 0 0 / 0.07)" : "none"
-        }`,
+        background: `${background ? "white" : "transparent"}`,
+        border: `${border ? "solid" : "none"}`,
       }}
       className="DatePicker-Container flex flex-row
-      w-[182px] px-4 py-3 rounded-xl border-[1px] items-center justify-between gap-3"
+      w-full h-[42px] px-4 py-3 rounded-md border-[1px] border-no items-center justify-between gap-3"
     >
       <div className="calender w-1/6">
         <CalendarIC width={"20px"} height={"20px"} stroke="#696969" />
       </div>
       <DatePicker
-        className="bg-transparent outline-none w-4/6 h-full text-navbarText"
+        className="bg-transparent outline-none w-4/6 h-full text-navbarText text-xs placeholder:text-xs"
         selected={selectedDate}
         onChange={(date) => setSelectedDate(date)}
         dateFormat="P"

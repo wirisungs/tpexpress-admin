@@ -5,6 +5,7 @@ import CustomerIC from "@/Svg/customerIC";
 import DriverIC from "@/Svg/driverIC";
 import OrderIC from "@/Svg/orderIC";
 import RequestIC from "@/Svg/requestIC";
+import KeyIC from "@/Svg/keyIC";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import "@/Style/MTri.css";
@@ -37,7 +38,7 @@ const NavbarTab = () => {
           } flex flex-row pl-8 pr-4 items-center gap-3 py-3`}
         >
           <div className="Icon">
-            <CustomerIC width={16} height={16} />
+            <CustomerIC stroke={"#696969"} width={16} height={16} />
           </div>
           <div className={`Text text-[12px] text-navbarText`}>Khách hàng</div>
         </Link>
@@ -51,9 +52,23 @@ const NavbarTab = () => {
           } flex flex-row pl-8 pr-4 items-center gap-3 py-3`}
         >
           <div className="Icon">
-            <DriverIC width={16} height={16} />
+            <DriverIC stroke={"#696969"} width={16} height={16} />
           </div>
           <div className={`Text text-[12px] text-navbarText`}>Tài xế</div>
+        </Link>
+
+        {/* Tài khoản */}
+        <Link
+          href={`/accounts`}
+          passHref
+          className={`${
+            pathname === "/accounts" ? "Active" : ""
+          } flex flex-row pl-8 pr-4 items-center gap-3 py-3`}
+        >
+          <div className="Icon">
+            <KeyIC stroke={"#696969"} width={16} height={16} />
+          </div>
+          <div className={`Text text-[12px] text-navbarText`}>Tài khoản</div>
         </Link>
 
         {/* Đơn hàng */}
@@ -65,17 +80,17 @@ const NavbarTab = () => {
           } flex flex-row pl-8 pr-4 items-center gap-3 py-3`}
         >
           <div className="Icon">
-            <OrderIC width={16} height={16} />
+            <OrderIC stroke={"#696969"} width={16} height={16} />
           </div>
           <div className={`Text text-[12px] text-navbarText`}>Đơn hàng</div>
         </Link>
 
         {/* Yêu cầu hỗ trợ */}
         <Link
-          href={`/requests`}
+          href={`/cskh`}
           passHref
           className={`${
-            pathname === "/request" ? "Active" : ""
+            pathname === "/cskh" ? "Active" : ""
           } flex flex-row pl-8 pr-4 items-center gap-3 py-3`}
         >
           <div className="Icon">

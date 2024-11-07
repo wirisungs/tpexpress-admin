@@ -3,7 +3,12 @@
 }
 .Active{
     font-weight: bold;
+<<<<<<< Updated upstream
     background-color: #F9FAFF;
+=======
+    background: var(--Color-Background-Background, #F9FAFF);
+    border-right: thin solid #EC6E70;
+>>>>>>> Stashed changes
 }
 
 .react-datepicker-wrapper input {
@@ -24,3 +29,4 @@ input[type="number"]::-webkit-outer-spin-button {
 input[type="number"] {
   -moz-appearance: textfield; /* Ẩn trên Firefox */
 }
+

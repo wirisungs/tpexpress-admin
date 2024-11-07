@@ -20,7 +20,9 @@ const config: Config = {
         subtitleText: "#5B5958",
         yellowText: "#FBA333",
         error: "#F61317",
-        success: "#0DA651"
+        success: "#0DA651",
+        boxOuline: "#CBCBCB",
+        backButton: "#B8DDFF"
       },
       fontFamily: {
         lato: ["Lato", "sans-serif"],

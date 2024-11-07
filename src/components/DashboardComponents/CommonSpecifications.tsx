@@ -21,17 +21,17 @@ const CommonSpecifications: React.FC<SpecificationsProps> = ({
   icon,
 }) => {
   return (
-    <div className="flex flex-row gap-3 px-8 py-6 w-[212px] h-[116px] bg-white rounded-md shadow-md">
+    <div className="flex flex-row gap-3 px-8 py-6 w-full h-[116px] bg-white rounded-md">
       <div className="icon-box flex items-center justify-center">
         <div
           style={{ backgroundColor: `${color}` }}
-          className="flex w-12 h-12 rounded-full items-center justify-center"
+          className="flex w-[42px] h-[42px] rounded-3xl items-center justify-center"
         >
           <div className="icon">{icon}</div>
         </div>
       </div>
       <div className="info flex flex-col justify-center">
-        <p className="text-normalText text-2xl font-bold">{quantity}</p>
+        <p className="text-normalText text-base font-bold">{quantity}</p>
         <p className="text-xs text-subtitleText ">{subtitle}</p>
 
         {/* Kiểm tra type là price hay percent */}
