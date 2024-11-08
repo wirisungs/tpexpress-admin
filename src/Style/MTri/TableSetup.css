@@ -131,10 +131,10 @@
   display: block;
   line-height: 6px;
   text-indent: -99999px;
-  background-color: #F9FAFF;
+  background-color: #f9f9f9;
   }
   tbody tr {
-    border-bottom: thin solid #F9FAFF;
+    border-bottom: thin solid #f9f9f9;
   }
   
   .header-cell {

@@ -9,18 +9,14 @@ interface LayoutProps {
 
 const Navbar: React.FC<LayoutProps> = ({ children }) => {
   return (
-<<<<<<< Updated upstream
-    <div className="MainContainer flex flex-row h-full w-full">
-      <div className="NavbarContainer flex flex-col w-[20%] gap-3">
-        <Nameplate image={Art} name="Trần Hữu Minh Trí" icon={<DropdownIC />} />
-        <NavbarTab />
-      </div>
-      <div className="bodyContainer bg-navbarActiveBG w-[80%] h-[1000px]">
-=======
     <div className="MainContainer flex flex-row min-h-[100vh] w-full">
       <div
-        className="NavbarContainer flex flex-col w-[15%] gap-3"
-        style={{ backgroundColor: "#ffffff" }}
+        className="NavbarContainer flex flex-col w-[15%] gap-3 "
+        style={{
+          backgroundColor: "#ffffff",
+          boxShadow: "2px 0px 8px rgb(0 0 0 / 0.1)",
+          zIndex: 10,
+        }}
       >
         <Nameplate
           name="Trần Hữu Minh Trí"
@@ -29,8 +25,7 @@ const Navbar: React.FC<LayoutProps> = ({ children }) => {
         />
         <NavbarTab />
       </div>
-      <div className="bodyContainer bg-navbarActiveBG w-[85%] h-full p-6 overflow-y-auto">
->>>>>>> Stashed changes
+      <div className="bodyContainer bg-[#f9f9f9] w-[85%] h-full p-6 overflow-y-auto">
         {children}
       </div>
     </div>

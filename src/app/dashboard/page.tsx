@@ -7,7 +7,7 @@ import OrderIC from "@/Svg/orderIC";
 
 const Dashboard: React.FC = () => {
   return (
-    <div className="flex ">
+    <div className="flex">
       <Navbar>
         <div className="head-reporting flex flex-col gap-4">
           <div className="w-[148px]">

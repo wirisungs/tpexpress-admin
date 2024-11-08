@@ -10,6 +10,7 @@ interface ButtonProps {
   width?: string;
   customColor?: string;
   href?: string | undefined;
+  type?: "button" | "submit";
 }
 
 interface LinkButtonProps extends ButtonProps {
@@ -21,6 +22,7 @@ const Button: React.FC<ButtonProps> = ({
   icon,
   width,
   customColor,
+  type,
   href = "/",
 }) => {
   const Router = useRouter();
@@ -29,7 +31,7 @@ const Button: React.FC<ButtonProps> = ({
   };
   return (
     <button
-      type="button"
+      type={type || "button"}
       style={{
         width: `${width ? `${width}` : "152px"}`,
         backgroundColor: `${customColor ? `${customColor}` : `#D9D9D9`}`,

@@ -1,20 +1,5 @@
-<<<<<<< Updated upstream
-import React from "react";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Paper,
-  Chip,
-} from "@mui/material";
-import TrackCard from "@/components/OrderComponents/TrackCard";
-=======
 "use client";
 import React, { useEffect, useState } from "react";
->>>>>>> Stashed changes
 import TramCSS from "@/Style/Tram.module.css";
 import "@/components/CommonComponents/Buttons/Button";
 import Navbar from "@/components/CommonComponents/Layout/Navbar";
@@ -22,21 +7,6 @@ import SortIC from "@/Svg/sortIC";
 import WarehouseIC from "@/Svg/warehouseIC";
 import BuildingIC from "@/Svg/buildingIC";
 import FlagIC from "@/Svg/flagIC";
-<<<<<<< Updated upstream
-import BoxIC from "@/Svg/boxIC";
-import { InputWithIcon } from "@/components/CommonComponents/Inputs/Inputs";
-
-function orderData(
-  id: string,
-  sender: string,
-  sendorreceive: string,
-  receiver: string,
-  driver: string,
-  date: string,
-  status: string
-) {
-  return { id, receiver, sendorreceive, sender, driver, date, status };
-=======
 import OrderIC from "@/Svg/orderIC";
 import "@/Style/MTri/TableSetupOrder.css";
 import "@/Style/MTri/Loading.css";
@@ -86,95 +56,9 @@ interface DeliveryServices {
   dservicesName: string;
   dservicesPrice: number;
   dservicesTime: string;
->>>>>>> Stashed changes
 }
-const Order = [
-  orderData(
-    "DH001",
-    "Nguyễn Văn B",
-    "Gửi",
-    "Nguyễn Văn C",
-    "Nguyễn Văn A",
-    "24/08/2024",
-    "Đang giao"
-  ),
-  orderData(
-    "DH001",
-    "Nguyễn Văn B",
-    "Nhận",
-    "Nguyễn Văn C",
-    "----",
-    "24/08/2024",
-    "Tại kho"
-  ),
-  orderData(
-    "DH001",
-    "Nguyễn Văn B",
-    "Gửi",
-    "Nguyễn Văn C",
-    "Nguyễn Văn A",
-    "24/08/2024",
-    "Đang giao"
-  ),
-  orderData(
-    "DH001",
-    "Nguyễn Văn B",
-    "Gửi",
-    "Nguyễn Văn C",
-    "Nguyễn Văn A",
-    "24/08/2024",
-    "Đang giao"
-  ),
-  orderData(
-    "DH001",
-    "Nguyễn Văn B",
-    "Gửi",
-    "Nguyễn Văn C",
-    "Nguyễn Văn A",
-    "24/08/2024",
-    "Đang giao"
-  ),
-  orderData(
-    "DH001",
-    "Nguyễn Văn B",
-    "Nhận",
-    "Nguyễn Văn C",
-    "Nguyễn Văn A",
-    "24/08/2024",
-    "Đang giao"
-  ),
-  orderData(
-    "DH001",
-    "Nguyễn Văn B",
-    "Nhận",
-    "Nguyễn Văn C",
-    "----",
-    "24/08/2024",
-    "Tại kho"
-  ),
-  orderData(
-    "DH001",
-    "Nguyễn Văn B",
-    "Gửi",
-    "Nguyễn Văn C",
-    "Nguyễn Văn A",
-    "24/08/2024",
-    "Đang giao"
-  ),
-  orderData(
-    "DH001",
-    "Nguyễn Văn B",
-    "Gửi",
-    "Nguyễn Văn C",
-    "----",
-    "24/08/2024",
-    "Tại kho"
-  ),
-];
 
 const OrderPage = () => {
-<<<<<<< Updated upstream
-=======
   const [orders, setOrders] = useState<OrderType[]>([]);
   const [warning, setWarning] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -221,21 +105,10 @@ const OrderPage = () => {
     return formattedDate;
   };
 
->>>>>>> Stashed changes
   return (
     <div className="flex">
       <Navbar>
         <main className={TramCSS.body}>
-<<<<<<< Updated upstream
-          <div className={TramCSS.trackingPark}>
-            <TrackCard
-              text="Đơn trong kho"
-              icon={<WarehouseIC />}
-              customColor="#FBECDA"
-            />
-            <TrackCard
-              text="Đơn thành phố"
-=======
           <InputDatePicker background={true} border={false} />
           <div className="flex flex-row w-full justify-between gap-6">
             <CommonSpecifications
@@ -257,112 +130,8 @@ const OrderPage = () => {
               color="#B8DDFF"
               quantity={37}
               subtitle="Đơn thành phố"
->>>>>>> Stashed changes
               icon={<BuildingIC fill="#007AFF" />}
             />
-<<<<<<< Updated upstream
-            <TrackCard
-              text="Đơn toàn quốc"
-              icon={<FlagIC fill="#EB455F" />}
-              customColor="#9DEEB9"
-            />
-            <TrackCard
-              text="Đơn đang giao"
-              icon={<BoxIC fill="#FDF7B9" color="#F1E01D" />}
-              customColor="#FDF7B9"
-            />
-          </div>
-          <div className={TramCSS.map}>
-            <div className={TramCSS.mapTitle}>
-              <h1 style={{ fontSize: "24px", fontWeight: "bold" }}>
-                Bản đồ vận chuyển
-              </h1>
-              <div className={TramCSS.searchBox}>
-                <InputWithIcon purpose="search" placeholder="Tên / Mã tài xế" />
-                {/* <SearchSvg/> */}
-              </div>
-            </div>
-            <div className={TramCSS.importMap}></div>
-          </div>
-          <div className={TramCSS.list}>
-            <Link href="/order/create">
-              <ButtonCPN
-                text={"Tạo đơn"}
-                customColor={"#eb455f"}
-                icon={<PlusIC fill={"#fff"} />}
-              />
-            </Link>
-            <Paper sx={{ width: "100%", overflow: "hidden" }}>
-              <TableContainer sx={{ maxHeight: 600 }}>
-                <Table stickyHeader style={{ boxShadow: "#cbcbcb" }}>
-                  <TableHead>
-                    <TableRow>
-                      <TableCell className={TramCSS.tbHead}>
-                        Mã đơn
-                        <SortIC fill="#CBCBCB" />
-                      </TableCell>
-                      <TableCell className={TramCSS.tbHead}>
-                        Người nhận/gửi
-                        <SortIC fill="#CBCBCB" />
-                      </TableCell>
-                      <TableCell className={TramCSS.tbHead}>
-                        Nhận/gửi
-                        <SortIC fill="#CBCBCB" />
-                      </TableCell>
-                      <TableCell className={TramCSS.tbHead}>
-                        Người nhận/gửi
-                        <SortIC fill="#CBCBCB" />
-                      </TableCell>
-                      <TableCell className={TramCSS.tbHead}>
-                        Tài xế
-                        <SortIC fill="#CBCBCB" />
-                      </TableCell>
-                      <TableCell className={TramCSS.tbHead}>
-                        Ngày giao dự kiến
-                        <SortIC fill="#CBCBCB" />
-                      </TableCell>
-                      <TableCell className={TramCSS.tbHead}>
-                        Trạng thái
-                        <SortIC fill="#CBCBCB" />
-                      </TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {Order.map((row) => (
-                      <TableRow
-                        key={row.id}
-                        /*sx={{ '&:last-child td, &:last-child th': { border: 0 } }}*/
-                      >
-                        <TableCell className={TramCSS.tbBody}>
-                          {row.id}
-                        </TableCell>
-                        <TableCell className={TramCSS.tbBody}>
-                          {row.sender}
-                        </TableCell>
-                        <TableCell className={TramCSS.tbBody}>
-                          {row.sendorreceive}
-                        </TableCell>
-                        <TableCell className={TramCSS.tbBody}>
-                          {row.receiver}
-                        </TableCell>
-                        <TableCell className={TramCSS.tbBody}>
-                          {row.driver}
-                        </TableCell>
-                        <TableCell className={TramCSS.tbBody}>
-                          {row.date}
-                        </TableCell>
-                        <TableCell className={TramCSS.tbBody}>
-                          <Chip
-                            variant="outlined"
-                            label={row.status}
-                            color={
-                              row.status === "Đang giao" ? "warning" : "primary"
-                            }
-                            // size="small"
-                          />
-                        </TableCell>
-                      </TableRow>
-=======
             <CommonSpecifications
               fluctuationType="none"
               color="#9DEEB9"
@@ -510,7 +279,6 @@ const OrderPage = () => {
                           </div>
                         </td>
                       </tr>
->>>>>>> Stashed changes
                     ))}
                   </tbody>
                 )}

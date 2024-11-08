@@ -17,11 +17,7 @@ interface InputProps {
   type?: string;
   label?: string;
   value?: string;
-<<<<<<< Updated upstream
-  length?: number;
-=======
   border?: boolean;
->>>>>>> Stashed changes
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   background?: boolean;
 }
@@ -52,30 +48,14 @@ const Input: React.FC<InputProps> = ({
   label,
   value,
   onChange,
-<<<<<<< Updated upstream
-  length,
-=======
   border,
   background = false,
->>>>>>> Stashed changes
 }) => {
   return (
     <div className="flex flex-col gap-[6px] w-full">
       {label ? (
         <label className="text-sm text-navbarText">{label}</label>
       ) : null}
-<<<<<<< Updated upstream
-      <input
-        maxLength={length}
-        required
-        type={type || "text"}
-        value={value}
-        onChange={onChange}
-        className="h-12 w-[342px] rounded-md px-4 py-3 bg-transparent
-      border-solid border-[1px] outline-none"
-        placeholder={placeholder}
-      />
-=======
       {border ? (
         <input
           style={{
@@ -104,7 +84,6 @@ const Input: React.FC<InputProps> = ({
           placeholder={placeholder}
         />
       )}
->>>>>>> Stashed changes
     </div>
   );
 };
@@ -114,7 +93,9 @@ const InputWithIcon: React.FC<InputIconProps> = ({
   purpose,
   placeholder,
   label,
+  value,
   border,
+  onChange,
   background,
 }) => {
   const type = purpose === "password" ? purpose : "text";
@@ -134,9 +115,9 @@ const InputWithIcon: React.FC<InputIconProps> = ({
         <label className="text-sm text-normalText">{label}</label>
       ) : null}
       <div
-        className="Input flex flex-row h-[42px] w-[342px] rounded-md px-4 py-3 bg-transparent
-        border-solid border-[1px] outline-none items-center justify-around transition-all0 duration-300"
+        className="Input flex flex-row h-[42px] w-full rounded-md px-4 py-3 bg-transparent outline-none items-center justify-between transition-all duration-300"
         style={{
+          border: `${border ? "solid 1px #cbcbcb" : "none"}`,
           borderColor: `${isFocused ? "#EB455F" : "#CBCBCB"}`,
           background: `${background ? "#ffffff" : "transparent"}`,
         }}
@@ -146,6 +127,8 @@ const InputWithIcon: React.FC<InputIconProps> = ({
           type={inputType}
           onFocus={() => setIsFocused(true)}
           onBlur={() => setIsFocused(false)}
+          value={value}
+          onChange={onChange}
           className="bg-transparent outline-none w-[90%] text-xs placeholder:text-xs"
           placeholder={placeholder}
         />

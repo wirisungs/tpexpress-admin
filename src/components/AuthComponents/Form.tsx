@@ -33,7 +33,7 @@ const Form: React.FC<LoginProps> = ({
     >
       {/* Nếu form là Login */}
       {formType === "login" && (
-        <div className="login-container flex flex-col gap-4">
+        <div className="login-container w-[406px] flex flex-col gap-4">
           <div className="title flex flex-col gap-[6px]">
             <p className="titleText text-2xl font-bold text-primaryText300">
               Đăng nhập
@@ -44,12 +44,7 @@ const Form: React.FC<LoginProps> = ({
           </div>
           <Input
             value={phone}
-<<<<<<< Updated upstream
-            onChange={(e) => handleChange(e)}
-            length={10}
-=======
             onChange={(e) => setPhone(e.target.value)}
->>>>>>> Stashed changes
             type="text"
             label="Số điện thoại"
             border={true}
@@ -79,7 +74,7 @@ const Form: React.FC<LoginProps> = ({
 
       {/* Forgot form */}
       {formType === "forgot" && (
-        <div className="login-container flex flex-col gap-4">
+        <div className="forgot-container w-[406px] flex flex-col gap-4">
           <div className="title flex flex-col gap-[6px]">
             <p className="titleText text-2xl font-bold text-primaryText300">
               Quên mật khẩu
@@ -90,12 +85,7 @@ const Form: React.FC<LoginProps> = ({
           </div>
           <Input
             value={phone}
-<<<<<<< Updated upstream
-            onChange={(e) => handleChange(e)}
-            length={10}
-=======
             // onChange={(e) => handleChange(e)}
->>>>>>> Stashed changes
             label="Số điện thoại"
             border={true}
             placeholder="VD: 0123456789"
@@ -125,7 +115,7 @@ const Form: React.FC<LoginProps> = ({
 
       {/* change pass form */}
       {formType === "changePassword" && (
-        <div className="changePass-container flex flex-col gap-4">
+        <div className="changePass-container w-[406px] flex flex-col gap-4">
           <div className="title flex flex-col gap-[6px]">
             <p className="titleText text-2xl font-bold text-primaryText300">
               Quên mật khẩu
@@ -141,6 +131,7 @@ const Form: React.FC<LoginProps> = ({
             placeholder="Nhập lại mật khẩu"
           />
           <InputWithIcon
+            border={true}
             label="Nhập lại mật khẩu"
             purpose="password"
             placeholder="Nhập lại mật khẩu"

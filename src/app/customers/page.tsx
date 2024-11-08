@@ -1,31 +1,12 @@
-import React from "react";
+"use client";
+import React, { useEffect, useState } from "react";
 import "@/Style/DTri/styles_customers.css";
-<<<<<<< Updated upstream
-import downup from "@/Pictures/Images_DT/downup.png";
-import ava1 from "@/Pictures/Images_DT/ava1.png";
-import Image from "next/image";
-import NavbarTab from "@/components/CommonComponents/Layout/Items/NavbarTab";
-import IconAndText from "@/components/CommonComponents/Layout/Items/IconAndText";
-import Input from "@/components/CommonComponents/Inputs/Inputs";
-=======
 import Input, {
   InputWithIcon,
 } from "@/components/CommonComponents/Inputs/Inputs";
->>>>>>> Stashed changes
 import Navbar from "@/components/CommonComponents/Layout/Navbar";
 import "@/Style/MTri/Loading.css";
 
-<<<<<<< Updated upstream
-const Customers: React.FC = () => {
-  // Tạo một mảng giả lập 10 phần tử
-  const customerData = Array(12).fill({
-    id: "KH001",
-    name: "BlueDuck",
-    email: "blueduck974@gmail.com",
-    phone: "0916607059",
-    address: "323 LosLess NewTime",
-  });
-=======
 import SortIC from "@/Svg/sortIC";
 import { useRouter } from "next/navigation";
 interface CustomerType {
@@ -68,7 +49,6 @@ const Customers: React.FC = () => {
   useEffect(() => {
     fetchData();
   }, []);
->>>>>>> Stashed changes
 
   return (
     <div className="all">
@@ -79,7 +59,6 @@ const Customers: React.FC = () => {
               purpose="search"
               placeholder="Nhập mã khách hàng / họ tên / email /...."
               background={true}
-              
             />
           </div>
           <div className="table">
@@ -142,19 +121,6 @@ const Customers: React.FC = () => {
                     </th>
                   </tr>
                 </thead>
-<<<<<<< Updated upstream
-                <tbody>
-                  {customerData.map((customer, index) => (
-                    <tr key={index}>
-                      <td className="rowdetail">{customer.id}</td>
-                      <td className="rowdetail">{customer.name}</td>
-                      <td className="email-cell">{customer.email}</td>
-                      <td className="rowdetail">{customer.phone}</td>
-                      <td className="address-cell">{customer.address}</td>
-                    </tr>
-                  ))}
-                </tbody>
-=======
                 {isLoading ? (
                   <div className="spinner-container">
                     <div className="spinner"></div>
@@ -214,7 +180,6 @@ const Customers: React.FC = () => {
                     ))}
                   </tbody>
                 )}
->>>>>>> Stashed changes
               </table>
             </div>
           </div>

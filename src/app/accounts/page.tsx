@@ -108,61 +108,61 @@ const DriverTable: React.FC = () => {
     violation: false,
   });
 
-  const sortDrivers = (
-    key:
-      | "id"
-      | "status"
-      | "lastName"
-      | "firstMiddleName"
-      | "gender"
-      | "area"
-      | "counterReceived"
-      | "violation"
-  ) => {
-    const sortedDrivers = [...drivers].sort(
-      (a: DriverType, b: DriverType): number => {
-        let comparison = 0;
+  // const sortDrivers = (
+  //   key:
+  //     | "id"
+  //     | "status"
+  //     | "lastName"
+  //     | "firstMiddleName"
+  //     | "gender"
+  //     | "area"
+  //     | "counterReceived"
+  //     | "violation"
+  // ) => {
+  //   const sortedDrivers = [...drivers].sort(
+  //     (a: DriverType, b: DriverType): number => {
+  //       let comparison = 0;
 
-        switch (key) {
-          case "id":
-            comparison = a.driverId.localeCompare(b.driverId);
-            return sortState.id ? -comparison : comparison;
-          case "status":
-            comparison = Number(a.driverStatus) - Number(b.driverStatus);
-            return sortState.status ? -comparison : comparison;
-          case "lastName":
-            comparison = getLastName(a.driverName).localeCompare(
-              getLastName(b.driverName)
-            );
-            return sortState.lastName ? -comparison : comparison;
-          case "firstMiddleName":
-            comparison = getFirstAndMiddleName(a.driverName).localeCompare(
-              getFirstAndMiddleName(b.driverName)
-            );
-            return sortState.firstMiddleName ? -comparison : comparison;
-          case "gender":
-            comparison = a.driverGender - b.driverGender;
-            return sortState.gender ? -comparison : comparison;
-          case "area":
-            comparison = getCity(a.driverAddress).localeCompare(
-              getCity(b.driverAddress)
-            );
-            return sortState.area ? -comparison : comparison;
-          case "counterReceived":
-            comparison = a.activeOrderCount - b.activeOrderCount;
-            return sortState.counterReceived ? -comparison : comparison;
-          case "violation":
-            comparison = a.driverViolation - b.driverViolation;
-            return sortState.violation ? -comparison : comparison;
-          default:
-            return 0;
-        }
-      }
-    );
+  //       switch (key) {
+  //         case "id":
+  //           comparison = a.driverId.localeCompare(b.driverId);
+  //           return sortState.id ? -comparison : comparison;
+  //         case "status":
+  //           comparison = Number(a.driverStatus) - Number(b.driverStatus);
+  //           return sortState.status ? -comparison : comparison;
+  //         case "lastName":
+  //           comparison = getLastName(a.driverName).localeCompare(
+  //             getLastName(b.driverName)
+  //           );
+  //           return sortState.lastName ? -comparison : comparison;
+  //         case "firstMiddleName":
+  //           comparison = getFirstAndMiddleName(a.driverName).localeCompare(
+  //             getFirstAndMiddleName(b.driverName)
+  //           );
+  //           return sortState.firstMiddleName ? -comparison : comparison;
+  //         case "gender":
+  //           comparison = a.driverGender - b.driverGender;
+  //           return sortState.gender ? -comparison : comparison;
+  //         case "area":
+  //           comparison = getCity(a.driverAddress).localeCompare(
+  //             getCity(b.driverAddress)
+  //           );
+  //           return sortState.area ? -comparison : comparison;
+  //         case "counterReceived":
+  //           comparison = a.activeOrderCount - b.activeOrderCount;
+  //           return sortState.counterReceived ? -comparison : comparison;
+  //         case "violation":
+  //           comparison = a.driverViolation - b.driverViolation;
+  //           return sortState.violation ? -comparison : comparison;
+  //         default:
+  //           return 0;
+  //       }
+  //     }
+  //   );
 
-    setUsers(sortedDrivers);
-    setSortState((prev) => ({ ...prev, [key]: !prev[key] }));
-  };
+  //   setUsers(sortedDrivers);
+  //   setSortState((prev) => ({ ...prev, [key]: !prev[key] }));
+  // };
 
   return (
     <div className="all">
@@ -174,13 +174,14 @@ const DriverTable: React.FC = () => {
                 purpose="search"
                 placeholder="Nhập mã khách hàng / họ tên / email /...."
                 background={true}
+                border={false}
               />
             </div>
             <Button
               text="Đăng ký tài khoản"
               icon={<AddEmployeeIC />}
               customColor="#EB455F"
-              href="/drivers/create"
+              href="/accounts/create"
             />
           </div>
           <div className="table">
