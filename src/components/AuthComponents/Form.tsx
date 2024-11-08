@@ -7,10 +7,11 @@ const Form = () => {
 
   const handleSSOLogin = () => {
     // Gọi phương thức redirectToLogin với URL callback
-    sso.redirectToLogin('http://172.20.10.2:4000/callback');
+    sso.redirectToLogin('http://tpexpress.ddns.net:4000/callback');
   };
 
   return (
+
     <form
       onSubmit={(e) => e.preventDefault()} 
       method="POST"
@@ -45,11 +46,9 @@ const Form = () => {
             fontSize: "16px", // Kích thước chữ nút
           }}
         >
-          Đăng nhập bằng SSO
+          Đăng nhập bằng Wowo
         </button>
-        <a className="text-base font-medium text-yellowText text-center" href="/forgot">
-          Quên mật khẩu?
-        </a>
+       
       </div>
     </form>
   );
