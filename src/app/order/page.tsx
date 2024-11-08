@@ -22,6 +22,7 @@ import BuildingIC from "@/Svg/buildingIC";
 import FlagIC from "@/Svg/flagIC";
 import BoxIC from "@/Svg/boxIC";
 import { InputWithIcon } from "@/components/CommonComponents/Inputs/Inputs";
+// import GoongMapReact from '@goongmaps/goong-map-react';
 
 function orderData(
   id: string,
@@ -34,6 +35,7 @@ function orderData(
 ) {
   return { id, receiver, sendorreceive, sender, driver, date, status };
 }
+
 const Order = [
   orderData(
     "DH001",
@@ -155,7 +157,25 @@ const OrderPage = () => {
                 {/* <SearchSvg/> */}
               </div>
             </div>
-            <div className={TramCSS.importMap}></div>
+            <div className={TramCSS.importMap}>
+              {/* <GoongMapReact
+                goongApiAccessToken="fxkxO3KHsSe2PRLJkga6WNwp8M79M3TKgxTm6MLt"
+                latitude={21.026745}
+                longitude={105.801982}
+                zoom={12}
+                width="100%"
+                height="450px"
+              /> */}
+              {/* <GoongMapReact
+                goongApiUrl="https://rsapi.goong.io"
+                goongApiAccessToken="sxokDhP8DKuPWtqIPzWP9WGxf91ghAB1oFdjvxee"
+                latitude={21.026745}
+                longitude={105.801982}
+                zoom={12}
+                width="100%"
+                height="450px"
+              /> */}
+            </div>
           </div>
           <div className={TramCSS.list}>
             <Link href="/order/create">

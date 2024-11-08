@@ -11,6 +11,9 @@
   "dependencies": {
     "@emotion/react": "^11.13.3",
     "@emotion/styled": "^11.13.0",
+    "@goongmaps/goong-js": "^1.0.9",
+    "@goongmaps/goong-map-react": "^1.1.2",
+    "@impargo/react-here-maps": "^3.0.0",
     "@mui/material": "^6.1.1",
     "@mui/styled-engine-sc": "^6.1.1",
     "date-fns": "^4.1.0",
