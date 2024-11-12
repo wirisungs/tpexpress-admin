@@ -46,7 +46,7 @@ const Form = () => {
             fontSize: "16px", // Kích thước chữ nút
           }}
         >
-          Đăng nhập bằng Wowo
+          Đăng nhập 
         </button>
        
       </div>

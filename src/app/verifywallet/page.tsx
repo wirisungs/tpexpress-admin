@@ -42,7 +42,7 @@ const VerifyWallet = () => {
                 if (window.ReactNativeWebView) {
                     window.ReactNativeWebView.postMessage(JSON.stringify(response));
                 }
-            }, 8000); // Chờ 3 giây
+            }, 3000); // Chờ 3 giây
 
         } catch (err) {
             console.error("Lỗi khi tạo đơn hàng:", err.message);
