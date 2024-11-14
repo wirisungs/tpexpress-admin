@@ -16,6 +16,7 @@ interface InputProps {
   placeholder: string;
   type?: string;
   label?: string;
+  labelcolor?: string;
   value?: string;
   border?: boolean;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -46,6 +47,7 @@ const Input: React.FC<InputProps> = ({
   placeholder,
   type,
   label,
+  labelcolor,
   value,
   onChange,
   border,
@@ -54,7 +56,12 @@ const Input: React.FC<InputProps> = ({
   return (
     <div className="flex flex-col gap-[6px] w-full">
       {label ? (
-        <label className="text-sm text-navbarText">{label}</label>
+        <label
+          style={{ color: `${labelcolor || "#4A4A4A"}` }}
+          className="text-sm"
+        >
+          {label}
+        </label>
       ) : null}
       {border ? (
         <input
@@ -93,6 +100,7 @@ const InputWithIcon: React.FC<InputIconProps> = ({
   purpose,
   placeholder,
   label,
+  labelcolor,
   value,
   border,
   onChange,
@@ -110,9 +118,14 @@ const InputWithIcon: React.FC<InputIconProps> = ({
 
   const [isFocused, setIsFocused] = useState(false);
   return (
-    <div className="flex flex-col w-auto h-auto gap-[6px]">
+    <div className="flex flex-col w-full h-auto gap-[6px]">
       {label ? (
-        <label className="text-sm text-normalText">{label}</label>
+        <label
+          style={{ color: `${labelcolor || "#4A4A4A"}` }}
+          className="text-sm text-normalText"
+        >
+          {label}
+        </label>
       ) : null}
       <div
         className="Input flex flex-row h-[42px] w-full rounded-md px-4 py-3 bg-transparent outline-none items-center justify-between transition-all duration-300"
@@ -161,18 +174,17 @@ const InputFunction: React.FC<InputFunctionProps> = ({
 }) => {
   const [isFocused, setIsFocused] = useState(false);
   return (
-    <div className="flex flex-col w-auto h-auto gap-[6px]">
+    <div className="flex flex-col w-full h-auto gap-[6px]">
       {label ? (
         <label className="text-sm text-normalText">{label}</label>
       ) : null}
       <div
         style={{ borderColor: `${isFocused ? "#EB455F" : "#CBCBCB"}` }}
-        className="Input flex flex-row h-[42px] w-[342px] rounded-md px-4 py-3 bg-transparent
+        className="Input flex flex-row h-[42px] w-full rounded-md px-4 py-3 bg-transparent
           border-solid border-[1px] justify-between items-center "
       >
         <input
           required
-          maxLength={length}
           value={value}
           onChange={onChange}
           type={type}

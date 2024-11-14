@@ -5,7 +5,7 @@ import CommonSpecifications from "../../components/DashboardComponents/CommonSpe
 import PendingIC from "@/Svg/pendingIC";
 import OrderIC from "@/Svg/orderIC";
 
-const Dashboard: React.FC = () => {
+const Dashboard = () => {
   return (
     <div className="flex">
       <Navbar>

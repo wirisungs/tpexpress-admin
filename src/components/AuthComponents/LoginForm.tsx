@@ -3,12 +3,14 @@ import React, { FormEvent, useState } from "react";
 import Input, { InputWithIcon } from "../CommonComponents/Inputs/Inputs";
 import { useRouter } from "next/navigation";
 import "@/Style/MTri/Loading.css";
+import { useAppContext } from "@/app/AppProvider";
 const LoginForm = () => {
-  const Router = useRouter();
+  const router = useRouter();
   const [phone, setPhone] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [warning, setWarning] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const { setSessionToken } = useAppContext();
 
   const collectData = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -31,20 +33,39 @@ const LoginForm = () => {
       if (!response.ok) {
         setIsLoading(false);
         if (result.message) {
-          setWarning(result.message);
-        } else throw new Error(`HTTP error! status: ${response.status}`);
+          return setWarning(
+            result.message || `HTTP error! status: ${response.status}`
+          );
+        }
       }
+      // Đăng nhập thành công
+      setWarning("");
+      const resultFromNextServer = await fetch("/api/auth", {
+        method: "POST",
+        body: JSON.stringify(result),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }).then(async (res) => {
+        const payload = await res.json();
+        const data = {
+          status: res.status,
+          payload,
+        };
+        if (!res.ok) {
+          throw data;
+        }
+        return data;
+      });
+      console.log(resultFromNextServer);
+      setSessionToken(resultFromNextServer.payload.session.token);
 
-      if (result.code === "Success") {
-        setTimeout(() => {
-          setIsLoading(false);
-          Router.push("/dashboard");
-        }, 1500);
-      } else {
-        setWarning(result.message);
-      }
+      // Chuyển đến dashboard
+      router.push("dashboard");
     } catch (error) {
       console.error("Error collecting data:", error);
+    } finally {
+      setIsLoading(false);
     }
   };
   const subtitle = "Tinh thần tốc độ - Dịch vụ hoàn hảo";
@@ -53,14 +74,18 @@ const LoginForm = () => {
     <form
       onSubmit={collectData}
       method="POST"
-      className="form-container px-8 py-16 rounded-xl border-solid border-[2px] border-primaryText300"
+      style={{
+        boxShadow: "0px 0px 20px 10px rgb(0 0 0 / 0.1)",
+        backgroundColor: "rgb(255 255 255 /1)",
+      }}
+      className="form-container px-8 py-16 h-full rounded-[32px] flex flex-col gap-4 justify-between items-center"
     >
-      <div className="login-container w-[406px] flex flex-col gap-4">
-        <div className="title flex flex-col gap-[6px]">
+      <div className="login-container w-[406px] items-start flex flex-col gap-4 ">
+        <div className="title flex flex-col w-full gap-[2px] items-center border-b border-gray-300 border-dashed pb-4">
           <p className="titleText text-2xl font-bold text-primaryText300">
             Đăng nhập
           </p>
-          <p className="subtitle text-yellowText text-xs font-medium">
+          <p className="subtitle text-yellowText text-base font-medium">
             {subtitle}
           </p>
         </div>
@@ -87,7 +112,7 @@ const LoginForm = () => {
         )}
         <button
           type="submit"
-          className="flex flex-row gap-[6px] h-[42px] bg-primaryText300 rounded-md justify-center items-center"
+          className="flex flex-row gap-[6px] w-full h-[42px] hover:opacity-90 active:opacity-50 duration-300 bg-primaryText300 rounded-md justify-center items-center"
         >
           <div className="text flex items-center text-white font-bold text-xs h-full">
             {isLoading ? (
@@ -99,10 +124,13 @@ const LoginForm = () => {
             )}
           </div>
         </button>
-        <a className="text-xs font-medium text-yellowText" href="/forgot">
-          Quên mật khẩu
-        </a>
       </div>
+      <a
+        className="text-sm font-medium hover:underline w-auto text-primaryText300"
+        href="/forgot"
+      >
+        Quên mật khẩu?
+      </a>
     </form>
   );
 };

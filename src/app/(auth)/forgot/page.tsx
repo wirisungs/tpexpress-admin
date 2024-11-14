@@ -1,4 +1,5 @@
 "use client";
+import ForgotForm from "@/components/AuthComponents/ForgotForm";
 import Form from "@/components/AuthComponents/Form";
 import AuthLayout from "@/components/CommonComponents/Layout/AuthLayout";
 import { useRouter } from "next/navigation"; // Correct import for useRouter in /app directory
@@ -15,7 +16,7 @@ const Page = () => {
   return (
     <div className="w-full">
       <AuthLayout>
-        <Form formType="forgot" onSubmit={handleSubmit} />
+        <ForgotForm />
       </AuthLayout>
     </div>
   );

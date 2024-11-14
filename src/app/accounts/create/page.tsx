@@ -26,7 +26,7 @@ const UserEnroll = () => {
 
   const collectData = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(userFullname, userPhone, userPassword, email, userRole);
+    // console.log(userFullname, userPhone, userPassword, email, userRole);
 
     // Kết nối với database
     try {

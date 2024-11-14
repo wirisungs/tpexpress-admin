@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 import Head from "next/head";
+import AppProvider from "./AppProvider";
+import { cookies } from "next/headers";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -24,6 +26,9 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const cookieStore = cookies();
+  const sessionToken = cookieStore.get("token");
+  // console.log(RootLayout, cookieStore.get("token"));
   return (
     <html lang="en">
       <Head>
@@ -34,7 +39,9 @@ export default function RootLayout({
       <body
         className={`min-h-[100vh] ${geistSans.variable} ${geistMono.variable} antialiased `}
       >
-        {children}
+        <AppProvider inititalSessionToken={sessionToken?.value}>
+          {children}
+        </AppProvider>
       </body>
     </html>
   );

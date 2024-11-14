@@ -20,9 +20,18 @@ type UserAccountType = {
   userRole: string;
   userEmail: string;
   userVerify: boolean;
-  infoDetail: DriverType;
+  driverDetail: DriverType;
+  employeeDetail: EmployeeType;
 };
 
+type EmployeeType = {
+  employeeId: string;
+  employeeName: string;
+  employeeEmail: string;
+  employeePhone: string;
+  employeeStatus: string;
+  userID: string;
+};
 type DriverType = {
   driverId: string;
   driverName: string;
@@ -43,7 +52,7 @@ type DriverType = {
   userID: string;
 };
 
-const DriverTable: React.FC = () => {
+const AccountTable: React.FC = () => {
   const [users, setUsers] = useState<UserAccountType[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -90,79 +99,89 @@ const DriverTable: React.FC = () => {
 
   const [sortState, setSortState] = useState<{
     id: boolean;
-    status: boolean;
+    phone: boolean;
     lastName: boolean;
     firstMiddleName: boolean;
-    gender: boolean;
+    gmail: boolean;
     area: boolean;
     counterReceived: boolean;
-    violation: boolean;
+    role: boolean;
   }>({
     id: false,
-    status: false,
+    phone: false,
     lastName: false,
     firstMiddleName: false,
-    gender: false,
+    gmail: false,
     area: false,
     counterReceived: false,
-    violation: false,
+    role: false,
   });
 
-  // const sortDrivers = (
-  //   key:
-  //     | "id"
-  //     | "status"
-  //     | "lastName"
-  //     | "firstMiddleName"
-  //     | "gender"
-  //     | "area"
-  //     | "counterReceived"
-  //     | "violation"
-  // ) => {
-  //   const sortedDrivers = [...drivers].sort(
-  //     (a: DriverType, b: DriverType): number => {
-  //       let comparison = 0;
+  const sortUsers = (
+    key:
+      | "id"
+      | "phone"
+      | "lastName"
+      | "firstMiddleName"
+      | "gmail"
+      | "area"
+      | "counterReceived"
+      | "role"
+  ) => {
+    const sortedUsers = [...users].sort(
+      (a: UserAccountType, b: UserAccountType): number => {
+        let comparison = 0;
 
-  //       switch (key) {
-  //         case "id":
-  //           comparison = a.driverId.localeCompare(b.driverId);
-  //           return sortState.id ? -comparison : comparison;
-  //         case "status":
-  //           comparison = Number(a.driverStatus) - Number(b.driverStatus);
-  //           return sortState.status ? -comparison : comparison;
-  //         case "lastName":
-  //           comparison = getLastName(a.driverName).localeCompare(
-  //             getLastName(b.driverName)
-  //           );
-  //           return sortState.lastName ? -comparison : comparison;
-  //         case "firstMiddleName":
-  //           comparison = getFirstAndMiddleName(a.driverName).localeCompare(
-  //             getFirstAndMiddleName(b.driverName)
-  //           );
-  //           return sortState.firstMiddleName ? -comparison : comparison;
-  //         case "gender":
-  //           comparison = a.driverGender - b.driverGender;
-  //           return sortState.gender ? -comparison : comparison;
-  //         case "area":
-  //           comparison = getCity(a.driverAddress).localeCompare(
-  //             getCity(b.driverAddress)
-  //           );
-  //           return sortState.area ? -comparison : comparison;
-  //         case "counterReceived":
-  //           comparison = a.activeOrderCount - b.activeOrderCount;
-  //           return sortState.counterReceived ? -comparison : comparison;
-  //         case "violation":
-  //           comparison = a.driverViolation - b.driverViolation;
-  //           return sortState.violation ? -comparison : comparison;
-  //         default:
-  //           return 0;
-  //       }
-  //     }
-  //   );
+        switch (key) {
+          case "id":
+            comparison = a.userId.localeCompare(b.userId);
+            return sortState.id ? -comparison : comparison;
+          case "phone":
+            comparison = Number(a.userPhone) - Number(b.userPhone);
+            return sortState.phone ? -comparison : comparison;
+          case "lastName":
+            comparison = getLastName(
+              (a.driverDetail && a.driverDetail.driverName) ||
+                (a.employeeDetail && a.employeeDetail.employeeName)
+            ).localeCompare(
+              getLastName(
+                (b.driverDetail && b.driverDetail.driverName) ||
+                  (b.employeeDetail && b.employeeDetail.employeeName)
+              )
+            );
+            return sortState.lastName ? -comparison : comparison;
+          case "firstMiddleName":
+            comparison = getFirstAndMiddleName(
+              (b.driverDetail && b.driverDetail.driverName) ||
+                (b.employeeDetail && b.employeeDetail.employeeName)
+            ).localeCompare(
+              getFirstAndMiddleName(
+                (b.driverDetail && b.driverDetail.driverName) ||
+                  (b.employeeDetail && b.employeeDetail.employeeName)
+              )
+            );
+            return sortState.firstMiddleName ? -comparison : comparison;
+          case "gmail":
+            comparison = a.userEmail.localeCompare(b.userEmail);
+            return sortState.gmail ? -comparison : comparison;
+          case "role":
+            comparison = a.userRole.localeCompare(getCity(b.userRole));
+            return sortState.area ? -comparison : comparison;
+          case "counterReceived":
+            comparison = a.activeOrderCount - b.activeOrderCount;
+            return sortState.counterReceived ? -comparison : comparison;
+          case "violation":
+            comparison = a.driverViolation - b.driverViolation;
+            return sortState.violation ? -comparison : comparison;
+          default:
+            return 0;
+        }
+      }
+    );
 
-  //   setUsers(sortedDrivers);
-  //   setSortState((prev) => ({ ...prev, [key]: !prev[key] }));
-  // };
+    setUsers(sortedUsers);
+    setSortState((prev) => ({ ...prev, [key]: !prev[key] }));
+  };
 
   return (
     <div className="all">
@@ -203,7 +222,7 @@ const DriverTable: React.FC = () => {
                     <th className="h-[42px] items-center break-words  p-3 text-left truncate">
                       <div className="flex flex-row gap-[6px] items-center h-full">
                         <p>Mã tài khoản</p>
-                        <div className="Sort" onClick={() => sortDrivers("id")}>
+                        <div className="Sort" onClick={() => sortUsers("id")}>
                           <SortIC />
                         </div>
                       </div>
@@ -213,7 +232,7 @@ const DriverTable: React.FC = () => {
                         <p>Số điện thoại</p>
                         <div
                           className="Sort"
-                          onClick={() => sortDrivers("status")}
+                          onClick={() => sortUsers("phone")}
                         >
                           <SortIC />
                         </div>
@@ -224,7 +243,7 @@ const DriverTable: React.FC = () => {
                         <p>Họ</p>
                         <div
                           className="Sort"
-                          onClick={() => sortDrivers("firstMiddleName")}
+                          onClick={() => sortUsers("firstMiddleName")}
                         >
                           <SortIC />
                         </div>
@@ -235,7 +254,7 @@ const DriverTable: React.FC = () => {
                         <p>Tên</p>
                         <div
                           className="Sort"
-                          onClick={() => sortDrivers("lastName")}
+                          onClick={() => sortUsers("lastName")}
                         >
                           <SortIC />
                         </div>
@@ -246,7 +265,7 @@ const DriverTable: React.FC = () => {
                         <p>Email</p>
                         <div
                           className="Sort"
-                          onClick={() => sortDrivers("gender")}
+                          onClick={() => sortUsers("gmail")}
                         >
                           <SortIC />
                         </div>
@@ -272,10 +291,7 @@ const DriverTable: React.FC = () => {
                     <th className="h-[42px] items-center break-words  p-3 text-center truncate">
                       <div className="flex flex-row gap-[6px] items-center justify-center h-full">
                         <p>Vai trò</p>
-                        <div
-                          className="Sort"
-                          onClick={() => sortDrivers("counterReceived")}
-                        >
+                        <div className="Sort" onClick={() => sortUsers("role")}>
                           <SortIC />
                         </div>
                       </div>
@@ -297,67 +313,142 @@ const DriverTable: React.FC = () => {
                         onClick={() => handleClick(user.userId)}
                         className="cursor-pointer"
                       >
-                        <td className="h-[42px] break-words p-3 text-left truncate">
-                          <div className="flex flex-row gap-[6px] items-center h-full w-full justify-end">
-                            <p>{index + 1}</p>
-                          </div>
-                        </td>
-                        <td className="h-[42px] items-center break-words  p-3 text-left truncate">
-                          <div className="flex flex-row gap-[6px] items-center h-full">
-                            <p>{user.userId}</p>
-                          </div>
-                        </td>
-                        <td className="h-[42px] items-center break-words  p-3 text-left truncate">
-                          <div className="flex flex-row gap-[6px] items-center h-full">
-                            <p>{user.userPhone}</p>
-                          </div>
-                        </td>
-                        <td className="h-[42px] items-center break-words  p-3 text-left truncate">
-                          <div className="flex flex-row gap-[6px] items-center h-full">
-                            <p>
-                              {getFirstAndMiddleName(
-                                user.infoDetail.driverName
-                              )}
-                            </p>
-                          </div>
-                        </td>
-                        <td className="h-[42px] items-center break-words  p-3 text-left truncate">
-                          <div className="flex flex-row gap-[6px] items-center h-full">
-                            <p>{getLastName(user.infoDetail.driverName)}</p>
-                          </div>
-                        </td>
-                        <td className="h-[42px] items-center break-words  p-3 text-left truncate">
-                          <div className="flex flex-row gap-[6px] items-center h-full  ">
-                            <p className=" overflow-hidden text-ellipsis">
-                              {user.infoDetail.driverEmail}
-                            </p>
-                          </div>
-                        </td>
-                        <td className="h-[42px] items-center break-words  p-3 text-left truncate">
-                          <div className="flex flex-row gap-[6px] items-center h-full">
-                            <p>
-                              {user.infoDetail.driverStatus
-                                ? "Hoạt động"
-                                : "Không hoạt động"}
-                            </p>
-                          </div>
-                        </td>
-                        <td className="h-[42px] items-center break-words  p-3 text-left truncate">
-                          <div className="flex flex-row gap-[6px] items-center h-full">
-                            <p className="w-full overflow-hidden text-ellipsis whitespace-nowrap">
-                              {user.userVerify
-                                ? "Đã xác thực"
-                                : "Chưa xác thực"}
-                            </p>
-                          </div>
-                        </td>
-                        <td className="h-[42px] items-center break-words  p-3 text-center truncate">
-                          <div className="flex flex-row gap-[6px] items-center h-full">
-                            <p className="w-full overflow-hidden text-ellipsis whitespace-nowrap">
-                              {user.userRole}
-                            </p>
-                          </div>
-                        </td>
+                        {user.driverDetail && (
+                          <>
+                            <td className="h-[42px] break-words p-3 text-left truncate">
+                              <div className="flex flex-row gap-[6px] items-center h-full w-full justify-end">
+                                <p>{index + 1}</p>
+                              </div>
+                            </td>
+                            <td className="h-[42px] items-center break-words  p-3 text-left truncate">
+                              <div className="flex flex-row gap-[6px] items-center h-full">
+                                <p>{user.userId}</p>
+                              </div>
+                            </td>
+                            <td className="h-[42px] items-center break-words  p-3 text-left truncate">
+                              <div className="flex flex-row gap-[6px] items-center h-full">
+                                <p>{user.userPhone}</p>
+                              </div>
+                            </td>
+                            <td className="h-[42px] items-center break-words  p-3 text-left truncate">
+                              <div className="flex flex-row gap-[6px] items-center h-full">
+                                <p>
+                                  {getFirstAndMiddleName(
+                                    user.driverDetail.driverName
+                                  )}
+                                </p>
+                              </div>
+                            </td>
+                            <td className="h-[42px] items-center break-words  p-3 text-left truncate">
+                              <div className="flex flex-row gap-[6px] items-center h-full">
+                                <p>
+                                  {getLastName(user.driverDetail.driverName)}
+                                </p>
+                              </div>
+                            </td>
+                            <td className="h-[42px] items-center break-words  p-3 text-left truncate">
+                              <div className="flex flex-row gap-[6px] items-center h-full  ">
+                                <p className=" overflow-hidden text-ellipsis">
+                                  {user.driverDetail.driverEmail}
+                                </p>
+                              </div>
+                            </td>
+                            <td className="h-[42px] items-center break-words  p-3 text-left truncate">
+                              <div className="flex flex-row gap-[6px] items-center h-full">
+                                <p>
+                                  {user.driverDetail.driverStatus
+                                    ? "Hoạt động"
+                                    : "Không hoạt động"}
+                                </p>
+                              </div>
+                            </td>
+                            <td className="h-[42px] items-center break-words  p-3 text-left truncate">
+                              <div className="flex flex-row gap-[6px] items-center h-full">
+                                <p className="w-full overflow-hidden text-ellipsis whitespace-nowrap">
+                                  {user.userVerify
+                                    ? "Đã xác thực"
+                                    : "Chưa xác thực"}
+                                </p>
+                              </div>
+                            </td>
+                            <td className="h-[42px] items-center break-words  p-3 text-center truncate">
+                              <div className="flex flex-row gap-[6px] items-center h-full">
+                                <p className="w-full overflow-hidden text-ellipsis whitespace-nowrap">
+                                  {user.userRole}
+                                </p>
+                              </div>
+                            </td>
+                          </>
+                        )}
+                        {user.employeeDetail && (
+                          <>
+                            <td className="h-[42px] break-words p-3 text-left truncate">
+                              <div className="flex flex-row gap-[6px] items-center h-full w-full justify-end">
+                                <p>{index + 1}</p>
+                              </div>
+                            </td>
+                            <td className="h-[42px] items-center break-words  p-3 text-left truncate">
+                              <div className="flex flex-row gap-[6px] items-center h-full">
+                                <p>{user.userId}</p>
+                              </div>
+                            </td>
+                            <td className="h-[42px] items-center break-words  p-3 text-left truncate">
+                              <div className="flex flex-row gap-[6px] items-center h-full">
+                                <p>{user.userPhone}</p>
+                              </div>
+                            </td>
+                            <td className="h-[42px] items-center break-words  p-3 text-left truncate">
+                              <div className="flex flex-row gap-[6px] items-center h-full">
+                                <p>
+                                  {getFirstAndMiddleName(
+                                    user.employeeDetail.employeeName
+                                  )}
+                                </p>
+                              </div>
+                            </td>
+                            <td className="h-[42px] items-center break-words  p-3 text-left truncate">
+                              <div className="flex flex-row gap-[6px] items-center h-full">
+                                <p>
+                                  {getLastName(
+                                    user.employeeDetail.employeeName
+                                  )}
+                                </p>
+                              </div>
+                            </td>
+                            <td className="h-[42px] items-center break-words  p-3 text-left truncate">
+                              <div className="flex flex-row gap-[6px] items-center h-full  ">
+                                <p className=" overflow-hidden text-ellipsis">
+                                  {user.employeeDetail.employeeEmail}
+                                </p>
+                              </div>
+                            </td>
+                            <td className="h-[42px] items-center break-words  p-3 text-left truncate">
+                              <div className="flex flex-row gap-[6px] items-center h-full">
+                                <p>
+                                  {user.employeeDetail.employeeStatus
+                                    ? "Hoạt động"
+                                    : "Không hoạt động"}
+                                </p>
+                              </div>
+                            </td>
+                            <td className="h-[42px] items-center break-words  p-3 text-left truncate">
+                              <div className="flex flex-row gap-[6px] items-center h-full">
+                                <p className="w-full overflow-hidden text-ellipsis whitespace-nowrap">
+                                  {user.userVerify
+                                    ? "Đã xác thực"
+                                    : "Chưa xác thực"}
+                                </p>
+                              </div>
+                            </td>
+                            <td className="h-[42px] items-center break-words  p-3 text-center truncate">
+                              <div className="flex flex-row gap-[6px] items-center h-full">
+                                <p className="w-full overflow-hidden text-ellipsis whitespace-nowrap">
+                                  {user.userRole}
+                                </p>
+                              </div>
+                            </td>
+                          </>
+                        )}
                       </tr>
                     ))}
                   </tbody>
@@ -371,4 +462,4 @@ const DriverTable: React.FC = () => {
   );
 };
 
-export default DriverTable;
+export default AccountTable;
