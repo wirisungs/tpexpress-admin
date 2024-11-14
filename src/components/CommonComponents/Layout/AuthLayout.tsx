@@ -9,7 +9,7 @@ const AuthLayout: React.FC<LayoutProps> = ({ children }) => {
         <div className="logo w-[100px] h-[60px]" />
         <div className="body flex w-full h-full flex-col items-center justify-between">
           <div className="heroSection flex flex-col gap-6 items-center w-full">
-            <DriverCar width={400} w-full height={200} />
+            <DriverCar width={400} height={200} />
             <p
               style={{ textShadow: "2px 0px 5px rgba(0 0 0 / 0.2)" }}
               className="welcome-text text-3xl font-bold text-normalText"
