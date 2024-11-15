@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import "@/Style/MTri/TableSetupOrderCSKH.css";
 import SortIC from "@/Svg/sortIC";
 import Navbar from "@/components/CommonComponents/Layout/Navbar";
-import Input from "@/components/CommonComponents/Inputs/Inputs";
+import { InputWithIcon } from "@/components/CommonComponents/Inputs/Inputs";
 
 type CSKHType = {
   Request_ID: string;
@@ -41,16 +41,17 @@ const CSKH: React.FC = () => {
     <div className="all">
       <Navbar>
         <div className="right flex flex-col gap-4">
-          <div className="inputright">
-            <Input
-              type="search"
-              placeholder="Nhập mã khách hàng / họ tên / email /...."
+          <div className="inputright w-[342px]">
+            <InputWithIcon
+              purpose="search"
+              placeholder="Nhập mã đơn hàng để tìm kiếm"
+              background={true}
             />
           </div>
           <div className="table">
             <div className="note-container">
               <p className="note">
-                Ghi chú: Ấn và khách hàng bất kì để xem hoặc thay đổi thông tin
+                Ghi chú: Ấn vào yêu cầu bất kì để xem hoặc thay đổi thông tin
               </p>
             </div>
             <div className="table-container">
@@ -145,12 +146,17 @@ const CSKH: React.FC = () => {
                       </td>
                       <td className="h-[42px] items-center break-words  p-3 text-left truncate">
                         <div className="flex flex-row gap-[6px] items-center h-full">
-                          <p>{request.Request_Picture}</p>
+                          <p className="text-ellipsis overflow-hidden">
+                            {request.Request_Picture}
+                          </p>
                         </div>
                       </td>
                       <td className="h-[42px] items-center break-words  p-3 text-left truncate">
                         <div className="flex flex-row gap-[6px] items-center h-full">
-                          <p>{request.Request_Status}</p>
+                          <p>
+                            {request.Request_Status === "Pending" &&
+                              "Chờ xử lý"}
+                          </p>
                         </div>
                       </td>
                       <td className="h-[42px] items-center break-words  p-3 text-left truncate">

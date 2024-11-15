@@ -1,9 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import "@/Style/DTri/styles_customers.css";
-import Input, {
-  InputWithIcon,
-} from "@/components/CommonComponents/Inputs/Inputs";
+import { InputWithIcon } from "@/components/CommonComponents/Inputs/Inputs";
 import Navbar from "@/components/CommonComponents/Layout/Navbar";
 import "@/Style/MTri/Loading.css";
 
@@ -64,7 +62,7 @@ const Customers: React.FC = () => {
           <div className="table">
             <div className="note-container">
               <p className="note">
-                Ghi chú: Ấn và khách hàng bất kì để xem hoặc thay đổi thông tin
+                Ghi chú: Ấn vào khách hàng bất kì để xem hoặc thay đổi thông tin
               </p>
             </div>
             <div className="table-container">

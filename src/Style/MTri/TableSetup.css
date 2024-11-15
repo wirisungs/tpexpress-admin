@@ -1,169 +1,177 @@
-
 /* Kích thước cột */
-  .driverTable th:nth-child(1), .driverTable td:nth-child(1) {
-    width: 5%; /* Cột STT */
-  }
-  
-  .driverTable th:nth-child(2), .driverTable td:nth-child(2) {
-    width: 10%; /* Mã tài xế */
-  }
-  
-  .driverTable th:nth-child(3), .driverTable td:nth-child(3) {
-    width: 10%; /* Status */
-  }
-  
-  .driverTable th:nth-child(4), .driverTable td:nth-child(4) {
-    width: 10%; /* Họ */
-  }
-  
-  .driverTable th:nth-child(5), .driverTable td:nth-child(5) {
-    width: 7%; /* Tên */
-  }
-  
-  .driverTable th:nth-child(6), .driverTable td:nth-child(6) {
-    width: 10%; /* Giới tính */
-  }
-  
-  .driverTable th:nth-child(7), .driverTable td:nth-child(7) {
-    width: 10%; /* SĐT */
-  }
-  
-  .driverTable th:nth-child(8), .driverTable td:nth-child(8) {
-    width: 8%; /* Khu vực */
-  }
-  .driverTable th:nth-child(9), .driverTable td:nth-child(9) {
-    width: 10%; /* Biển số */
-  }
-  .driverTable th:nth-child(10), .driverTable  td:nth-child(10) {
-    width: 10%; /* Cảnh cáo */
-  }
+.driverTable th:nth-child(1),
+.driverTable td:nth-child(1) {
+  width: 5%; /* Cột STT */
+}
 
+.driverTable th:nth-child(2),
+.driverTable td:nth-child(2) {
+  width: 10%; /* Mã tài xế */
+}
 
+.driverTable th:nth-child(3),
+.driverTable td:nth-child(3) {
+  width: 10%; /* Status */
+}
 
-  tbody {
-    display: block;  /* Để kích hoạt scroll cho tbody */
-    max-height: 500px;  /* Giới hạn chiều cao tối đa */
-    overflow-y: auto;  /* Cho phép cuộn khi vượt quá chiều cao */
-  }
-  
-  tbody::-webkit-scrollbar {
-    display: none;
-  }
-  
-  tr {
-    display: table;
-    width: 100%;
-    table-layout: fixed; /* Đảm bảo bảng không bị phá vỡ layout */
-  }
-  
-  tbody tr:hover {
-    background-color: #f1f1f1;
-  }
-  
-  .textnav {
-    font-size: 14px;
-    font-weight: 400;
-    color: #1C1C1C;
-  }
-  
-  ::placeholder {
-    color: #CBCBCB;
-    font-size: 16px;
-    font-weight: 400;
-  }
+.driverTable th:nth-child(4),
+.driverTable td:nth-child(4) {
+  width: 10%; /* Họ */
+}
 
-  .all {
-    display: flex;
-    flex-direction: row;
-    width: 100%;
-  }
-  
-  .left {
-    width: 203px;
-  }
-  
-  .note-container {
-    width: 100%;
-    max-width: 1029px;
-    margin-bottom: 16px;
-    text-align: left;
-  }
-  
-  .note {
-    color: #EB455F;
-    font-size: 12px;
-  }
-  
-  table {
-    width: full;  
-    border-collapse: collapse;
-    box-sizing: border-box;
-    font-family: "Lato", sans-serif;
-  }
-  
-  thead {
-    position: sticky;
-    top: 0;
-    z-index: 1;
-    margin-bottom: 6px;
-  }
-  thead tr th p {
-    font-size: 14px;
-    color: #696969;
-  }
-  thead tr th svg {
-    cursor: pointer;
-    color: #696969;
-  }
-  
-  tbody tr td p {
-    font-size: 12px;
-    color: #696969;
-  }
-  
-  tbody tr td svg {
-    color: #696969;
-    cursor: pointer;
-  }
-  
-  tbody::before{
+.driverTable th:nth-child(5),
+.driverTable td:nth-child(5) {
+  width: 7%; /* Tên */
+}
+
+.driverTable th:nth-child(6),
+.driverTable td:nth-child(6) {
+  width: 10%; /* Giới tính */
+}
+
+.driverTable th:nth-child(7),
+.driverTable td:nth-child(7) {
+  width: 10%; /* SĐT */
+}
+
+.driverTable th:nth-child(8),
+.driverTable td:nth-child(8) {
+  width: 8%; /* Khu vực */
+}
+.driverTable th:nth-child(9),
+.driverTable td:nth-child(9) {
+  width: 10%; /* Biển số */
+}
+.driverTable th:nth-child(10),
+.driverTable td:nth-child(10) {
+  width: 10%; /* Cảnh cáo */
+}
+
+tbody {
+  display: block; /* Để kích hoạt scroll cho tbody */
+  max-height: 500px; /* Giới hạn chiều cao tối đa */
+  overflow-y: auto; /* Cho phép cuộn khi vượt quá chiều cao */
+}
+
+tbody::-webkit-scrollbar {
+  display: none;
+}
+
+tr {
+  display: table;
+  width: 100%;
+  table-layout: fixed; /* Đảm bảo bảng không bị phá vỡ layout */
+}
+
+tbody tr:hover {
+  background-color: #f1f1f1;
+}
+
+.textnav {
+  font-size: 14px;
+  font-weight: 400;
+  color: #1c1c1c;
+}
+
+::placeholder {
+  color: #cbcbcb;
+  font-size: 16px;
+  font-weight: 400;
+}
+
+.all {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+}
+
+.left {
+  width: 203px;
+}
+
+.note-container {
+  width: 100%;
+  max-width: 1029px;
+  margin-bottom: 16px;
+  text-align: left;
+}
+
+.note {
+  color: #eb455f;
+  font-size: 12px;
+}
+
+table {
+  width: full;
+  border-collapse: collapse;
+  box-sizing: border-box;
+  font-family: "Lato", sans-serif;
+}
+
+thead {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  margin-bottom: 6px;
+}
+thead tr th p {
+  font-size: 14px;
+  color: #696969;
+}
+thead tr th svg {
+  cursor: pointer;
+  color: #696969;
+}
+
+tbody tr td p {
+  font-size: 12px;
+  color: #696969;
+}
+
+tbody tr td svg {
+  color: #696969;
+  cursor: pointer;
+}
+
+tbody::before {
   content: "-";
   display: block;
   line-height: 6px;
   text-indent: -99999px;
   background-color: #f9f9f9;
-  }
-  tbody tr {
-    border-bottom: thin solid #f9f9f9;
-  }
-  
-  .header-cell {
-    display: flex;
-    align-items: center;
-    font-size: 14px;
-    height: 42px;
-    font-weight:bold;
-    flex-direction: row;
-    gap: 6px
-  }
-  
-  .downup-icon {
-    width: 12px;
-    height: 12px;
-  }
-  
-  .th {
-    text-align: left;
-    border-bottom: 1px solid #ddd;
-    font-size: 16px;
-    color: #696969;
-    padding: 12px;
-    box-sizing: border-box;
-  }
-  
-  .email-cell, .address-cell {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    max-width: 200px;
-  }
+}
+tbody tr {
+  border-bottom: thin solid #f9f9f9;
+}
+
+.header-cell {
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  height: 42px;
+  font-weight: bold;
+  flex-direction: row;
+  gap: 6px;
+}
+
+.downup-icon {
+  width: 12px;
+  height: 12px;
+}
+
+.th {
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+  font-size: 16px;
+  color: #696969;
+  padding: 12px;
+  box-sizing: border-box;
+}
+
+.email-cell,
+.address-cell {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 200px;
+}

@@ -39,7 +39,7 @@ interface DatePickerProps {
 interface SelectionInputProps {
   options: { [key: string]: string | boolean | number };
   label?: string;
-  onChange?: (value: string | number | boolean) => void;
+  onChange?: (value: string) => void;
 }
 
 // Input thông thường
@@ -214,7 +214,7 @@ const InputSelection: React.FC<SelectionInputProps> = ({
     const value = e.target.value;
     const abbreviation = options[value];
     setSelectedValue(value);
-    console.log(selectedValue);
+    console.log(value);
     if (onChange) {
       onChange(abbreviation);
     }

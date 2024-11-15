@@ -78,20 +78,21 @@ const Navbar: React.FC<LayoutProps> = React.memo(({ children }) => {
   return (
     <div className="MainContainer flex flex-row min-h-[100vh] w-full">
       <div
-        className="NavbarContainer flex flex-col w-[15%] gap-3"
+        className="NavbarContainer flex flex-col md:w-[20%] lg:w-[15%] gap-3"
         style={{
           backgroundColor: "#ffffff",
           boxShadow: "2px 0px 8px rgb(0 0 0 / 0.1)",
           zIndex: 10,
         }}
       >
-        <div className="flex flex-col pl-8 pb-4 pt-6 pr-6 h-[78px]">
-          <div className="flex flex-row justify-between gap-3 w-full items-center">
-            <p className="Username flex text-base font-bold h-full items-center text-ellipsis">
+        <div className="flex flex-col items-center md:items-start pl-8 pb-4 pt-6 pr-6 h-[78px]">
+          <div className="flex flex-row justify-center md:justify-between gap-3 w-full items-center">
+            <p className="Username text-base font-bold h-full items-center text-ellipsis hidden md:flex">
               {userName || "Loading..."}
             </p>
+            <div className="profileAvt flex w-8 h-8 rounded-full md:hidden"></div>
           </div>
-          <p className="Username flex text-xs text-subtitleText h-full items-center text-ellipsis">
+          <p className="Username text-xs text-subtitleText h-full items-center text-ellipsis hidden md:flex">
             {userRole === "Driver" ? "Tài xế" : "Quản trị viên"}
           </p>
         </div>
@@ -108,7 +109,7 @@ const Navbar: React.FC<LayoutProps> = React.memo(({ children }) => {
           </div>
         </div>
       </div>
-      <div className="bodyContainer bg-[#f9f9f9] w-[85%] h-full p-6 overflow-y-auto">
+      <div className="bodyContainer bg-[#f9f9f9] md:w-[80%] lg:w-[85%] h-full p-6 overflow-y-auto">
         {children}
       </div>
     </div>

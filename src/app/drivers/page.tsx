@@ -163,21 +163,15 @@ const DriverTable: React.FC = () => {
             <div className="w-[342px]">
               <InputWithIcon
                 purpose="search"
-                placeholder="Nhập mã khách hàng / họ tên / email /...."
+                placeholder="Nhập số điện thoại để tìm kiếm"
                 background={true}
               />
             </div>
-            <Button
-              text="Đăng ký tài xế"
-              icon={<AddEmployeeIC />}
-              customColor="#EB455F"
-              href="/drivers/create"
-            />
           </div>
           <div className="table">
             <div className="note-container">
               <p className="note">
-                Ghi chú: Ấn và khách hàng bất kì để xem hoặc thay đổi thông tin
+                Ghi chú: Ấn vào tài xế bất kì để xem hoặc thay đổi thông tin
               </p>
             </div>
             <div className="table-container">

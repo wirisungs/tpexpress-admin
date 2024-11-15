@@ -191,22 +191,24 @@ const AccountTable: React.FC = () => {
             <div className="w-[342px]">
               <InputWithIcon
                 purpose="search"
-                placeholder="Nhập mã khách hàng / họ tên / email /...."
+                placeholder="Nhập số điện thoại để tìm kiếm"
                 background={true}
                 border={false}
               />
             </div>
-            <Button
-              text="Đăng ký tài khoản"
-              icon={<AddEmployeeIC />}
-              customColor="#EB455F"
-              href="/accounts/create"
-            />
+            <div className="w-[168px]">
+              <Button
+                text="Đăng ký tài khoản"
+                icon={<AddEmployeeIC />}
+                customColor="#EB455F"
+                href="/accounts/create"
+              />
+            </div>
           </div>
           <div className="table">
             <div className="note-container">
               <p className="note">
-                Ghi chú: Ấn và khách hàng bất kì để xem hoặc thay đổi thông tin
+                Ghi chú: Ấn vào tài khoản bất kì để xem hoặc thay đổi thông tin
               </p>
             </div>
             <div className="table-container">
@@ -374,7 +376,7 @@ const AccountTable: React.FC = () => {
                             <td className="h-[42px] items-center break-words  p-3 text-center truncate">
                               <div className="flex flex-row gap-[6px] items-center h-full">
                                 <p className="w-full overflow-hidden text-ellipsis whitespace-nowrap">
-                                  {user.userRole}
+                                  {user.userRole === "Driver" && "Tài xế"}
                                 </p>
                               </div>
                             </td>
@@ -443,7 +445,7 @@ const AccountTable: React.FC = () => {
                             <td className="h-[42px] items-center break-words  p-3 text-center truncate">
                               <div className="flex flex-row gap-[6px] items-center h-full">
                                 <p className="w-full overflow-hidden text-ellipsis whitespace-nowrap">
-                                  {user.userRole}
+                                  {user.userRole === "Admin" && "Quản trị viên"}
                                 </p>
                               </div>
                             </td>

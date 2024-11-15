@@ -7,7 +7,6 @@ import React from "react";
 interface ButtonProps {
   text: string;
   icon?: React.ReactNode;
-  width?: string;
   customColor?: string;
   href?: string | undefined;
   type?: "button" | "submit";
@@ -20,7 +19,6 @@ interface LinkButtonProps extends ButtonProps {
 const Button: React.FC<ButtonProps> = ({
   text,
   icon,
-  width,
   customColor,
   type,
   href = "/",
@@ -33,11 +31,10 @@ const Button: React.FC<ButtonProps> = ({
     <button
       type={type || "button"}
       style={{
-        width: `${width ? `${width}` : "152px"}`,
         backgroundColor: `${customColor ? `${customColor}` : `#D9D9D9`}`,
       }}
       onClick={handleOnclick}
-      className="flex flex-row gap-[6px] h-[42px] rounded-md justify-center items-center"
+      className="flex flex-row gap-[6px] w-full h-[42px] rounded-md justify-center items-center"
     >
       <div className="icon">{icon}</div>
       <div className="text flex items-center text-white font-bold text-xs h-full">

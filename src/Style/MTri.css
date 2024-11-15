@@ -103,6 +103,11 @@ input[type="number"] {
   background-size: cover;
 }
 
+.profileAvt {
+  background-image: url("../Pictures/Image_MT/PersonalImage.png");
+  background-size: cover;
+}
+
 /* Keyframes để thay đổi vị trí */
 @keyframes move {
   0% {

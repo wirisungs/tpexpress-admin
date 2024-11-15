@@ -109,7 +109,9 @@ const OrderPage = () => {
     <div className="flex">
       <Navbar>
         <main className={TramCSS.body}>
-          <InputDatePicker background={true} border={false} />
+          <div className="w-[168px]">
+            <InputDatePicker background={true} border={false} />
+          </div>
           <div className="flex flex-row w-full justify-between gap-6">
             <CommonSpecifications
               fluctuationType="none"
@@ -145,7 +147,7 @@ const OrderPage = () => {
           <div className="table">
             <div className="note-container">
               <p className="note">
-                Ghi chú: Ấn và khách hàng bất kì để xem hoặc thay đổi thông tin
+                Ghi chú: Ấn vào đơn hàng bất kì để xem hoặc thay đổi thông tin
               </p>
             </div>
             <div className="table-container">

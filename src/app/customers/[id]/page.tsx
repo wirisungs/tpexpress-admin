@@ -284,9 +284,6 @@ const CusDetails = () => {
                           <th className="h-[42px] break-words p-3 text-left truncate">
                             <div className="flex flex-row gap-[6px] items-center h-full w-full justify-end">
                               <p>STT</p>
-                              <div className="Sort">
-                                <SortIC />
-                              </div>
                             </div>
                           </th>
                           <th className="h-[42px] items-center break-words  p-3 text-left truncate">
@@ -305,7 +302,7 @@ const CusDetails = () => {
                           </th>
                           <th className="h-[42px] items-center break-words  p-3 text-left truncate">
                             <div className="flex flex-row gap-[6px] items-center h-full">
-                              <p>Người nhận / gửi</p>
+                              <p>Người nhận</p>
                               <SortIC />
                             </div>
                           </th>
@@ -423,9 +420,6 @@ const CusDetails = () => {
                           <th className="h-[42px] break-words p-3 text-left truncate">
                             <div className="flex flex-row gap-[6px] items-center h-full w-full justify-end">
                               <p>STT</p>
-                              <div className="Sort">
-                                <SortIC />
-                              </div>
                             </div>
                           </th>
                           <th className="h-[42px] items-center break-words  p-3 text-left truncate">

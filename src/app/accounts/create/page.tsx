@@ -5,8 +5,7 @@ import Input, {
 } from "@/components/CommonComponents/Inputs/Inputs";
 import Navbar from "@/components/CommonComponents/Layout/Navbar";
 import TitleBar from "@/components/CommonComponents/Layout/bars/TitleBar";
-import { useRouter } from "next/navigation";
-import React, { FormEvent, useEffect, useState } from "react";
+import React, { FormEvent, useState } from "react";
 
 const UserEnroll = () => {
   const [userFullname, setUserFullname] = useState<string>("");
@@ -15,6 +14,7 @@ const UserEnroll = () => {
   const [confirmPass, setConfirmPass] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [userRole, setUserRole] = useState<string>("");
+  const [warning, setWarning] = useState<string>("");
   const roleOptions: { [key: string]: string } = {
     "Tài xế": "Driver",
     "Nhân viên": "Employee",
@@ -43,12 +43,14 @@ const UserEnroll = () => {
           userRole: userRole,
         }),
       });
+      const result = await response.json();
       if (!response.ok) {
+        if (result.message) {
+          setWarning(result.message);
+        }
         throw new Error(`HTTP error! status: ${response.status}`);
       }
-
-      const result = await response.json();
-      console.log("Data saved:", result);
+      setWarning(result.message);
     } catch (error) {
       console.error("Error collecting data:", error);
     }
@@ -109,7 +111,19 @@ const UserEnroll = () => {
               />
             </div>
           </div>
-          <div className="flex w-full items-center justify-center">
+          <div className="flex flex-col w-full items-center justify-center gap-4 rounded-md">
+            {warning && (
+              <div
+                style={{
+                  backgroundColor: `${
+                    warning !== "Đăng ký thành công" ? "#EB455F" : "#0DA651"
+                  }`,
+                }}
+                className="flex flex-row items-center px-4 w-full h-[42px] rounded-md"
+              >
+                <p className="text-white text-sm font-bold">{warning}</p>
+              </div>
+            )}
             <button
               type="submit"
               className="flex flex-row gap-[6px] w-64 h-[42px] bg-primaryText300 rounded-md justify-center items-center"
