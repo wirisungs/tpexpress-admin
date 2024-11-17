@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Input, {
   InputFunction,
   InputWithIcon,
@@ -10,67 +10,89 @@ type type = "login" | "forgot" | "changePassword";
 interface FormProps {
   formType: type;
   onSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
+  warning: string;
 }
-const Form: React.FC<FormProps> = ({ formType, onSubmit }) => {
-  const [phone, setPhone] = useState<string | undefined>();
+interface LoginProps extends FormProps {
+  phone: string;
+  setPhone: (value: string) => void;
+}
+const Form: React.FC<LoginProps> = ({
+  formType,
+  onSubmit,
+  phone,
+  setPhone,
+  warning,
+}) => {
   const subtitle = "Tinh thần tốc độ - Dịch vụ hoàn hảo";
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    setPhone(value); // Cập nhật state
-  };
   return (
     <form
       onSubmit={onSubmit}
       method="POST"
-      style={{ boxShadow: "0px 0px 12px rgb(0 0 0 / 0.2)" }}
-      className="form-container px-8 py-16 rounded-xl"
+      className="form-container px-8 py-16 rounded-xl border-solid border-[2px] border-primaryText300"
     >
       {/* Nếu form là Login */}
       {formType === "login" && (
-        <div className="login-container flex flex-col gap-4">
+        <div className="login-container w-[406px] flex flex-col gap-4">
           <div className="title flex flex-col gap-[6px]">
-            <p className="titleText text-[32px] font-bold text-primaryText300">
+            <p className="titleText text-2xl font-bold text-primaryText300">
               Đăng nhập
             </p>
-            <p className="subtitle text-yellowText font-medium">{subtitle}</p>
+            <p className="subtitle text-yellowText text-xs font-medium">
+              {subtitle}
+            </p>
           </div>
           <Input
             value={phone}
-            onChange={(e) => handleChange(e)}
-            length={10}
+            onChange={(e) => setPhone(e.target.value)}
             type="text"
             label="Số điện thoại"
+            border={true}
             placeholder="VD: 0123456789"
           />
+          {warning ? (
+            <p className="text-xs text-primaryText300">{warning}</p>
+          ) : (
+            ""
+          )}
           <InputWithIcon
             label="Mật khẩu"
             purpose="password"
             placeholder="VD: Abc@12345678"
           />
-          <Button text="Đăng nhập" width="100%" customColor="#EB455F" />
-          <a className="text-base font-medium text-yellowText" href="/forgot">
+          <Button
+            text="Đăng nhập"
+            width="100%"
+            customColor="#EB455F"
+            href="/dashboard"
+          />
+          <a className="text-xs font-medium text-yellowText" href="/forgot">
             Quên mật khẩu?
           </a>
         </div>
       )}
+
+      {/* Forgot form */}
       {formType === "forgot" && (
-        <div className="login-container flex flex-col gap-4">
+        <div className="forgot-container w-[406px] flex flex-col gap-4">
           <div className="title flex flex-col gap-[6px]">
-            <p className="titleText text-[32px] font-bold text-primaryText300">
+            <p className="titleText text-2xl font-bold text-primaryText300">
               Quên mật khẩu
             </p>
-            <p className="subtitle text-yellowText font-medium">{subtitle}</p>
+            <p className="subtitle text-xs text-yellowText font-medium">
+              {subtitle}
+            </p>
           </div>
           <Input
             value={phone}
-            onChange={(e) => handleChange(e)}
-            length={10}
+            // onChange={(e) => handleChange(e)}
             label="Số điện thoại"
+            border={true}
             placeholder="VD: 0123456789"
           />
           <Input
             label="Email công ty cấp"
+            border={true}
             placeholder="VD: abc@tpexpress.com"
           />
           <InputFunction
@@ -79,33 +101,44 @@ const Form: React.FC<FormProps> = ({ formType, onSubmit }) => {
             functionText="Gửi"
           />
 
-          <Button text="Đổi mật khẩu" width="100%" customColor="#EB455F" />
-          <a className="text-base font-medium text-yellowText" href="/login">
+          <Button
+            text="Đổi mật khẩu"
+            width="100%"
+            customColor="#EB455F"
+            href="/repassword"
+          />
+          <a className="text-xs font-medium text-yellowText" href="/">
             Trở về đăng nhập
           </a>
         </div>
       )}
+
+      {/* change pass form */}
       {formType === "changePassword" && (
-        <div className="login-container flex flex-col gap-4">
+        <div className="changePass-container w-[406px] flex flex-col gap-4">
           <div className="title flex flex-col gap-[6px]">
-            <p className="titleText text-[32px] font-bold text-primaryText300">
+            <p className="titleText text-2xl font-bold text-primaryText300">
               Quên mật khẩu
             </p>
-            <p className="subtitle text-yellowText font-medium">{subtitle}</p>
+            <p className="subtitle text-xs text-yellowText font-medium">
+              {subtitle}
+            </p>
           </div>
           <InputWithIcon
             label="Mật khẩu"
             purpose="password"
+            border={true}
             placeholder="Nhập lại mật khẩu"
           />
           <InputWithIcon
+            border={true}
             label="Nhập lại mật khẩu"
             purpose="password"
             placeholder="Nhập lại mật khẩu"
           />
 
-          <Button text="Thay đổi" width="100%" customColor="#EB455F" />
-          <a className="text-base font-medium text-yellowText" href="/login">
+          <Button text="Thay đổi" width="100%" customColor="#EB455F" href="/" />
+          <a className="text-xs font-medium text-yellowText" href="/">
             Trở về đăng nhập
           </a>
         </div>

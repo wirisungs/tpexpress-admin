@@ -2,10 +2,11 @@ import * as React from "react";
 const SvgComponent = (props) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
-    width={25}
-    height={25}
+    width={16}
+    height={16}
     fill="none"
     {...props}
+    viewBox="0 0 25 25"
   >
     <path
       fill={props.fill || "#1C1C1C"}

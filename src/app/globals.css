@@ -34,3 +34,7 @@ body {
     scrollbar-width: none;
   }
 }
+
+table thead {
+  user-select: none; 
+}

@@ -5,13 +5,15 @@ import CommonSpecifications from "../../components/DashboardComponents/CommonSpe
 import PendingIC from "@/Svg/pendingIC";
 import OrderIC from "@/Svg/orderIC";
 
-const Dashboard: React.FC = () => {
+const Dashboard = () => {
   return (
-    <div>
+    <div className="flex">
       <Navbar>
-        <div className="head-reporting flex flex-col p-6 gap-4 bg-headBackground">
-          <InputDatePicker background="yes" />
-          <div className="flex flex-row w-full justify-between">
+        <div className="head-reporting flex flex-col gap-4">
+          <div className="w-[148px]">
+            <InputDatePicker background={true} border={false} />
+          </div>
+          <div className="flex flex-row gap-6 w-full justify-between">
             <CommonSpecifications
               fluctuationType="none"
               color="#FBECDA"

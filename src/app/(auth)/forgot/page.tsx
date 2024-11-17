@@ -1,20 +1,25 @@
 "use client";
+import ForgotForm from "@/components/AuthComponents/ForgotForm";
 import Form from "@/components/AuthComponents/Form";
 import AuthLayout from "@/components/CommonComponents/Layout/AuthLayout";
+import { useRouter } from "next/navigation"; // Correct import for useRouter in /app directory
 import React from "react";
 
-const page = () => {
+const Page = () => {
+  const router = useRouter();
+
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    alert("Register");
+    router.push("/");
   };
+
   return (
     <div className="w-full">
       <AuthLayout>
-        <Form formType="forgot" onSubmit={handleSubmit} />
+        <ForgotForm />
       </AuthLayout>
     </div>
   );
 };
 
-export default page;
+export default Page;

@@ -1,17 +1,26 @@
-*{
-    box-sizing: border-box;
+* {
+  box-sizing: border-box;
 }
-.Active{
-    font-weight: bold;
-    background-color: #F9FAFF;
+
+@import url("https://fonts.googleapis.com/css2?family=Agbalumo&family=Bitter:ital,wght@0,100..900;1,100..900&family=Dancing+Script:wght@400..700&family=Lobster&family=Lora:ital,wght@0,400..700;1,400..700&display=swap");
+
+.describe-text,
+.support p {
+  font-family: "Lato", sans-serif;
+  font-weight: 100;
+}
+.Active {
+  font-weight: bold;
+  background: var(--Color-Background-Background, #f9faff);
+  border-right: thin solid #ec6e70;
 }
 
 .react-datepicker-wrapper input {
-    width: 100%;
+  width: 100%;
 }
 
-.logoArea{
-    background: linear-gradient(to bottom, #5B5958, #1C1C1C);
+.logoArea {
+  background: linear-gradient(to bottom, #5b5958, #1c1c1c);
 }
 /* Ẩn thanh tăng giảm trên Chrome, Safari */
 input[type="number"]::-webkit-inner-spin-button,
@@ -23,4 +32,115 @@ input[type="number"]::-webkit-outer-spin-button {
 /* Ẩn thanh tăng giảm trên Firefox */
 input[type="number"] {
   -moz-appearance: textfield; /* Ẩn trên Firefox */
+}
+
+.layout-container {
+  background-image: url("../Pictures/Image_MT/particle-lines-futuristic-gradient-background.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+/* Circle */
+/* Container bao quanh ngũ giác */
+.pentagon {
+  position: relative;
+  width: 350px;
+  height: 350px;
+  margin: 50px auto;
+}
+
+/* Tạo các hình tròn con lớn */
+.circle {
+  position: absolute;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background-color: #fff;
+  box-shadow: 0px 0px 10px 5px rgb(0 0 0 / 0.2);
+  animation: move 10s linear infinite;
+}
+
+/* Định vị các hình tròn con tại các vị trí theo hình ngũ giác */
+.circle:nth-child(1) {
+  top: 0;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  animation-delay: 0s;
+  background-image: url("../Pictures/Image_MT/Bob.png");
+  background-size: cover;
+}
+.circle:nth-child(2) {
+  top: 22%;
+  left: 88%;
+  transform: translate(-50%, -50%);
+  animation-delay: 1s;
+  background-image: url("../Pictures/Image_MT/Jack.png");
+  background-size: cover;
+}
+.circle:nth-child(3) {
+  bottom: 10%;
+  left: 76%;
+  transform: translate(-50%, -50%);
+  animation-delay: 2s;
+  background-image: url("../Pictures/Image_MT/DeeDee.png");
+  background-size: cover;
+}
+.circle:nth-child(4) {
+  bottom: 10%;
+  left: 24%;
+  transform: translate(-50%, -50%);
+  animation-delay: 3s;
+  background-image: url("../Pictures/Image_MT/Joey.png");
+  background-size: cover;
+}
+.circle:nth-child(5) {
+  top: 22%;
+  left: 12%;
+  transform: translate(-50%, -50%);
+  animation-delay: 4s;
+  background-image: url("../Pictures/Image_MT/Marky.png");
+  background-size: cover;
+}
+
+.profileAvt {
+  background-image: url("../Pictures/Image_MT/PersonalImage.png");
+  background-size: cover;
+}
+
+/* Keyframes để thay đổi vị trí */
+@keyframes move {
+  0% {
+    transform: translate(-50%, -50%) scale(1);
+  }
+  20% {
+    transform: translate(-50%, -50%) scale(1.2);
+  } /* Phóng to nhẹ khi di chuyển */
+  25% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-50%, -50%);
+  }
+}
+/* 
+  .login-container{
+    animation: rotate 10s linear infinite;
+  }
+  @keyframes rotate {
+    from {
+      -webkit-transform: rotate(0deg);
+    }
+    to {
+          -webkit-transform: rotate(360deg);
+    }
+  } */
+
+.logo {
+  background-image: url("../Pictures/Image_MT/logo.png");
+  background-size: contain;
+  background-repeat: no-repeat;
 }

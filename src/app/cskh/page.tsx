@@ -1,116 +1,181 @@
-import React from 'react';
-import '@/Style/DTri/styles_customers.css';
-import downup from '@/Pictures/Images_DT/downup.png';
-import ava1 from '@/Pictures/Images_DT/ava1.png'
-import Image from 'next/image';
-import NavbarTab from '@/components/CommonComponents/Layout/Items/NavbarTab';
-import IconAndText from '@/components/CommonComponents/Layout/Items/IconAndText';
+"use client";
+import React, { useEffect, useState } from "react";
+import "@/Style/MTri/TableSetupOrderCSKH.css";
+import SortIC from "@/Svg/sortIC";
+import Navbar from "@/components/CommonComponents/Layout/Navbar";
+import { InputWithIcon } from "@/components/CommonComponents/Inputs/Inputs";
 
-const Customers: React.FC = () => {
-  // Tạo một mảng giả lập 10 phần tử
-  const cskhData = Array(12).fill({
-    stt: '1',
-    madon: 'DH0001',
-    name: 'Nguyễn Đức Duza',
-    vande: 'Hàng tôi bị vỡ',
-    hinhanh: 'photo.png',
-    hanhdong: 'kiểm tra',
-    trangthai: 'Đã xử lí',
-    phanhoi: 'Phản hồi',
-  });
+type CSKHType = {
+  Request_ID: string;
+  Cus_ID: string;
+  Order_ID: string;
+  Driver_ID: string;
+  Request_Picture: string;
+  Request_Status: string;
+  Request_Date: string;
+  Request_Type: string;
+};
+const CSKH: React.FC = () => {
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [requests, setRequests] = useState<CSKHType[]>([]);
 
+  useEffect(() => {
+    const fetchRequest = async () => {
+      setIsLoading(true);
+      try {
+        const response = await fetch("http://localhost:5000/api/request/");
+        if (!response.ok) {
+          throw new Error("Network not ok");
+        }
+        const result = await response.json();
+        setRequests(result);
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchRequest();
+  }, []);
   return (
-    <div className='all'>
-      <div className='left'>
-          <IconAndText
-            Text={<span className="textnav">Trần Hữu Minh Trí</span>}
-            Icon={<Image src={ava1} alt="Avatar" width={40} height={40} />}
-          />
-          <div className='nav'>
-            <NavbarTab/>
+    <div className="all">
+      <Navbar>
+        <div className="right flex flex-col gap-4">
+          <div className="inputright w-[342px]">
+            <InputWithIcon
+              purpose="search"
+              placeholder="Nhập mã đơn hàng để tìm kiếm"
+              background={true}
+            />
           </div>
-      </div>
-
-      <div className='right'>
-        <div className='right-bottom'>
-        <div className='table-container'>
-        <table>
-          <thead>
-            <tr>
-              <th>
-                <div className="header-cell">
-                  STT
-                  <Image src={downup} alt="downup icon" className='downup-icon' />
-                </div>
-              </th>
-              <th>
-                <div className="header-cell">
-                  Mã đơn
-                  <Image src={downup} alt="downup icon" className='downup-icon' />
-                </div>
-              </th>
-              <th>
-                <div className="header-cell">
-                  Người yêu cầu
-                  <Image src={downup} alt="downup icon" className='downup-icon' />
-                </div>
-              </th>
-              <th>
-                <div className="header-cell">
-                  Vấn đề
-                  <Image src={downup} alt="downup icon" className='downup-icon' />
-                </div>
-              </th>
-              <th>
-                <div className="header-cell">
-                  Hình ảnh
-                  <Image src={downup} alt="downup icon" className='downup-icon' />
-                </div>
-              </th>
-              <th>
-                <div className="header-cell">
-                  Hành động
-                  <Image src={downup} alt="downup icon" className='downup-icon' />
-                </div>
-              </th>
-              <th>
-                <div className="header-cell">
-                  Trạng thái 
-                  <Image src={downup} alt="downup icon" className='downup-icon' />
-                </div>
-              </th>
-              <th>
-                <div className="header-cell">
-                  Phản hồi
-                  <Image src={downup} alt="downup icon" className='downup-icon' />
-                </div>
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {cskhData.map((cskh, index) => (
-              <tr key={index}>
-                <td>{cskh.stt}</td>
-                <td>{cskh.madon}</td>
-                <td >{cskh.name}</td>
-                <td>{cskh.vande}</td>
-                <td >{cskh.hinhanh}</td>
-                <td >{cskh.hanhdong}</td>
-                <td >{cskh.trangthai}</td>
-                <td >{cskh.phanhoi}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-
-
+          <div className="table">
+            <div className="note-container">
+              <p className="note">
+                Ghi chú: Ấn vào yêu cầu bất kì để xem hoặc thay đổi thông tin
+              </p>
+            </div>
+            <div className="table-container">
+              <table className="cskhTable min-w-full bg-white table-fixed rounded-md">
+                {/* Title từng cột */}
+                <thead>
+                  <tr>
+                    <th className="h-[42px] break-words p-3 text-left truncate">
+                      <div className="flex flex-row gap-[6px] items-center h-full w-full justify-end">
+                        <p>STT</p>
+                      </div>
+                    </th>
+                    <th className="h-[42px] items-center break-words  p-3 text-left truncate">
+                      <div className="flex flex-row gap-[6px] items-center h-full">
+                        <p>Mã yêu cầu</p>
+                        <SortIC />
+                      </div>
+                    </th>
+                    <th className="h-[42px] items-center break-words  p-3 text-left truncate">
+                      <div className="flex flex-row gap-[6px] items-center h-full">
+                        <p>Mã đơn hàng</p>
+                        <SortIC />
+                      </div>
+                    </th>
+                    <th className="h-[42px] items-center break-words  p-3 text-left truncate">
+                      <div className="flex flex-row gap-[6px] items-center h-full">
+                        <p>Mã khách hàng</p>
+                        <SortIC />
+                      </div>
+                    </th>
+                    <th className="h-[42px] items-center break-words  p-3 text-left truncate">
+                      <div className="flex flex-row gap-[6px] items-center h-full">
+                        <p>Vấn đề</p>
+                        <SortIC />
+                      </div>
+                    </th>
+                    <th className="h-[42px] items-center break-words  p-3 text-left truncate">
+                      <div className="flex flex-row gap-[6px] items-center h-full">
+                        <p>Đính kèm</p>
+                        <SortIC />
+                      </div>
+                    </th>
+                    <th className="h-[42px] items-center break-words  p-3 text-left truncate">
+                      <div className="flex flex-row gap-[6px] items-center h-full">
+                        <p>Trạng thái</p>
+                        <SortIC />
+                      </div>
+                    </th>
+                    <th className="h-[42px] items-center break-words  p-3 text-left truncate">
+                      <div className="flex flex-row gap-[6px] items-center h-full">
+                        <p>Tài xế</p>
+                        <SortIC />
+                      </div>
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {requests.map((request, index) => (
+                    <tr key={index}>
+                      <td className="h-[42px] break-words p-3 text-left truncate">
+                        <div className="flex flex-row gap-[6px] items-center h-full w-full justify-end">
+                          <p>{index + 1}</p>
+                        </div>
+                      </td>
+                      <td className="h-[42px] items-center break-words  p-3 text-left truncate">
+                        <div className="flex flex-row gap-[6px] items-center h-full">
+                          <p>{request.Request_ID}</p>
+                        </div>
+                      </td>
+                      <td className="h-[42px] items-center break-words  p-3 text-left truncate">
+                        <div className="flex flex-row gap-[6px] items-center h-full">
+                          <p>{request.Order_ID}</p>
+                        </div>
+                      </td>
+                      <td className="h-[42px] items-center break-words  p-3 text-left truncate">
+                        <div className="flex flex-row gap-[6px] items-center h-full">
+                          <p>{request.Cus_ID}</p>
+                        </div>
+                      </td>
+                      <td className="h-[42px] items-center break-words  p-3 text-left truncate">
+                        <div className="flex flex-row gap-[6px] items-center h-full">
+                          <p>
+                            {request.Request_Type === "HBV"
+                              ? "Hàng bị vỡ"
+                              : request.Request_Type === "HBL"
+                              ? "Hàng bị lạc"
+                              : request.Request_Type === "HCG"
+                              ? "Hàng chưa giao"
+                              : "Chưa nhận được tiền"}
+                          </p>
+                        </div>
+                      </td>
+                      <td className="h-[42px] items-center break-words  p-3 text-left truncate">
+                        <div className="flex flex-row gap-[6px] items-center h-full">
+                          <p className="text-ellipsis overflow-hidden">
+                            {request.Request_Picture}
+                          </p>
+                        </div>
+                      </td>
+                      <td className="h-[42px] items-center break-words  p-3 text-left truncate">
+                        <div className="flex flex-row gap-[6px] items-center h-full">
+                          <p>
+                            {request.Request_Status === "Pending" &&
+                              "Chờ xử lý"}
+                          </p>
+                        </div>
+                      </td>
+                      <td className="h-[42px] items-center break-words  p-3 text-left truncate">
+                        <div className="flex flex-row gap-[6px] items-center h-full">
+                          <p className="w-full overflow-hidden text-ellipsis whitespace-nowrap">
+                            {request.Driver_ID}
+                          </p>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
         </div>
-        
-      </div>
-      
+      </Navbar>
     </div>
   );
 };
 
-export default Customers;
+export default CSKH;
