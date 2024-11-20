@@ -20,7 +20,7 @@ const NavbarTab = () => {
           href={`/dashboard`}
           passHref
           className={`${
-            pathname === "/dashboard" ? "Active" : ""
+            pathname.startsWith("/dashboard") ? "Active" : ""
           } flex flex-row pl-8 pr-4 items-center gap-3 py-3`}
         >
           <div className="Icon">
@@ -34,7 +34,7 @@ const NavbarTab = () => {
           href={`/customers`}
           passHref
           className={`${
-            pathname === "/customers" ? "Active" : ""
+            pathname.startsWith("/customers") ? "Active" : ""
           } flex flex-row pl-8 pr-4 items-center gap-3 py-3`}
         >
           <div className="Icon">
@@ -48,7 +48,7 @@ const NavbarTab = () => {
           href={`/drivers`}
           passHref
           className={`${
-            pathname === "/drivers" ? "Active" : ""
+            pathname.startsWith("/drivers") ? "Active" : ""
           } flex flex-row pl-8 pr-4 items-center gap-3 py-3`}
         >
           <div className="Icon">
@@ -62,7 +62,7 @@ const NavbarTab = () => {
           href={`/accounts`}
           passHref
           className={`${
-            pathname === "/accounts" ? "Active" : ""
+            pathname.startsWith("/accounts") ? "Active" : ""
           } flex flex-row pl-8 pr-4 items-center gap-3 py-3`}
         >
           <div className="Icon">
@@ -76,7 +76,7 @@ const NavbarTab = () => {
           href={`/order`}
           passHref
           className={`${
-            pathname === "/order" ? "Active" : ""
+            pathname.startsWith("/order") ? "Active" : ""
           } flex flex-row pl-8 pr-4 items-center gap-3 py-3`}
         >
           <div className="Icon">
@@ -90,7 +90,7 @@ const NavbarTab = () => {
           href={`/cskh`}
           passHref
           className={`${
-            pathname === "/cskh" ? "Active" : ""
+            pathname.startsWith("/cskh") ? "Active" : ""
           } flex flex-row pl-8 pr-4 items-center gap-3 py-3`}
         >
           <div className="Icon">

@@ -4,6 +4,7 @@ import NavbarTab from "./Items/NavbarTab";
 import GetToken from "@/app/libs/GetToken";
 import RemoveToken from "@/app/libs/RemoveToken";
 import { useRouter } from "next/navigation";
+import { ToastContainer } from "react-toastify";
 
 interface LayoutProps {
   children: ReactNode;
@@ -76,7 +77,7 @@ const Navbar: React.FC<LayoutProps> = React.memo(({ children }) => {
   };
 
   return (
-    <div className="MainContainer flex flex-row min-h-[100vh] w-full">
+    <div className="MainContainer flex flex-row min-h-[100vh] max-h-[100vh] w-full">
       <div
         className="NavbarContainer flex flex-col md:w-[20%] lg:w-[15%] gap-3"
         style={{
@@ -110,6 +111,7 @@ const Navbar: React.FC<LayoutProps> = React.memo(({ children }) => {
         </div>
       </div>
       <div className="bodyContainer bg-[#f9f9f9] md:w-[80%] lg:w-[85%] h-full p-6 overflow-y-auto">
+        <ToastContainer />
         {children}
       </div>
     </div>

@@ -1,5 +1,5 @@
 "use client";
-import React, { HTMLInputTypeAttribute, useState } from "react";
+import React, { HTMLInputTypeAttribute, useEffect, useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
@@ -9,15 +9,18 @@ import DropdownIC from "@/Svg/dropdown";
 import SearchIC from "@/Svg/searchIC";
 
 import "@/Style/MTri.css";
+import { useRouter } from "next/navigation";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 type InputPurpose = "search" | "password" | "OnlyEnter";
 
 interface InputProps {
-  placeholder: string;
+  placeholder: string | Date | undefined;
   type?: string;
   label?: string;
   labelcolor?: string;
-  value?: string;
+  value?: string | Date | undefined;
   border?: boolean;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   background?: boolean;
@@ -25,6 +28,7 @@ interface InputProps {
 
 interface InputIconProps extends InputProps {
   purpose: InputPurpose;
+  pageOfAPI?: string;
 }
 
 interface InputFunctionProps extends InputProps {
@@ -40,6 +44,7 @@ interface SelectionInputProps {
   options: { [key: string]: string | boolean | number };
   label?: string;
   onChange?: (value: string) => void;
+  defaultValue?: string;
 }
 
 // Input thông thường
@@ -105,14 +110,70 @@ const InputWithIcon: React.FC<InputIconProps> = ({
   border,
   onChange,
   background,
+  pageOfAPI,
 }) => {
+  const router = useRouter();
   const type = purpose === "password" ? purpose : "text";
   const [inputType, setInputType] = useState<HTMLInputTypeAttribute>(type);
-  const handleIconClick = () => {
+  const handleIconClick = async () => {
     if (purpose === "password") {
       setInputType((prevType) =>
         prevType === "password" ? "text" : "password"
       );
+    } else if (purpose === "search") {
+      const inputValue = String(value);
+
+      if (inputValue) {
+        console.log(inputValue);
+        let queryParam = "";
+        if (/^[\w.+\-]+@gmail\.com$/.test(inputValue)) {
+          queryParam = `email=${inputValue}`;
+        } else if (/(0[3|5|7|8|9])+([0-9]{8})\b/g.test(inputValue)) {
+          queryParam = `phone=${inputValue}`;
+        } else {
+          queryParam = `id=${inputValue}`;
+        }
+        let response;
+        console.log(pageOfAPI);
+        switch (pageOfAPI) {
+          case "cusDetails": {
+            response = await fetch(
+              `http://localhost:5000/api/customer/cus?${queryParam}`
+            );
+            break;
+          }
+          case "driDetails": {
+            response = await fetch(
+              `http://localhost:5000/api/driver/dri?${queryParam}`
+            );
+            break;
+          }
+        }
+        if (response) {
+          const result = await response.json();
+
+          if (response.ok) {
+            console.log(queryParam);
+            switch (pageOfAPI) {
+              case "cusDetails": {
+                router.push(`/customers/cus?${queryParam}`);
+                break;
+              }
+              case "driDetails": {
+                router.push(`/drivers/dri?${queryParam}`);
+                break;
+              }
+              default: {
+                console.warn("Unknown pageOfAPI:", pageOfAPI);
+              }
+            }
+          } else {
+            if (result && result.message) {
+              toast.error(result.message);
+            }
+          }
+        }
+      }
     }
   };
 
@@ -144,6 +205,7 @@ const InputWithIcon: React.FC<InputIconProps> = ({
           onChange={onChange}
           className="bg-transparent outline-none w-[90%] text-xs placeholder:text-xs"
           placeholder={placeholder}
+          id="searchInput"
         />
         <button
           className="icon"
@@ -192,6 +254,7 @@ const InputFunction: React.FC<InputFunctionProps> = ({
           onBlur={() => setIsFocused(false)}
           className="bg-transparent outline-none w-[80%] text-xs placeholder:text-xs"
           placeholder={placeholder}
+          id="searchInput"
         />
         <button type="button" className="text-sm h-full text-primaryText300">
           {functionText}
@@ -206,10 +269,18 @@ const InputSelection: React.FC<SelectionInputProps> = ({
   options,
   label,
   onChange,
+  defaultValue,
 }) => {
   const [selectedValue, setSelectedValue] = useState<string | undefined>(
-    undefined
+    defaultValue
   );
+
+  useEffect(() => {
+    if (defaultValue) {
+      setSelectedValue(defaultValue);
+    }
+  }, [defaultValue]);
+
   const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const value = e.target.value;
     const abbreviation = options[value];

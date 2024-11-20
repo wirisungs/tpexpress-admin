@@ -14,9 +14,9 @@ const ForgotForm = () => {
     <form
       method="POST"
       style={{ boxShadow: "0px 0px 20px 10px rgb(0 0 0 / 0.2)" }}
-      className="form-container h-full px-8 py-16 border-solid border-[2px] bg-white rounded-[32px] flex flex-col gap-4 items-center justify-between"
+      className="form-container w-full h-full px-8 pt-16 pb-4 border-solid border-[2px] bg-white rounded-[32px] flex flex-col gap-4 items-center justify-between"
     >
-      <div className="forgot-container w-[406px] flex flex-col gap-4">
+      <div className="forgot-container lg:w-[406px] flex flex-col gap-4">
         <div className="title flex flex-col w-full gap-[2px] items-center border-b border-gray-300 border-dashed pb-4">
           <p className="titleText text-2xl font-bold text-primaryText300">
             Quên mật khẩu

@@ -7,7 +7,7 @@ interface InfoBoxProps {
 const InfoBox: React.FC<InfoBoxProps> = ({ label, content }) => {
   return (
     <div className="flex w-full gap-[6px] flex-col">
-      <p className="text-sm">{label}</p>
+      <p className="text-sm text-normalText">{label}</p>
       <div className="box w-full h-[42px] flex px-4 border-solid border-[1px] border-boxOuline bg-transparent rounded-md text-xs items-center ">
         {content}
       </div>

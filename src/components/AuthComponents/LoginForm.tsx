@@ -33,37 +33,37 @@ const LoginForm = () => {
       if (!response.ok) {
         setIsLoading(false);
         if (result.message) {
-          return setWarning(
-            result.message || `HTTP error! status: ${response.status}`
-          );
+          return setWarning(result.message);
         }
+        return setWarning("Hệ thống đã gặp sự cố. Vui lòng thử lại sau!");
+      } else {
+        setWarning("");
+        const resultFromNextServer = await fetch("/api/auth", {
+          method: "POST",
+          body: JSON.stringify(result),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }).then(async (res) => {
+          const payload = await res.json();
+          const data = {
+            status: res.status,
+            payload,
+          };
+          if (!res.ok) {
+            throw data;
+          }
+          return data;
+        });
+        console.log(resultFromNextServer);
+        setSessionToken(resultFromNextServer.payload.session.token);
       }
-      // Đăng nhập thành công
-      setWarning("");
-      const resultFromNextServer = await fetch("/api/auth", {
-        method: "POST",
-        body: JSON.stringify(result),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }).then(async (res) => {
-        const payload = await res.json();
-        const data = {
-          status: res.status,
-          payload,
-        };
-        if (!res.ok) {
-          throw data;
-        }
-        return data;
-      });
-      console.log(resultFromNextServer);
-      setSessionToken(resultFromNextServer.payload.session.token);
 
       // Chuyển đến dashboard
       router.push("dashboard");
     } catch (error) {
-      console.error("Error collecting data:", error);
+      setWarning("Lỗi kết nối. Vui lòng kiểm tra lại internet");
+      console.log(error);
     } finally {
       setIsLoading(false);
     }
@@ -78,14 +78,14 @@ const LoginForm = () => {
         boxShadow: "0px 0px 20px 10px rgb(0 0 0 / 0.1)",
         backgroundColor: "rgb(255 255 255 /1)",
       }}
-      className="form-container px-8 py-16 h-full rounded-[32px] flex flex-col gap-4 justify-between items-center"
+      className="form-container px-8 pt-16 pb-4 w-full h-full rounded-[32px] flex flex-col gap-4 justify-between items-center"
     >
-      <div className="login-container w-[406px] items-start flex flex-col gap-4 ">
+      <div className="login-container lg:w-[406px] items-start flex flex-col gap-4 ">
         <div className="title flex flex-col w-full gap-[2px] items-center border-b border-gray-300 border-dashed pb-4">
           <p className="titleText text-2xl font-bold text-primaryText300">
             Đăng nhập
           </p>
-          <p className="subtitle text-yellowText text-base font-medium">
+          <p className="subtitle text-normalText text-base font-medium">
             {subtitle}
           </p>
         </div>
@@ -125,6 +125,7 @@ const LoginForm = () => {
           </div>
         </button>
       </div>
+      <div className="banner h-full w-full rounded-md shadow-lg "></div>
       <a
         className="text-sm font-medium hover:underline w-auto text-primaryText300"
         href="/forgot"

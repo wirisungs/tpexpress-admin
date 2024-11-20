@@ -186,7 +186,7 @@ const AccountTable: React.FC = () => {
   return (
     <div className="all">
       <Navbar>
-        <div className="right flex flex-col gap-4">
+        <div className="right h-full flex flex-col gap-4">
           <div className="inputright flex flex-row gap-4">
             <div className="w-[342px]">
               <InputWithIcon
@@ -205,14 +205,14 @@ const AccountTable: React.FC = () => {
               />
             </div>
           </div>
-          <div className="table">
+          <div className="flex flex-col h-full">
             <div className="note-container">
               <p className="note">
                 Ghi chú: Ấn vào tài khoản bất kì để xem hoặc thay đổi thông tin
               </p>
             </div>
-            <div className="table-container">
-              <table className="driverTable min-w-full bg-white table-fixed rounded-md">
+            <div className="table-container h-full">
+              <table className="driverTable min-w-full h-full bg-white table-fixed rounded-md">
                 {/* Title từng cột */}
                 <thead>
                   <tr>
@@ -291,7 +291,7 @@ const AccountTable: React.FC = () => {
                       </div>
                     </th>
                     <th className="h-[42px] items-center break-words  p-3 text-center truncate">
-                      <div className="flex flex-row gap-[6px] items-center justify-center h-full">
+                      <div className="flex flex-row gap-[6px] items-center justify-start h-full">
                         <p>Vai trò</p>
                         <div className="Sort" onClick={() => sortUsers("role")}>
                           <SortIC />
@@ -308,7 +308,7 @@ const AccountTable: React.FC = () => {
                     </p>
                   </div>
                 ) : (
-                  <tbody>
+                  <tbody className="h-full">
                     {users.map((user, index) => (
                       <tr
                         key={index}
@@ -375,7 +375,7 @@ const AccountTable: React.FC = () => {
                             </td>
                             <td className="h-[42px] items-center break-words  p-3 text-center truncate">
                               <div className="flex flex-row gap-[6px] items-center h-full">
-                                <p className="w-full overflow-hidden text-ellipsis whitespace-nowrap">
+                                <p className="overflow-hidden text-ellipsis whitespace-nowrap">
                                   {user.userRole === "Driver" && "Tài xế"}
                                 </p>
                               </div>
@@ -444,7 +444,7 @@ const AccountTable: React.FC = () => {
                             </td>
                             <td className="h-[42px] items-center break-words  p-3 text-center truncate">
                               <div className="flex flex-row gap-[6px] items-center h-full">
-                                <p className="w-full overflow-hidden text-ellipsis whitespace-nowrap">
+                                <p className="overflow-hidden text-ellipsis whitespace-nowrap">
                                   {user.userRole === "Admin" && "Quản trị viên"}
                                 </p>
                               </div>

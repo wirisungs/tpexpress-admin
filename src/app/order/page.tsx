@@ -1,6 +1,5 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import TramCSS from "@/Style/Tram.module.css";
 import "@/components/CommonComponents/Buttons/Button";
 import Navbar from "@/components/CommonComponents/Layout/Navbar";
 import SortIC from "@/Svg/sortIC";
@@ -106,9 +105,9 @@ const OrderPage = () => {
   };
 
   return (
-    <div className="flex">
+    <div className="all">
       <Navbar>
-        <main className={TramCSS.body}>
+        <div className="right h-full flex flex-col gap-4 justify-start items-start">
           <div className="w-[168px]">
             <InputDatePicker background={true} border={false} />
           </div>
@@ -144,16 +143,16 @@ const OrderPage = () => {
           </div>
 
           {/* List đơn hàng */}
-          <div className="table">
+          <div className="flex flex-col h-full overflow-hidden">
             <div className="note-container">
               <p className="note">
                 Ghi chú: Ấn vào đơn hàng bất kì để xem hoặc thay đổi thông tin
               </p>
             </div>
-            <div className="table-container">
+            <div className="table-container flex-1 h-full">
               <table className="orderTable min-w-full bg-white table-fixed rounded-md">
                 {/* Title từng cột */}
-                <thead>
+                <thead className="shadow-sm">
                   <tr>
                     <th className="h-[42px] break-words p-3 text-left truncate">
                       <div className="flex flex-row gap-[6px] items-center h-full w-full justify-end">
@@ -218,7 +217,7 @@ const OrderPage = () => {
                     <p className="mt-6 text-yellowText">{warning}</p>
                   </div>
                 ) : (
-                  <tbody>
+                  <tbody className="h-full">
                     {orders.map((order, index) => (
                       <tr key={index}>
                         <td className="h-[42px] break-words p-3 text-left truncate">
@@ -287,7 +286,7 @@ const OrderPage = () => {
               </table>
             </div>
           </div>
-        </main>
+        </div>
       </Navbar>
     </div>
   );

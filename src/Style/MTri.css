@@ -126,21 +126,30 @@ input[type="number"] {
     transform: translate(-50%, -50%);
   }
 }
-/* 
-  .login-container{
-    animation: rotate 10s linear infinite;
+/* .logo {
+  animation: rotate 5s linear infinite;
+}
+@keyframes rotate {
+  from {
+    -webkit-transform: rotate(0deg);
   }
-  @keyframes rotate {
-    from {
-      -webkit-transform: rotate(0deg);
-    }
-    to {
-          -webkit-transform: rotate(360deg);
-    }
-  } */
+  to {
+    -webkit-transform: rotate(360deg);
+  }
+} */
 
 .logo {
   background-image: url("../Pictures/Image_MT/logo.png");
   background-size: contain;
   background-repeat: no-repeat;
+}
+
+.banner {
+  background-image: url("../Pictures/Image_MT/image.png");
+  background-size: cover;
+}
+
+.noresult {
+  background-image: url("../Pictures/Image_MT/NoResult.png");
+  background-size: cover;
 }

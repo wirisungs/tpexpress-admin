@@ -1,47 +1,46 @@
 /* Kích thước cột */
 .cskhTable th:nth-child(1),
 .cskhTable td:nth-child(1) {
-  width: 5%; /* Cột STT */
+  width: 50px; /* Cột STT */
 }
 
 .cskhTable th:nth-child(2),
 .cskhTable td:nth-child(2) {
-  width: 10%; /* Mã yêu cầu */
+  width: auto; /* Mã yêu cầu */
 }
 
 .cskhTable th:nth-child(3),
 .cskhTable td:nth-child(3) {
-  width: 10%; /* Mã đơn */
+  width: auto; /* Mã đơn */
 }
 
 .cskhTable th:nth-child(4),
 .cskhTable td:nth-child(4) {
-  width: 10%; /* Mã khách */
+  width: auto; /* Mã khách */
 }
 
 .cskhTable th:nth-child(5),
 .cskhTable td:nth-child(5) {
-  width: 15%; /* Vấn đề */
+  width: auto; /* Vấn đề */
 }
 
 .cskhTable th:nth-child(6),
 .cskhTable td:nth-child(6) {
-  width: 10%; /* Đính kèm */
+  width: auto; /* Đính kèm */
 }
 
 .cskhTable th:nth-child(7),
 .cskhTable td:nth-child(7) {
-  width: 10%; /* Trạng thái */
+  width: auto; /* Trạng thái */
 }
 
 .cskhTable th:nth-child(8),
 .cskhTable td:nth-child(8) {
-  width: 15%; /* Mã tài */
+  width: auto; /* Mã tài */
 }
 
 tbody {
   display: block; /* Để kích hoạt scroll cho tbody */
-  max-height: 500px; /* Giới hạn chiều cao tối đa */
   overflow-y: auto; /* Cho phép cuộn khi vượt quá chiều cao */
 }
 
@@ -166,4 +165,8 @@ tbody tr {
   overflow: hidden;
   text-overflow: ellipsis;
   max-width: 200px;
+}
+
+.popup::-webkit-scrollbar {
+  display: none;
 }

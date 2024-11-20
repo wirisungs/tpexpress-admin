@@ -1,17 +1,12 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import Input, {
-  InputWithIcon,
-} from "@/components/CommonComponents/Inputs/Inputs";
+import { InputWithIcon } from "@/components/CommonComponents/Inputs/Inputs";
 import Navbar from "@/components/CommonComponents/Layout/Navbar";
 
 // Icons && CSS
 import SortIC from "@/Svg/sortIC";
-import AddEmployeeIC from "@/Svg/addEmployee";
 import "@/Style/MTri/TableSetup.css";
 import "@/Style/MTri/Loading.css";
-
-import Button from "@/components/CommonComponents/Buttons/Button";
 import { useRouter } from "next/navigation";
 
 interface DriverType {
@@ -37,10 +32,12 @@ interface DriverType {
 const DriverTable: React.FC = () => {
   const [drivers, setDrivers] = useState<DriverType[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [searchValue, setSearchValue] = useState<string>("");
 
+  // Xử lý điều hướng
   const router = useRouter();
   const handleClick = (driverId: string) => {
-    router.push(`/drivers/${driverId}`);
+    router.push(`/drivers/dri?id=${driverId}`);
   };
 
   const fetchData = async () => {
@@ -158,26 +155,31 @@ const DriverTable: React.FC = () => {
   return (
     <div className="all">
       <Navbar>
-        <div className="right flex flex-col gap-4">
+        <div className="right h-full flex flex-col gap-4 justify-start items-start">
           <div className="inputright flex flex-row gap-4">
-            <div className="w-[342px]">
-              <InputWithIcon
-                purpose="search"
-                placeholder="Nhập số điện thoại để tìm kiếm"
-                background={true}
-              />
+            <div className="w-full flex flex-row gap-4 items-center">
+              <div className="w-[342px]">
+                <InputWithIcon
+                  purpose="search"
+                  placeholder="Nhập mã / gmail / số điện thoại để tìm"
+                  background={true}
+                  value={searchValue}
+                  onChange={(e) => setSearchValue(e.target.value)}
+                  pageOfAPI="driDetails"
+                />
+              </div>
             </div>
           </div>
-          <div className="table">
-            <div className="note-container">
+          <div className="h-full flex flex-col">
+            <div className="note-container h-auto flex">
               <p className="note">
                 Ghi chú: Ấn vào tài xế bất kì để xem hoặc thay đổi thông tin
               </p>
             </div>
-            <div className="table-container">
-              <table className="driverTable min-w-full bg-white table-fixed rounded-md">
+            <div className="table-container flex flex-1">
+              <table className="driverTable min-w-full h-full bg-white table-fixed rounded-md">
                 {/* Title từng cột */}
-                <thead>
+                <thead className="shadow-sm">
                   <tr>
                     <th className="h-[42px] break-words p-3 text-left truncate">
                       <div className="flex flex-row gap-[6px] items-center h-full w-full justify-end">
@@ -285,7 +287,7 @@ const DriverTable: React.FC = () => {
                     </p>
                   </div>
                 ) : (
-                  <tbody>
+                  <tbody className="h-full">
                     {drivers.map((driver, index) => (
                       <tr
                         key={index}

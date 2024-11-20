@@ -19,10 +19,11 @@ interface CustomerType {
 const Customers: React.FC = () => {
   const [customers, setCustomers] = useState<CustomerType[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [searchValue, setSearchValue] = useState<string>("");
   const router = useRouter();
 
   const handleClick = (cus_ID: string) => {
-    router.push(`/customers/${cus_ID}`);
+    router.push(`/customers/cus?id=${cus_ID}`);
   };
 
   const fetchData = async () => {
@@ -51,24 +52,27 @@ const Customers: React.FC = () => {
   return (
     <div className="all">
       <Navbar>
-        <div className="right flex flex-col gap-4">
+        <div className="right h-full flex flex-col gap-4">
           <div className="inputright w-[342px]">
             <InputWithIcon
               purpose="search"
-              placeholder="Nhập mã khách hàng / họ tên / email /...."
+              placeholder="Nhập mã / gmail / số điện thoại để tìm"
               background={true}
+              value={searchValue}
+              onChange={(e) => setSearchValue(e.target.value)}
+              pageOfAPI="cusDetails"
             />
           </div>
-          <div className="table">
+          <div className="h-full flex flex-col">
             <div className="note-container">
               <p className="note">
                 Ghi chú: Ấn vào khách hàng bất kì để xem hoặc thay đổi thông tin
               </p>
             </div>
-            <div className="table-container">
-              <table className="cusTable min-w-full bg-white table-fixed rounded-md">
+            <div className="table-container h-full flex-1">
+              <table className="cusTable min-w-full h-full bg-white table-fixed rounded-md">
                 {/* Title từng cột */}
-                <thead>
+                <thead className="shadow-sm">
                   <tr>
                     <th className="h-[42px] break-words p-3 text-left truncate">
                       <div className="flex flex-row gap-[6px] items-center h-full w-full justify-end">
@@ -127,7 +131,7 @@ const Customers: React.FC = () => {
                     </p>
                   </div>
                 ) : (
-                  <tbody>
+                  <tbody className="h-full">
                     {customers.map((cus, index) => (
                       <tr key={index} onClick={() => handleClick(cus.cusId)}>
                         <td className="h-[42px] break-words p-3 text-left truncate">

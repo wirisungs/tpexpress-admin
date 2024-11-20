@@ -33,7 +33,6 @@ export default function RootLayout({
     <html lang="en">
       <Head>
         <meta httpEquiv="Content-Language" content="en" />{" "}
-        {/* Thay 'en' bằng ngôn ngữ của bạn */}
         <meta name="google" content="notranslate" /> {/* Ngăn Google dịch */}
       </Head>
       <body
