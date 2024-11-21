@@ -1,8 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import Input, {
-  InputWithIcon,
-} from "@/components/CommonComponents/Inputs/Inputs";
+import { InputWithIcon } from "@/components/CommonComponents/Inputs/Inputs";
 import Navbar from "@/components/CommonComponents/Layout/Navbar";
 
 // Icons && CSS

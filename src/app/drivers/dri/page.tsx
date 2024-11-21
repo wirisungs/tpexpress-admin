@@ -292,7 +292,7 @@ const DriverDetails = () => {
 
               {/* Body */}
               {/* Thông tin cá nhân */}
-              <div className="px-6 detailsBox bg-white pb-6 flex flex-col w-full gap-6 items-center">
+              <div className="px-6 detailsBox h-full bg-white pb-6 flex flex-col w-full gap-6 items-center">
                 <div className="driverInfo flex flex-col gap-6 w-full">
                   <p className="text-2xl">Thông tin cá nhân</p>
                   <div className="detailsBox flex flex-row w-full gap-6">
@@ -581,7 +581,7 @@ const DriverDetails = () => {
                     )}
                   </div>
                 </div> */}
-                <div className="flex flex-row gap-6">
+                <div className="flex flex-row h-full gap-6">
                   <div className="flex items-center w-[342px]">
                     {isEditing ? (
                       <button

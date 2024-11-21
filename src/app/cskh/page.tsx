@@ -40,7 +40,7 @@ const CSKH: React.FC = () => {
   const [maximize, setMaximize] = useState<boolean>(false);
   const [requests, setRequests] = useState<CSKHType[]>([]);
   const [selectedRequest, setSelectedRequest] = useState<CSKHType | null>(null);
-  const [requestStatus, setRequestStatus] = useState<string>("pending");
+  const [requestStatus, setRequestStatus] = useState<string>("Pending");
   const [isResponse, setIsResponse] = useState<boolean>(false);
 
   // Mở pop phản hồi
