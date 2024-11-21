@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { OrderResponse, WoWoWallet } from '@htilssu/wowo';
+import TPLogo from "@/Svg/LogoDog"; // Import logo component
 
 const VerifyWallet = () => {
     const [orderResponse, setOrderResponse] = useState<OrderResponse | null>(null);
@@ -22,7 +23,7 @@ const VerifyWallet = () => {
         serviceName: "Dịch vụ giao hàng TPE",
         items: items.map(item => ({
             name: item.Item_Name,
-            amount: item.amount || 1,  // Adjust based on the item data you pass
+            amount: item.amount || 1,
             unitPrice: item.Item_AllValue
         })),
         callback: {
@@ -36,14 +37,12 @@ const VerifyWallet = () => {
             const response = await wowoWallet.createOrder(orderProps);
             setOrderResponse(response);
             console.log("Đơn hàng đã được tạo:", response);
-
-            // Chờ 3 giây trước khi gửi thông điệp và chuyển trang
-            setTimeout(() => {
-                if (window.ReactNativeWebView) {
-                    window.ReactNativeWebView.postMessage(JSON.stringify(response));
-                }
-            }, 3000); // Chờ 3 giây
-
+    
+            // Lưu checkoutUrl vào sessionStorage
+            if (response?.checkoutUrl) {
+                sessionStorage.setItem("checkoutUrl", response.checkoutUrl); // Lưu vào sessionStorage
+                window.location.href = response.checkoutUrl; // Chuyển hướng đến trang thanh toán
+            }
         } catch (err) {
             console.error("Lỗi khi tạo đơn hàng:", err.message);
             setError(err.message);
@@ -51,22 +50,47 @@ const VerifyWallet = () => {
     };
 
     return (
-        <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100vh", backgroundColor: "#f5f5f5" }}>
-            <form onSubmit={(e) => e.preventDefault()} method="POST" style={{
-                boxShadow: "0px 0px 12px rgba(0, 0, 0, 0.2)",
-                padding: "16px",
-                borderRadius: "12px",
-                margin: "0 auto",
-                maxWidth: "400px",
-                width: "90%",
-                backgroundColor: "white"
-            }}>
-                <div className="login-container flex flex-col gap-4">
-                    <div className="title flex flex-col gap-[6px] text-center">
-                        <p className="titleText text-[24px] font-bold text-primaryText300">Thanh toán</p>
-                        <p className="subtitle text-yellowText font-medium">{subtitle}</p>
-                    </div>
-                    <button type="button" onClick={handleCreateOrder} style={{
+        <div 
+            style={{
+                backgroundImage: `url('https://images.pexels.com/photos/164527/pexels-photo-164527.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2')`,
+                backgroundSize: "cover", // Bao phủ toàn bộ khu vực
+                backgroundPosition: "center", // Căn giữa hình ảnh
+                width: "100vw", // Đảm bảo chiều rộng bằng 100% màn hình
+                height: "100vh", // Đảm bảo chiều cao bằng 100% màn hình
+                display: "flex", // Căn giữa nội dung form
+                justifyContent: "center", // Căn giữa theo chiều ngang
+                alignItems: "center", // Căn giữa theo chiều dọc
+                overflow: "hidden", // Ẩn mọi phần thừa
+            }}
+        >
+            <form 
+                onSubmit={(e) => e.preventDefault()} 
+                method="POST" 
+                style={{
+                    boxShadow: "0px 0px 12px rgba(0, 0, 0, 0.2)",
+                    padding: "16px",
+                    borderRadius: "12px",
+                    margin: "0 auto",
+                    maxWidth: "400px",
+                    width: "90%",
+                    backgroundColor: "rgba(255, 255, 255, 0.9)", // Nền trắng mờ cho form
+                    display: "flex", // Sử dụng flex để căn giữa nội dung trong form
+                    flexDirection: "column", // Đặt logo và các phần tử khác theo chiều dọc
+                    alignItems: "center", // Căn giữa các phần tử theo chiều ngang
+                }}
+            >
+                {/* Đặt TPLogo vào form và căn giữa */}
+                <TPLogo style={{ marginBottom: "20px" }} /> {/* Khoảng cách giữa logo và các phần tử bên dưới */}
+
+                <div className="title flex flex-col gap-[6px] text-center">
+                    <p className="titleText text-[24px] font-bold text-primaryText300">THIEN PHUC EXPRESS</p>
+                    <p className="subtitle text-yellowText font-medium">{subtitle}</p>
+                </div>
+
+                <button 
+                    type="button" 
+                    onClick={handleCreateOrder} 
+                    style={{
                         width: "100%",
                         backgroundColor: "#EB455F",
                         color: "white",
@@ -74,26 +98,12 @@ const VerifyWallet = () => {
                         borderRadius: "8px",
                         border: "none",
                         cursor: "pointer",
-                        fontSize: "16px"
-                    }}>
-                        Thanh toán bằng WoWo wallet
-                    </button>
-                    {orderResponse && (
-                        <div>
-                            <p>Đơn hàng đã được tạo thành công!</p>
-                            <p>Total: {orderResponse.money}</p>
-                            <p>Items:</p>
-                            <ul>
-                                {orderResponse.items && orderResponse.items.map((item, index) => (
-                                    <li key={index}>
-                                        <strong>{item.name}</strong> - {item.amount} x {item.unitPrice} VND
-                                    </li>
-                                ))}
-                            </ul>
-                            <p>Checkout URL: {orderResponse.checkoutUrl}</p>
-                        </div>
-                    )}
-                </div>
+                        fontSize: "16px",
+                        marginTop: "12px"
+                    }}
+                >
+                    Thanh toán bằng WoWo wallet
+                </button>
             </form>
             {error && <p>Lỗi: {error}</p>}
         </div>
