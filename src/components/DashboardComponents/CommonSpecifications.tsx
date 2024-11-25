@@ -36,7 +36,7 @@ const CommonSpecifications: React.FC<SpecificationsProps> = ({
   unit,
 }) => {
   return (
-    <div className="flex flex-row gap-3 px-8 py-6 w-full h-[116px] bg-white rounded-md">
+    <div className="flex flex-row gap-3 px-8 py-6 w-full h-[116px] bg-white rounded-md shadow-sm">
       <div className="icon-box flex items-center justify-center">
         <div
           style={{ backgroundColor: `${color}` }}

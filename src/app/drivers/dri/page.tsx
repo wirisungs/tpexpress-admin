@@ -1,7 +1,7 @@
 "use client";
 import Navbar from "@/components/CommonComponents/Layout/Navbar";
 import { useSearchParams } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import TitleBar from "@/components/CommonComponents/Layout/bars/TitleBar";
 import EditIC from "@/Svg/editIC";
 import InfoBox from "@/components/CommonComponents/Box/InfoBox";
@@ -13,6 +13,7 @@ import Input, {
 } from "@/components/CommonComponents/Inputs/Inputs";
 import "@/Style/MTri.css";
 import { toast } from "react-toastify";
+import Image from "next/image";
 
 interface vehicleDetails {
   vehicleLicenseBSX: string;
@@ -38,6 +39,7 @@ interface DriverType {
   driverViolation: number;
   driverStatus: string;
   driverNationality: string;
+  driverAvatar: string;
   activeOrderCount: number;
   vehicleDetails: vehicleDetails;
   userID: string;
@@ -87,6 +89,8 @@ const DriverDetails = () => {
   const [driverGender, setDriverGender] = useState<number>(0);
   const [driverNationality, setDriverNationality] = useState<string>("");
   const [userId, setUserId] = useState<string>("");
+  const fileInputRef = useRef(null);
+  const [previewImage, setPreviewImage] = useState(driver?.driverAvatar || "");
 
   const searchParams = useSearchParams();
   const id = searchParams.get("id")?.replace(/'/g, "");
@@ -103,6 +107,79 @@ const DriverDetails = () => {
     const formattedDate = `${day}-${month}-${year}`; // Kết hợp các giá trị thành định dạng dd-mm-yyyy
 
     return formattedDate;
+  };
+
+  const [image, setImage] = useState(null);
+  const [imageUrl, setImageUrl] = useState("");
+
+  // Xử lý thay đổi file (khi người dùng chọn ảnh)
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      // Hiển thị ảnh preview
+      const imageUrl = URL.createObjectURL(file);
+      setPreviewImage(imageUrl);
+      setImage(file);
+    }
+  };
+
+  const handleSubmit = async () => {
+    if (!image) {
+      alert("Please select an image");
+      return;
+    }
+
+    setIsLoading(true);
+
+    const formData = new FormData();
+    formData.append("file", image);
+    formData.append("upload_preset", "thrisx");
+    formData.append("cloud_name", "dwxm1hn0b");
+
+    try {
+      // Gửi ảnh lên Cloudinary
+      const response = await fetch(
+        "https://api.cloudinary.com/v1_1/dwxm1hn0b/image/upload",
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
+
+      const data = await response.json();
+
+      if (response.ok) {
+        const uploadedImageUrl = data.secure_url || data.url;
+        setImageUrl(uploadedImageUrl);
+        console.log(uploadedImageUrl);
+        // Gửi URL ảnh đến backend
+        const addToDB = await fetch(
+          `http://localhost:5000/api/driver/updateAvatar/${driver?.driverId}`, // Thay "12345" bằng ID thực tế
+          {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ driverAvatar: uploadedImageUrl }),
+          }
+        );
+
+        const result = await addToDB.json();
+
+        if (addToDB.ok) {
+          toast.success("Cập nhật thành công");
+        } else {
+          toast.error("Đã có lỗi xảy ra: ", result.message);
+        }
+      } else {
+        toast.success("Cập nhật thất bại");
+      }
+    } catch (error) {
+      console.error("Error uploading image:", error);
+      toast.success("Cập nhật thất bại");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   useEffect(() => {
@@ -140,6 +217,9 @@ const DriverDetails = () => {
   };
 
   const saveUpdate = async () => {
+    if (image) {
+      handleSubmit();
+    }
     try {
       const response = await fetch(
         `http://localhost:5000/api/driver/update/${id}`,
@@ -235,7 +315,38 @@ const DriverDetails = () => {
               <div className="boxHeader flex flex-row">
                 <div className="basicDetail flex flex-row bg-white w-full p-6 rounded-md gap-4 ">
                   <div className="detail flex flex-row flex-1 gap-4">
-                    <div className="profileAvt w-[92px] h-[92px] rounded-full" />
+                    <div
+                      className="relative cursor-pointer"
+                      onClick={() => fileInputRef.current.click()}
+                    >
+                      {previewImage ? (
+                        <Image
+                          src={previewImage}
+                          alt="avt"
+                          width={92}
+                          height={92}
+                          className="rounded-full"
+                        />
+                      ) : driver && driver.driverAvatar ? (
+                        <Image
+                          src={driver.driverAvatar}
+                          alt="avt"
+                          width={92}
+                          height={92}
+                          className="rounded-full"
+                        />
+                      ) : (
+                        <div className="profileAvt w-[92px] h-[92px] rounded-full bg-gray-300" />
+                      )}
+                      <input
+                        type="file"
+                        ref={fileInputRef}
+                        style={{ display: "none" }} // Ẩn input
+                        accept="image/*" // Chỉ cho phép chọn ảnh
+                        onChange={handleImageChange}
+                      />
+                    </div>
+
                     <div className="flex flex-col justify-center gap-1">
                       <div className="textIcon flex flex-row items-center justify-between gap-3">
                         <p className="Name text-base text-navbarText font-bold">
@@ -243,18 +354,44 @@ const DriverDetails = () => {
                         </p>
                       </div>
                       <div className="textIcon flex flex-row items-center justify-between gap-3">
-                        <p className="Sdt text-xs text-navbarText">
-                          {driver?.driverPhone}
-                        </p>
-                        <EditIC width={16} height={16} stroke={"#007AFF"} />
+                        {isEditing ? (
+                          <input
+                            className="placeholder:text-xs outline-none text-xs text-normalText"
+                            placeholder={
+                              driver && driver.driverPhone
+                                ? String(driver.driverPhone)
+                                : "Bổ sung"
+                            }
+                            value={driverPhone}
+                            onChange={(e) => setDriverPhone(e.target.value)}
+                          />
+                        ) : (
+                          <p className="Address text-xs text-navbarText text-wrap">
+                            {driver && driver.driverPhone !== null
+                              ? driver.driverPhone
+                              : "Bổ sung"}
+                          </p>
+                        )}
                       </div>
                       <div className="textIcon flex flex-row items-center justify-between gap-3">
-                        <p className="Address text-xs text-navbarText text-wrap">
-                          {driver && driver.driverAddress !== null
-                            ? driver.driverAddress
-                            : "Bổ sung"}
-                        </p>
-                        <EditIC width={16} height={16} stroke={"#007AFF"} />
+                        {isEditing ? (
+                          <input
+                            className="placeholder:text-xs outline-none text-xs text-normalText"
+                            placeholder={
+                              driver && driver.driverAddress
+                                ? driver.driverAddress
+                                : "Bổ sung"
+                            }
+                            value={driverAddress}
+                            onChange={(e) => setDriverAddress(e.target.value)}
+                          />
+                        ) : (
+                          <p className="Address text-xs text-navbarText text-wrap">
+                            {driver && driver.driverAddress !== null
+                              ? driver.driverAddress
+                              : "Bổ sung"}
+                          </p>
+                        )}
                       </div>
                     </div>
                   </div>

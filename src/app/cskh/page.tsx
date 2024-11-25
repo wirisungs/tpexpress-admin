@@ -8,9 +8,6 @@ import Input, {
   InputWithIcon,
 } from "@/components/CommonComponents/Inputs/Inputs";
 import InfoBox from "@/components/CommonComponents/Box/InfoBox";
-import Button, {
-  ButtonBorder,
-} from "@/components/CommonComponents/Buttons/Button";
 import Image from "next/image";
 import { toast } from "react-toastify";
 
@@ -316,7 +313,7 @@ const CSKH: React.FC = () => {
               </p>
             </div>
             <div className="table-container h-full">
-              <table className="cskhTable min-w-full h-full bg-white table-fixed rounded-md">
+              <table className="cskhTable h-full bg-white table-fixed rounded-md">
                 {/* Title từng cột */}
                 <thead>
                   <tr>
@@ -397,8 +394,8 @@ const CSKH: React.FC = () => {
                         </div>
                       </td>
                       <td className="h-[42px] items-center break-words  p-3 text-left truncate">
-                        <div className="flex flex-row gap-[6px] items-center h-full">
-                          <p>
+                        <div className="flex flex-row gap-[6px] items-center h-full overflow-hidden">
+                          <p className="overflow-hidden text-ellipsis">
                             {request.Request_Type === "HBV"
                               ? "Hàng bị vỡ"
                               : request.Request_Type === "HBL"

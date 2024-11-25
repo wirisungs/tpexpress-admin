@@ -82,95 +82,66 @@ const AccountTable: React.FC = () => {
     fetchData();
   }, []);
 
-  const getFirstAndMiddleName = (fullname: string) => {
+  const getFirstAndMiddleName = (fullname: string | null | undefined) => {
+    if (!fullname) return "";
     return fullname.split(" ").slice(0, -1).join(" ");
   };
 
-  const getLastName = (fullname: string) => {
+  const getLastName = (fullname: string | null | undefined) => {
+    if (!fullname) return "";
     return fullname.split(" ").slice(-1).join(" ");
   };
 
-  const getCity = (address: string) => {
-    const parts = address.split(",");
-    return parts[parts.length - 1]?.trim();
-  };
-
   const [sortState, setSortState] = useState<{
-    id: boolean;
     phone: boolean;
     lastName: boolean;
     firstMiddleName: boolean;
-    gmail: boolean;
-    area: boolean;
-    counterReceived: boolean;
+    email: boolean;
     role: boolean;
   }>({
-    id: false,
     phone: false,
     lastName: false,
     firstMiddleName: false,
-    gmail: false,
-    area: false,
-    counterReceived: false,
+    email: false,
     role: false,
   });
 
   const sortUsers = (
-    key:
-      | "id"
-      | "phone"
-      | "lastName"
-      | "firstMiddleName"
-      | "gmail"
-      | "area"
-      | "counterReceived"
-      | "role"
+    key: "phone" | "lastName" | "firstMiddleName" | "email" | "role"
   ) => {
     const sortedUsers = [...users].sort(
       (a: UserAccountType, b: UserAccountType): number => {
         let comparison = 0;
 
         switch (key) {
-          case "id":
-            comparison = a.userId.localeCompare(b.userId);
-            return sortState.id ? -comparison : comparison;
           case "phone":
             comparison = Number(a.userPhone) - Number(b.userPhone);
             return sortState.phone ? -comparison : comparison;
           case "lastName":
-            comparison = getLastName(
-              (a.driverDetail && a.driverDetail.driverName) ||
-                (a.employeeDetail && a.employeeDetail.employeeName)
-            ).localeCompare(
-              getLastName(
-                (b.driverDetail && b.driverDetail.driverName) ||
-                  (b.employeeDetail && b.employeeDetail.employeeName)
-              )
-            );
+            const driverLastNameA =
+              getLastName(a.driverDetail?.driverName) || "";
+            const driverLastNameB =
+              getLastName(b.driverDetail?.driverName) || "";
+            comparison = driverLastNameA.localeCompare(driverLastNameB);
             return sortState.lastName ? -comparison : comparison;
           case "firstMiddleName":
-            comparison = getFirstAndMiddleName(
-              (b.driverDetail && b.driverDetail.driverName) ||
-                (b.employeeDetail && b.employeeDetail.employeeName)
-            ).localeCompare(
-              getFirstAndMiddleName(
-                (b.driverDetail && b.driverDetail.driverName) ||
-                  (b.employeeDetail && b.employeeDetail.employeeName)
-              )
-            );
+            const driverA =
+              getFirstAndMiddleName(a.driverDetail?.driverName) || "";
+            const driverB =
+              getFirstAndMiddleName(b.driverDetail?.driverName) || "";
+            comparison = driverA.localeCompare(driverB);
             return sortState.firstMiddleName ? -comparison : comparison;
-          case "gmail":
-            comparison = a.userEmail.localeCompare(b.userEmail);
-            return sortState.gmail ? -comparison : comparison;
+          case "email":
+            const emailA = a.driverDetail?.driverEmail || "";
+            const emailB = b.driverDetail?.driverEmail || "";
+            console.log(emailA, emailB);
+            comparison = emailA.localeCompare(emailB);
+            return sortState.email ? -comparison : comparison;
           case "role":
-            comparison = a.userRole.localeCompare(getCity(b.userRole));
-            return sortState.area ? -comparison : comparison;
-          case "counterReceived":
-            comparison = a.activeOrderCount - b.activeOrderCount;
-            return sortState.counterReceived ? -comparison : comparison;
-          case "violation":
-            comparison = a.driverViolation - b.driverViolation;
-            return sortState.violation ? -comparison : comparison;
+            const userRoleA = a.userRole || "";
+            const userRoleB = b.userRole || "";
+            comparison = userRoleA.localeCompare(userRoleB);
+            return sortState.role ? -comparison : comparison;
           default:
             return 0;
         }
@@ -222,53 +193,44 @@ const AccountTable: React.FC = () => {
                     <th className="h-[42px] items-center break-words  p-3 text-left truncate">
                       <div className="flex flex-row gap-[6px] items-center h-full">
                         <p>Mã tài khoản</p>
-                        <div className="Sort" onClick={() => sortUsers("id")}>
-                          <SortIC />
-                        </div>
                       </div>
                     </th>
                     <th className="h-[42px] items-center break-words  p-3 text-left truncate">
                       <div className="flex flex-row gap-[6px] items-center h-full">
                         <p>Số điện thoại</p>
-                        <div
-                          className="Sort"
-                          onClick={() => sortUsers("phone")}
-                        >
-                          <SortIC />
-                        </div>
                       </div>
                     </th>
                     <th className="h-[42px] items-center break-words  p-3 text-left truncate">
                       <div className="flex flex-row gap-[6px] items-center h-full">
                         <p>Họ</p>
-                        <div
-                          className="Sort"
+                        <button
+                          type="button"
                           onClick={() => sortUsers("firstMiddleName")}
                         >
                           <SortIC />
-                        </div>
+                        </button>
                       </div>
                     </th>
                     <th className="h-[42px] items-center break-words  p-3 text-left truncate">
                       <div className="flex flex-row gap-[6px] items-center h-full">
                         <p>Tên</p>
-                        <div
-                          className="Sort"
+                        <button
+                          type="button"
                           onClick={() => sortUsers("lastName")}
                         >
                           <SortIC />
-                        </div>
+                        </button>
                       </div>
                     </th>
                     <th className="h-[42px] items-center break-words  p-3 text-left truncate">
                       <div className="flex flex-row gap-[6px] items-center h-full">
                         <p>Email</p>
-                        <div
-                          className="Sort"
-                          onClick={() => sortUsers("gmail")}
+                        <button
+                          type="button"
+                          onClick={() => sortUsers("email")}
                         >
                           <SortIC />
-                        </div>
+                        </button>
                       </div>
                     </th>
                     <th className="h-[42px] items-center break-words  p-3 text-left truncate">
@@ -277,17 +239,7 @@ const AccountTable: React.FC = () => {
                         <SortIC />
                       </div>
                     </th>
-                    <th className="h-[42px] items-center break-words  p-3 text-left truncate">
-                      <div className="flex flex-row gap-[6px] items-center h-full">
-                        <p>Xác thực</p>
-                        <div
-                          className="Sort"
-                          onClick={() => sortDrivers("area")}
-                        >
-                          <SortIC />
-                        </div>
-                      </div>
-                    </th>
+
                     <th className="h-[42px] items-center break-words  p-3 text-center truncate">
                       <div className="flex flex-row gap-[6px] items-center justify-start h-full">
                         <p>Vai trò</p>
@@ -313,73 +265,6 @@ const AccountTable: React.FC = () => {
                         onClick={() => handleClick(user.userId)}
                         className="cursor-pointer"
                       >
-                        {user.driverDetail && (
-                          <>
-                            <td className="h-[42px] break-words p-3 text-left truncate">
-                              <div className="flex flex-row gap-[6px] items-center h-full w-full justify-end">
-                                <p>{index + 1}</p>
-                              </div>
-                            </td>
-                            <td className="h-[42px] items-center break-words  p-3 text-left truncate">
-                              <div className="flex flex-row gap-[6px] items-center h-full">
-                                <p>{user.userId}</p>
-                              </div>
-                            </td>
-                            <td className="h-[42px] items-center break-words  p-3 text-left truncate">
-                              <div className="flex flex-row gap-[6px] items-center h-full">
-                                <p>{user.userPhone}</p>
-                              </div>
-                            </td>
-                            <td className="h-[42px] items-center break-words  p-3 text-left truncate">
-                              <div className="flex flex-row gap-[6px] items-center h-full">
-                                <p>
-                                  {getFirstAndMiddleName(
-                                    user.driverDetail.driverName
-                                  )}
-                                </p>
-                              </div>
-                            </td>
-                            <td className="h-[42px] items-center break-words  p-3 text-left truncate">
-                              <div className="flex flex-row gap-[6px] items-center h-full">
-                                <p>
-                                  {getLastName(user.driverDetail.driverName)}
-                                </p>
-                              </div>
-                            </td>
-                            <td className="h-[42px] items-center break-words  p-3 text-left truncate">
-                              <div className="flex flex-row gap-[6px] items-center h-full  ">
-                                <p className=" overflow-hidden text-ellipsis">
-                                  {user.driverDetail.driverEmail}
-                                </p>
-                              </div>
-                            </td>
-                            <td className="h-[42px] items-center break-words  p-3 text-left truncate">
-                              <div className="flex flex-row gap-[6px] items-center h-full">
-                                <p>
-                                  {user.driverDetail.driverStatus
-                                    ? "Hoạt động"
-                                    : "Không hoạt động"}
-                                </p>
-                              </div>
-                            </td>
-                            <td className="h-[42px] items-center break-words  p-3 text-left truncate">
-                              <div className="flex flex-row gap-[6px] items-center h-full">
-                                <p className="w-full overflow-hidden text-ellipsis whitespace-nowrap">
-                                  {user.userVerify
-                                    ? "Đã xác thực"
-                                    : "Chưa xác thực"}
-                                </p>
-                              </div>
-                            </td>
-                            <td className="h-[42px] items-center break-words  p-3 text-center truncate">
-                              <div className="flex flex-row gap-[6px] items-center h-full">
-                                <p className="overflow-hidden text-ellipsis whitespace-nowrap">
-                                  {user.userRole === "Driver" && "Tài xế"}
-                                </p>
-                              </div>
-                            </td>
-                          </>
-                        )}
                         {user.employeeDetail && (
                           <>
                             <td className="h-[42px] break-words p-3 text-left truncate">
@@ -431,15 +316,7 @@ const AccountTable: React.FC = () => {
                                 </p>
                               </div>
                             </td>
-                            <td className="h-[42px] items-center break-words  p-3 text-left truncate">
-                              <div className="flex flex-row gap-[6px] items-center h-full">
-                                <p className="w-full overflow-hidden text-ellipsis whitespace-nowrap">
-                                  {user.userVerify
-                                    ? "Đã xác thực"
-                                    : "Chưa xác thực"}
-                                </p>
-                              </div>
-                            </td>
+
                             <td className="h-[42px] items-center break-words  p-3 text-center truncate">
                               <div className="flex flex-row gap-[6px] items-center h-full">
                                 <p className="overflow-hidden text-ellipsis whitespace-nowrap">

@@ -92,7 +92,7 @@ tbody tr:hover {
   font-size: 12px;
 }
 
-table {
+.cskhTable {
   width: full;
   border-collapse: collapse;
   box-sizing: border-box;

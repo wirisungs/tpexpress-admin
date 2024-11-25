@@ -5,6 +5,8 @@ import GetToken from "@/app/libs/GetToken";
 import RemoveToken from "@/app/libs/RemoveToken";
 import { useRouter } from "next/navigation";
 import { ToastContainer } from "react-toastify";
+import { useRole } from "@/contexts/RoleContext";
+import { useUserName } from "@/contexts/UsernameContext";
 
 interface LayoutProps {
   children: ReactNode;
@@ -13,6 +15,9 @@ interface LayoutProps {
 const Navbar: React.FC<LayoutProps> = React.memo(({ children }) => {
   const [userName, setUserName] = useState<string | null>(null);
   const [userRole, setUserRole] = useState<string | null>(null);
+
+  const { role } = useRole();
+  const { fullName } = useUserName();
 
   const router = useRouter();
 
@@ -64,6 +69,7 @@ const Navbar: React.FC<LayoutProps> = React.memo(({ children }) => {
       setUserRole(userRoleFromAPI);
       localStorage.setItem("userName", userNameFromAPI);
       localStorage.setItem("userRole", userRoleFromAPI);
+      console.log(userRole);
     } catch (error) {
       console.error("Error fetching user data", error);
     }
@@ -76,31 +82,53 @@ const Navbar: React.FC<LayoutProps> = React.memo(({ children }) => {
     router.push("/");
   };
 
+  const getRole = (Role: string) => {
+    switch (Role) {
+      case "Driver": {
+        return "Tài xế";
+      }
+      case "Admin": {
+        return "Quản trị viên";
+      }
+      case "Support": {
+        return "Nhân viên CSKH";
+      }
+      case "Saleman": {
+        return "Nhân viên kinh doanh";
+      }
+      default: {
+        return "Không xác định"; // Xử lý trường hợp Role không khớp
+      }
+    }
+  };
   return (
-    <div className="MainContainer flex flex-row min-h-[100vh] max-h-[100vh] w-full">
+    <div className="MainContainer flex flex-row min-h-screen w-full">
+      {/* Navbar */}
       <div
-        className="NavbarContainer flex flex-col md:w-[20%] lg:w-[15%] gap-3"
+        className="NavbarContainer flex flex-col min-w-[200px] max-w-[300px] md:w-[20%] lg:w-[15%] gap-3"
         style={{
           backgroundColor: "#ffffff",
           boxShadow: "2px 0px 8px rgb(0 0 0 / 0.1)",
           zIndex: 10,
         }}
       >
-        <div className="flex flex-col items-center md:items-start pl-8 pb-4 pt-6 pr-6 h-[78px]">
-          <div className="flex flex-row justify-center md:justify-between gap-3 w-full items-center">
-            <p className="Username text-base font-bold h-full items-center text-ellipsis hidden md:flex">
-              {userName || "Loading..."}
+        {/* User info */}
+        <div className="flex flex-col items-center md:items-start pl-8 pb-4 pt-6 pr-6 h-auto overflow-hidden gap-1">
+          <div className="flex flex-row w-full overflow-hidden">
+            <p className="Username text-base text-nowrap font-bold hidden md:flex overflow-hidden text-ellipsis whitespace-nowrap max-w-full h-10">
+              {fullName ? fullName : "Loading..."}
             </p>
             <div className="profileAvt flex w-8 h-8 rounded-full md:hidden"></div>
           </div>
-          <p className="Username text-xs text-subtitleText h-full items-center text-ellipsis hidden md:flex">
-            {userRole === "Driver" ? "Tài xế" : "Quản trị viên"}
+          <p className="Username text-xs text-subtitleText h-full hidden md:flex overflow-hidden whitespace-nowrap text-ellipsis max-w-full">
+            {role ? getRole(role) : "Loading..."}
           </p>
         </div>
-        <div className="flex flex-col justify-between">
-          <NavbarTab />
-          {/* Nút đăng xuất */}
-          <div className="w-full h-[42px] p-4">
+
+        {/* Navbar tabs */}
+        <div className="flex flex-col justify-between flex-1">
+          <NavbarTab userRole={role ? role : "None"} />
+          <div className="w-full h-auto px-4 py-6">
             <button
               className="w-full h-[42px] rounded-md bg-primaryText300 text-sm text-white font-bold"
               onClick={() => logout()}
@@ -110,7 +138,9 @@ const Navbar: React.FC<LayoutProps> = React.memo(({ children }) => {
           </div>
         </div>
       </div>
-      <div className="bodyContainer bg-[#f9f9f9] md:w-[80%] lg:w-[85%] h-full p-6 overflow-y-auto">
+
+      {/* Body content */}
+      <div className="bodyContainer bg-[#f9f9f9] flex-1 min-h-screen p-6 overflow-y-auto">
         <ToastContainer />
         {children}
       </div>

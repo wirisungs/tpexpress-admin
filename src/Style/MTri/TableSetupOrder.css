@@ -38,7 +38,10 @@
 .orderTable td:nth-child(8) {
   width: auto; /* Status */
 }
-
+.orderTable th:nth-child(8),
+.orderTable td:nth-child(8) {
+  width: auto; /* DeliverPrice */
+}
 
 tbody::-webkit-scrollbar {
   display: none;
@@ -99,10 +102,10 @@ table {
 }
 
 thead {
-  background-color: #fff; 
-  position: sticky; 
-  top: 0; 
-  z-index: 1; 
+  background-color: #fff;
+  position: sticky;
+  top: 0;
+  z-index: 1;
 }
 
 tbody {

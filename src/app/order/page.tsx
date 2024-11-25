@@ -13,6 +13,18 @@ import "@/Style/MTri/Loading.css";
 import { InputDatePicker } from "@/components/CommonComponents/Inputs/Inputs";
 import CommonSpecifications from "@/components/DashboardComponents/CommonSpecifications";
 
+const formatDong = (price: number | undefined) => {
+  if (price === undefined || isNaN(price)) {
+    return "N/A"; // hoặc giá trị mặc định nào đó
+  }
+
+  const formattedPrice = price.toLocaleString("vi", {
+    style: "currency",
+    currency: "VND",
+  });
+  return formattedPrice;
+};
+
 interface OrderType {
   orderId: string;
   paymentId: string;
@@ -203,6 +215,12 @@ const OrderPage = () => {
                         <SortIC />
                       </div>
                     </th>
+                    <th className="h-[42px] items-center break-words  p-3 text-left truncate">
+                      <div className="flex flex-row gap-[6px] items-center h-full">
+                        <p>Tiền vận chuyển</p>
+                        <SortIC />
+                      </div>
+                    </th>
                   </tr>
                 </thead>
                 {isLoading ? (
@@ -276,6 +294,13 @@ const OrderPage = () => {
                               className="w-full overflow-hidden text-ellipsis whitespace-nowrap"
                             >
                               {order.deliveryStatus.statusName}
+                            </p>
+                          </div>
+                        </td>
+                        <td className="h-[42px] items-center break-words  p-3 text-left truncate">
+                          <div className="flex flex-row gap-[6px] items-center h-full ">
+                            <p className="w-full text-start">
+                              {formatDong(order ? order.deliverPrice : 0)}
                             </p>
                           </div>
                         </td>

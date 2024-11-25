@@ -16,8 +16,11 @@ const UserEnroll = () => {
   const [userRole, setUserRole] = useState<string>("");
   const [warning, setWarning] = useState<string>("");
   const roleOptions: { [key: string]: string } = {
-    "Tài xế": "Driver",
-    "Nhân viên": "Employee",
+    "--- Chọn chức vụ ---": "None",
+    Driver: "Driver",
+    Admin: "Admin",
+    Support: "Support",
+    Saleman: "Saleman",
   };
 
   const handleRoleChange = (value: string) => {

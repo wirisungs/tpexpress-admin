@@ -72,6 +72,9 @@ const DriverTable: React.FC = () => {
   };
 
   const getCity = (address: string) => {
+    if (!address) {
+      return;
+    }
     const parts = address.split(",");
     return parts[parts.length - 1]?.trim();
   };
@@ -129,12 +132,14 @@ const DriverTable: React.FC = () => {
             );
             return sortState.firstMiddleName ? -comparison : comparison;
           case "gender":
-            comparison = a.driverGender - b.driverGender;
+            const genderA = Number(a.driverGender) || 0;
+            const genderB = Number(b.driverGender) || 0;
+            comparison = genderA - genderB;
             return sortState.gender ? -comparison : comparison;
           case "area":
-            comparison = getCity(a.driverAddress).localeCompare(
-              getCity(b.driverAddress)
-            );
+            const cityA = getCity(a.driverAddress) || "";
+            const cityB = getCity(b.driverAddress) || "";
+            comparison = cityA.localeCompare(cityB);
             return sortState.area ? -comparison : comparison;
           case "counterReceived":
             comparison = a.activeOrderCount - b.activeOrderCount;
@@ -189,70 +194,66 @@ const DriverTable: React.FC = () => {
                     <th className="h-[42px] items-center break-words  p-3 text-left truncate">
                       <div className="flex flex-row gap-[6px] items-center h-full">
                         <p>Mã tài xế</p>
-                        <div className="Sort" onClick={() => sortDrivers("id")}>
-                          <SortIC />
-                        </div>
                       </div>
                     </th>
                     <th className="h-[42px] items-center break-words  p-3 text-left truncate">
                       <div className="flex flex-row gap-[6px] items-center h-full">
                         <p>Trạng thái</p>
-                        <div
-                          className="Sort"
+                        <button
+                          type="button"
                           onClick={() => sortDrivers("status")}
                         >
                           <SortIC />
-                        </div>
+                        </button>
                       </div>
                     </th>
                     <th className="h-[42px] items-center break-words  p-3 text-left truncate">
                       <div className="flex flex-row gap-[6px] items-center h-full">
                         <p>Họ</p>
-                        <div
-                          className="Sort"
+                        <button
+                          type="button"
                           onClick={() => sortDrivers("firstMiddleName")}
                         >
                           <SortIC />
-                        </div>
+                        </button>
                       </div>
                     </th>
                     <th className="h-[42px] items-center break-words  p-3 text-left truncate">
                       <div className="flex flex-row gap-[6px] items-center h-full">
                         <p>Tên</p>
-                        <div
-                          className="Sort"
+                        <button
+                          type="button"
                           onClick={() => sortDrivers("lastName")}
                         >
                           <SortIC />
-                        </div>
+                        </button>
                       </div>
                     </th>
                     <th className="h-[42px] items-center break-words  p-3 text-left truncate">
                       <div className="flex flex-row gap-[6px] items-center h-full">
                         <p>Giới tính</p>
-                        <div
-                          className="Sort"
+                        <button
+                          type="button"
                           onClick={() => sortDrivers("gender")}
                         >
                           <SortIC />
-                        </div>
+                        </button>
                       </div>
                     </th>
                     <th className="h-[42px] items-center break-words  p-3 text-left truncate">
                       <div className="flex flex-row gap-[6px] items-center h-full">
                         <p>Số điện thoại</p>
-                        <SortIC />
                       </div>
                     </th>
                     <th className="h-[42px] items-center break-words  p-3 text-left truncate">
                       <div className="flex flex-row gap-[6px] items-center h-full">
                         <p>Khu vực</p>
-                        <div
-                          className="Sort"
+                        <button
+                          type="button"
                           onClick={() => sortDrivers("area")}
                         >
                           <SortIC />
-                        </div>
+                        </button>
                       </div>
                     </th>
                     <th className="h-[42px] items-center break-words  p-3 text-center truncate">

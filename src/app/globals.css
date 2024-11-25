@@ -38,3 +38,18 @@ body {
 table thead {
   user-select: none; 
 }
+
+.MuiChartsTooltip-table {
+  width: auto !important;
+  max-width: 400px !important;
+}
+
+.MuiChartsTooltip-table tbody {
+  width: 100% !important;
+  max-width: 100% !important;
+}
+
+.MuiChartsTooltip-valueCell{
+  padding-left: 8px !important;
+  padding-right: 8px !important;
+}

@@ -4,6 +4,9 @@ import Input, { InputWithIcon } from "../CommonComponents/Inputs/Inputs";
 import { useRouter } from "next/navigation";
 import "@/Style/MTri/Loading.css";
 import { useAppContext } from "@/app/AppProvider";
+import { useRole } from "@/contexts/RoleContext";
+import { useUserName } from "@/contexts/UsernameContext";
+import { jwtDecode } from "jwt-decode";
 const LoginForm = () => {
   const router = useRouter();
   const [phone, setPhone] = useState<string>("");
@@ -11,6 +14,8 @@ const LoginForm = () => {
   const [warning, setWarning] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const { setSessionToken } = useAppContext();
+  const { setRole } = useRole();
+  const { setFullName } = useUserName();
 
   const collectData = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -38,6 +43,8 @@ const LoginForm = () => {
         return setWarning("Hệ thống đã gặp sự cố. Vui lòng thử lại sau!");
       } else {
         setWarning("");
+        setRole(result.user.userRole);
+        setFullName(result.employeeFullName);
         const resultFromNextServer = await fetch("/api/auth", {
           method: "POST",
           body: JSON.stringify(result),
@@ -60,7 +67,9 @@ const LoginForm = () => {
       }
 
       // Chuyển đến dashboard
-      router.push("dashboard");
+      setTimeout(() => {
+        router.push("dashboard");
+      }, 100);
     } catch (error) {
       setWarning("Lỗi kết nối. Vui lòng kiểm tra lại internet");
       console.log(error);

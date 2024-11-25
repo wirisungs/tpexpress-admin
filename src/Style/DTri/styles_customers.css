@@ -20,8 +20,8 @@
   font-size: 12px;
 }
 
-table {
-  width: full;
+.cusTable {
+  width: 100%;
   border-collapse: collapse;
   box-sizing: border-box;
   font-family: "Lato", sans-serif;

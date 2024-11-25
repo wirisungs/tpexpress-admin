@@ -21,6 +21,6 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/Svg/Search.jsx", "src/Svg/warehouseIC.jsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/Svg/Search.jsx", "src/Svg/warehouseIC.jsx", "src/components/Charts/RankingChart.jsx", "src/hooks/useFetch.jsx"],
   "exclude": ["node_modules"]
 }

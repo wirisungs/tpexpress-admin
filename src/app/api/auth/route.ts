@@ -1,6 +1,7 @@
 export async function POST(request: Request) {
   const res = await request.json()
   const sessionToken = res.session?.token
+  console.log(sessionToken)
   
   if(!sessionToken){
     return Response.json({message: 'Không nhận được session token'},{

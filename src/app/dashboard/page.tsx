@@ -1,16 +1,17 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import Navbar from "@/components/CommonComponents/Layout/Navbar";
-import { InputDatePicker } from "@/components/CommonComponents/Inputs/Inputs";
 import CommonSpecifications from "../../components/DashboardComponents/CommonSpecifications";
 import PendingIC from "@/Svg/pendingIC";
 import OrderIC from "@/Svg/orderIC";
+
 import {
   LineChart,
   lineElementClasses,
   markElementClasses,
-  PieChart,
 } from "@mui/x-charts";
+import { PieChartOrderStatus } from "@/components/Charts/PieChartOrderStatus";
+import { RankingChart } from "@/components/Charts/RankingChart";
 
 interface OrderPriceOf5Date {
   xLabels: string[];
@@ -43,7 +44,7 @@ const Dashboard = () => {
         const result = await response.json();
 
         // Kiểm tra dữ liệu trả về
-        console.log("Result from API:", result);
+        // console.log("Result from API:", result);
 
         // Nếu dữ liệu không có gì, trả về
         if (!result || result.length === 0) {
@@ -61,7 +62,7 @@ const Dashboard = () => {
         );
 
         // Log sau khi sắp xếp
-        console.log("Sorted Result:", sortedResult);
+        // console.log("Sorted Result:", sortedResult);
 
         // Ánh xạ dữ liệu vào xLabels và orderTotalPrice
         const xLabels = sortedResult.map((item: { _id: string }) => item._id);
@@ -70,7 +71,7 @@ const Dashboard = () => {
         );
 
         // Log dữ liệu đã ánh xạ
-        console.log("Mapped Data:", { xLabels, orderTotalPrice });
+        // console.log("Mapped Data:", { xLabels, orderTotalPrice });
 
         // Cập nhật state
         setOrderPriceOfDate({ xLabels, orderTotalPrice });
@@ -91,12 +92,12 @@ const Dashboard = () => {
         }
         const result = await response.json();
         setOrderStatus(result);
-        console.log(result);
+        // console.log(result);
 
         const sumOrder =
           result.Canceled + result.Success + result.Pending + result.Delivering;
         setSumOrder(sumOrder);
-        console.log(sumOrder);
+        // console.log(sumOrder);
       } catch (error) {
         console.error(error);
       }
@@ -104,58 +105,45 @@ const Dashboard = () => {
     getData();
   }, []);
 
-  const renderPieChart = (statusData) => (
-    <PieChart
-      sx={{
-        "& .MuiChartsLegend-series text": { fontSize: "0.7em !important" },
-      }}
-      series={[
-        {
-          data: [
+  const renderLineChart = () => (
+    <div className="flex w-full">
+      <LineChart
+        width={1100}
+        height={300}
+        grid={{ vertical: true, horizontal: true }}
+        series={[
+          {
+            data: orderPriceOfDate.orderTotalPrice,
+            id: "pvId",
+          },
+        ]}
+        xAxis={[{ scaleType: "point", data: orderPriceOfDate.xLabels }]}
+        sx={{
+          [`.${lineElementClasses.root}, .${markElementClasses.root}`]: {
+            strokeWidth: 1,
+          },
+          ".MuiLineElement-series-pvId": {
+            strokeDasharray: "5 5",
+          },
+          ".MuiLineElement-series-uvId": {
+            strokeDasharray: "3 4 5 2",
+          },
+          [`.${markElementClasses.root}:not(.${markElementClasses.highlighted})`]:
             {
-              id: 0,
-              value: statusData.Pending,
-              label: `Đang xử lý (${Math.round(
-                (orderStatus.Pending / sumOrder) * 100
-              )}%)`,
-              color: "#FBA333",
+              fill: "#fff",
             },
-            {
-              id: 1,
-              value: statusData.Success,
-              label: `Hoàn thành (${Math.round(
-                (orderStatus.Success / sumOrder) * 100
-              )}%)`,
-
-              color: "#81E7A5",
-            },
-            {
-              id: 2,
-              value: statusData.Canceled,
-              label: `Hủy đơn (${Math.round(
-                (orderStatus.Canceled / sumOrder) * 100
-              )}%)`,
-              color: "#EC6E70",
-            },
-          ],
-          cx: 100,
-          cornerRadius: 5,
-          paddingAngle: 2,
-          innerRadius: 25,
-        },
-      ]}
-      width={500}
-      height={200}
-    />
+          [`& .${markElementClasses.highlighted}`]: {
+            stroke: "none",
+          },
+        }}
+      />
+    </div>
   );
 
   return (
-    <div className="flex">
+    <div className="flex h-screen w-full overflow-hidden">
       <Navbar>
-        <div className="head-reporting flex flex-col gap-6">
-          <div className="w-[148px]">
-            <InputDatePicker background={true} border={false} />
-          </div>
+        <div className="no-scrollbar flex flex-col gap-6 w-full h-full overflow-y-auto">
           <div className="flex flex-row gap-6 w-full justify-between">
             <CommonSpecifications
               fluctuationType="none"
@@ -178,7 +166,11 @@ const Dashboard = () => {
                 orderPriceOfDate.orderTotalPrice[3]
               }
               color="#81E7A5"
-              quantity={orderPriceOfDate.orderTotalPrice[4]}
+              quantity={
+                orderPriceOfDate.orderTotalPrice[4]
+                  ? orderPriceOfDate.orderTotalPrice[4]
+                  : 0
+              }
               subtitle="Doanh thu hôm nay"
               unit="đ"
               icon={<PendingIC fill="#0DA651" />}
@@ -193,49 +185,31 @@ const Dashboard = () => {
               icon={<PendingIC fill="#C03CF1" />}
             />
           </div>
-          <div className="chartArea h-full flex flex-row gap-6">
-            <div className="bg-white flex flex-col gap-6 flex-1 p-8 rounded-md">
-              <p className="text-base font-bold text-normalText">
-                Tỉ lệ hoàn thành đơn
-              </p>
-              {renderPieChart(orderStatus)}
-            </div>
-            <div className="bg-white flex p-8 w-full flex-col">
-              <p className="text-base font-bold text-normalText">Doanh thu</p>
-              <div className="bg-white flex w-full ">
-                <LineChart
-                  width={500}
-                  height={300}
-                  series={[
-                    {
-                      data: orderPriceOfDate.orderTotalPrice,
-                      id: "pvId",
-                    },
-                  ]}
-                  xAxis={[
-                    { scaleType: "point", data: orderPriceOfDate.xLabels },
-                  ]}
-                  sx={{
-                    [`.${lineElementClasses.root}, .${markElementClasses.root}`]:
-                      {
-                        strokeWidth: 1,
-                      },
-                    ".MuiLineElement-series-pvId": {
-                      strokeDasharray: "5 5",
-                    },
-                    ".MuiLineElement-series-uvId": {
-                      strokeDasharray: "3 4 5 2",
-                    },
-                    [`.${markElementClasses.root}:not(.${markElementClasses.highlighted})`]:
-                      {
-                        fill: "#fff",
-                      },
-                    [`& .${markElementClasses.highlighted}`]: {
-                      stroke: "none",
-                    },
-                  }}
-                />
+
+          <div className="flex flex-col w-full gap-6">
+            <div className="chartArea flex flex-row gap-6">
+              <div className="pieChart flex flex-col flex-1 rounded-md">
+                <div className="flex flex-row gap-6">
+                  <div className="flex-1 flex-col flex p-6 bg-white rounded-md shadow-sm">
+                    <p className="text-base font-bold text-normalText mb-3">
+                      Tỉ lệ hoàn thành đơn
+                    </p>
+                    <PieChartOrderStatus /> {/* Gọi Piechart components*/}
+                  </div>
+                  <div className="flex-1 flex-col p-6 bg-white rounded-md shadow-sm">
+                    <p className="text-base font-bold text-normalText mb-3">
+                      Xếp hạng tài xế trong tuần (Số đơn hoàn thành)
+                    </p>
+                    <RankingChart />
+                  </div>
+                </div>
               </div>
+            </div>
+            <div className="bg-white w-full flex flex-1 p-8 flex-col rounded-md mb-2 shadow-sm">
+              <p className="text-base font-bold text-normalText">
+                Doanh thu trong 7 ngày gần nhất
+              </p>
+              {renderLineChart()}
             </div>
           </div>
         </div>

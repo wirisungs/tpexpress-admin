@@ -216,7 +216,7 @@ const CusDetails = () => {
               <div className="boxHeader flex flex-row">
                 <div className="basicDetail flex flex-row bg-white w-full p-6 rounded-md gap-4 ">
                   <div className="detail flex flex-row flex-1 gap-4">
-                    <div className="profileAvt w-[116px] h-[116px] rounded-full bg-slate-300" />
+                    <div className="profileAvt w-[92px] h-[92px] rounded-full bg-slate-300" />
                     <div className="flex flex-col justify-center gap-1">
                       <p className="Name font-bold text-base">
                         {customer ? customer.cusName : ""}
