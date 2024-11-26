@@ -1,12 +1,7 @@
 import React from "react";
-import Navbar from "@/components/CommonComponents/Layout/Navbar";
-import TramCSS from "@/Style/Tram.module.css";
-import Link from "next/link";
-import BackSvg from "@/Svg/backIC";
 import { FormControl, InputAdornment, OutlinedInput } from "@mui/material";
 import DropdownIC from "@/Svg/dropdown";
 import ButtonCPN from "@/components/CommonComponents/Buttons/Button";
-import React from "react";
 import Navbar from "@/components/CommonComponents/Layout/Navbar";
 import TramCSS from "@/Style/Tram.module.css";
 import Link from "next/link";

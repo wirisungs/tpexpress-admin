@@ -3,11 +3,11 @@ import { SSO } from "@htilssu/wowo";
 import TPLogo from "@/Svg/LogoDog";
 
 const Form = () => {
-  const subtitle = "Tinh thần tốc độ - Dịch vụ hoàn hảo";
+  const subtitle = "Giao hàng bằng cả tính mạng";
   const sso = new SSO("TPE");
 
   const handleSSOLogin = () => {
-    sso.redirectToLogin("http://tpexpress.ddns.net:4000/callback");
+    sso.redirectToLogin("http://10.0.2.2:4000/callback");
   };
 
   return (
@@ -46,7 +46,7 @@ const Form = () => {
 
         <div className="title flex flex-col gap-[6px] text-center">
           <p className="titleText text-[24px] font-bold text-primaryText300">
-            THIEN PHUC EXPRESS
+            THIEN PHUC DRIVER
           </p>
           <p className="subtitle text-yellowText font-medium">{subtitle}</p>
         </div>
