@@ -1,7 +1,7 @@
 /* Kích thước cột */
 .orderTable th:nth-child(1),
 .orderTable td:nth-child(1) {
-  width: 5%; /* Cột STT */
+  width: 50px; /* Cột STT */
 }
 
 .orderTable th:nth-child(2),
@@ -11,17 +11,17 @@
 
 .orderTable th:nth-child(3),
 .orderTable td:nth-child(3) {
-  width: 15%; /* Ngừi gửi */
+  width: auto; /* Ngừi gửi */
 }
 
 .orderTable th:nth-child(4),
 .orderTable td:nth-child(4) {
-  width: 15%; /* Ng nhận */
+  width: auto; /* Ng nhận */
 }
 
 .orderTable th:nth-child(5),
 .orderTable td:nth-child(5) {
-  width: 10%; /* Địa chỉ */
+  width: auto; /* Địa chỉ */
 }
 
 .orderTable th:nth-child(6),
@@ -31,22 +31,16 @@
 
 .orderTable th:nth-child(7),
 .orderTable td:nth-child(7) {
-  width: 10%; /* Tài xế */
+  width: auto; /* Tài xế */
 }
 
 .orderTable th:nth-child(8),
 .orderTable td:nth-child(8) {
-  width: 7%; /* Status */
+  width: auto; /* Status */
 }
-.orderTable th:nth-child(9),
-.orderTable td:nth-child(9) {
-  width: auto; /* Thêm */
-}
-
-tbody {
-  display: block; /* Để kích hoạt scroll cho tbody */
-  max-height: 500px; /* Giới hạn chiều cao tối đa */
-  overflow-y: auto; /* Cho phép cuộn khi vượt quá chiều cao */
+.orderTable th:nth-child(8),
+.orderTable td:nth-child(8) {
+  width: auto; /* DeliverPyrice */
 }
 
 tbody::-webkit-scrollbar {
@@ -96,19 +90,27 @@ tbody tr:hover {
   color: #eb455f;
   font-size: 12px;
 }
+.table-container {
+  height: 100%;
+  overflow-y: auto;
+}
 
 table {
-  width: full;
+  width: 100%;
+  height: 100%;
   border-collapse: collapse;
-  box-sizing: border-box;
-  font-family: "Lato", sans-serif;
 }
 
 thead {
+  background-color: #fff;
   position: sticky;
   top: 0;
   z-index: 1;
-  margin-bottom: 6px;
+}
+
+tbody {
+  display: block;
+  overflow-y: auto;
 }
 thead tr th p {
   font-size: 14px;

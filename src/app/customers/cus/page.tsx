@@ -3,11 +3,14 @@ import Navbar from "@/components/CommonComponents/Layout/Navbar";
 import React, { useEffect, useState } from "react";
 import TitleBar from "@/components/CommonComponents/Layout/bars/TitleBar";
 import EditIC from "@/Svg/editIC";
-import { usePathname } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import "@/Style/MTri/Loading.css";
 import "@/Style/MTri/TableSetupOrderCus.css";
+import "@/Style/MTri.css";
 
 import SortIC from "@/Svg/sortIC";
+import AcceptIC from "@/Svg/accept";
+import { toast } from "react-toastify";
 type customerType = {
   cusId: string;
   cusName: string;
@@ -69,28 +72,86 @@ type CSKHType = {
   Driver_ID: string;
   Request_Picture: string;
   Request_Status: string;
-  Request_Date: string;
+  Request_Date: Date;
   Request_Type: string;
 };
 const CusDetails = () => {
-  const pathName = usePathname();
-  const id = pathName.split("/").pop();
+  const searchParams = useSearchParams();
+  const id = searchParams.get("id")?.replace(/'/g, "");
+  const email = searchParams.get("email")?.replace(/'/g, "");
+  const phone = searchParams.get("phone")?.replace(/'/g, "");
+  // const id = pathName.split("/").pop();
+
   const [customer, setCustomer] = useState<customerType | null>(null);
+  const [cusEmail, setCusEmail] = useState<string>("");
+  const [cusPhone, setCusPhone] = useState<string>("");
+  const [cusAddress, setCusAddress] = useState<string>("");
   const [requests, setRequests] = useState<CSKHType[]>([]);
   const [tab, setTab] = useState<string>("LSD"); // LSD: Lịch sử đơn, LSYC: Lịch sử yêu cầu
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [warning, setWarning] = useState<string>("");
+  const [orderWarning, setOrderWarning] = useState<string>("");
+  const [requestWarning, setRequestWarning] = useState<string>("");
+  const [isEditing, setIsEditing] = useState<boolean>(false);
+
+  const handleEdit = () => {
+    setIsEditing(true);
+  };
+
+  const handleUpdate = async () => {
+    try {
+      const response = await fetch(
+        `http://localhost:5000/api/customer/update/${customer?.cusId}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            cusEmail,
+            cusPhone,
+            cusAddress,
+          }),
+        }
+      );
+      const updatedCustomer = await response.json();
+      if (!response.ok) {
+        toast.info(updatedCustomer.message);
+        throw new Error("Error updating driver");
+      }
+      toast.success("Cập nhật thành công!");
+      setTimeout(() => {
+        window.location.reload();
+      }, 1000);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsEditing(false);
+    }
+  };
 
   const handleClick = (tabName: string) => {
     setTab(tabName);
   };
+
   useEffect(() => {
     const fetchCustomer = async () => {
       setIsLoading(true);
       try {
+        let queryParam = "";
+        if (id !== undefined && id !== null) {
+          queryParam = `id=${id}`;
+        } else if (email !== undefined && email !== null) {
+          queryParam = `email=${email}`;
+        } else if (phone !== undefined && phone !== null) {
+          queryParam = `phone=${phone}`;
+        }
+        console.log(queryParam);
+
         const response = await fetch(
-          `http://localhost:5000/api/customer/${id}`
+          `http://localhost:5000/api/customer/cus?${queryParam}`
         );
+        console.log(`http://localhost:5000/api/customer/cus?${queryParam}`);
+
         if (!response.ok) {
           throw new Error("Customer not found");
         }
@@ -103,10 +164,8 @@ const CusDetails = () => {
       }
     };
 
-    if (id) {
-      fetchCustomer();
-    }
-  }, [id]);
+    fetchCustomer();
+  }, [id, email, phone]);
   const [orders, setOrders] = useState<OrderType[]>([]);
   const [cancelCounter, setCancelCounter] = useState<number>(0);
 
@@ -118,11 +177,14 @@ const CusDetails = () => {
           method: "GET",
         });
 
+        const result = await response.json();
         if (!response.ok) {
+          if (result.message) {
+            return setOrderWarning(result.message);
+          }
           throw new Error("Network not ok");
         }
 
-        const result = await response.json();
         setOrders(result);
         // console.log(orders);
 
@@ -138,7 +200,7 @@ const CusDetails = () => {
     if (id) {
       fetchOrder();
     }
-  }, [id]);
+  }, [id, email, phone]);
 
   // Lấy requests list
   useEffect(() => {
@@ -151,7 +213,7 @@ const CusDetails = () => {
         }
         const result = await response.json();
         if (result.message) {
-          setWarning(result.message);
+          setRequestWarning(result.message);
         } else {
           setRequests(result);
         }
@@ -160,7 +222,7 @@ const CusDetails = () => {
       }
     };
     fetchRequests();
-  }, [id]);
+  }, [id, email, phone]);
 
   // Hàm định dạng ngày giờ
 
@@ -196,28 +258,95 @@ const CusDetails = () => {
               <div className="boxHeader flex flex-row">
                 <div className="basicDetail flex flex-row bg-white w-full p-6 rounded-md gap-4 ">
                   <div className="detail flex flex-row flex-1 gap-4">
-                    <div className="profileAvt w-[116px] h-[116px] rounded-full bg-slate-300" />
+                    <div className="profileAvt w-[92px] h-[92px] rounded-full bg-slate-300" />
                     <div className="flex flex-col justify-center gap-1">
-                      <p className="Name font-bold text-base">
-                        {customer ? customer.cusName : ""}
-                      </p>
-                      <div className="textIcon flex flex-row items-center justify-between gap-3">
-                        <p className="Gmail text-xs text-navbarText">
-                          {customer ? customer.cusEmail : ""}
+                      <div className="flex flex-row gap-3 items-center">
+                        <p className="Name font-bold text-base">
+                          {customer ? customer.cusName : ""}
                         </p>
-                        <EditIC width={16} height={16} stroke={"#007AFF"} />
+                        {isEditing ? (
+                          <button type="button" onClick={() => handleUpdate()}>
+                            <AcceptIC width={16} height={16} fill="#0da651" />
+                          </button>
+                        ) : (
+                          <button type="button" onClick={() => handleEdit()}>
+                            <EditIC width={16} height={16} stroke="#1c1c1c" />
+                          </button>
+                        )}
                       </div>
-                      <div className="textIcon flex flex-row items-center justify-between gap-3">
-                        <p className="Sdt text-xs text-navbarText">
-                          0383478483
-                        </p>
-                        <EditIC width={16} height={16} stroke={"#007AFF"} />
+
+                      {/* Trường email khách hàng */}
+                      <div className="textIcon flex flex-row ">
+                        {isEditing ? (
+                          <div className="flex flex-row w-full items-center justify-between">
+                            <input
+                              className="placeholder:text-xs outline-none text-xs text-normalText"
+                              placeholder={
+                                customer && customer.cusEmail
+                                  ? customer.cusEmail
+                                  : "Bổ sung"
+                              }
+                              value={cusEmail}
+                              onChange={(e) => setCusEmail(e.target.value)}
+                            />
+                          </div>
+                        ) : (
+                          <div className="flex flex-row w-full items-center justify-between gap-3">
+                            <p className="Gmail text-xs text-navbarText">
+                              {customer ? customer.cusEmail : ""}
+                            </p>
+                          </div>
+                        )}
                       </div>
-                      <div className="textIcon flex flex-row items-center justify-between gap-3">
-                        <p className="Address text-xs text-navbarText text-wrap">
-                          {customer ? customer.cusAddress : ""}
-                        </p>
-                        <EditIC width={16} height={16} stroke={"#007AFF"} />
+                      {/* Trường sđt khách hàng */}
+                      <div className="textIcon flex flex-row ">
+                        {isEditing ? (
+                          <div className="flex flex-row w-full items-center justify-between">
+                            <input
+                              className="placeholder:text-xs outline-none text-xs text-normalText"
+                              placeholder={
+                                customer && customer?.cusPhone
+                                  ? String(customer.cusPhone)
+                                  : "Bổ sung"
+                              }
+                              value={cusPhone}
+                              onChange={(e) => setCusPhone(e.target.value)}
+                            />
+                          </div>
+                        ) : (
+                          <div className="flex flex-row w-full items-center justify-between gap-3">
+                            <p className="Gmail text-xs text-navbarText">
+                              {customer && customer.cusPhone
+                                ? customer.cusPhone
+                                : "Bổ sung"}
+                            </p>
+                          </div>
+                        )}
+                      </div>
+                      {/* Trường địa chỉ khách hàng */}
+                      <div className="textIcon flex flex-row ">
+                        {isEditing ? (
+                          <div className="flex flex-row w-full items-center justify-between">
+                            <input
+                              className="placeholder:text-xs outline-none text-xs text-normalText"
+                              placeholder={
+                                customer && customer?.cusAddress
+                                  ? customer.cusAddress
+                                  : "Bổ sung"
+                              }
+                              value={cusAddress}
+                              onChange={(e) => setCusAddress(e.target.value)}
+                            />
+                          </div>
+                        ) : (
+                          <div className="flex flex-row w-full items-center justify-between gap-3">
+                            <p className="Gmail text-xs text-navbarText">
+                              {customer && customer.cusAddress
+                                ? customer.cusAddress
+                                : "Bổ sung"}
+                            </p>
+                          </div>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -339,6 +468,11 @@ const CusDetails = () => {
                             Đang tải dữ liệu...
                           </p>
                         </div>
+                      ) : orderWarning ? (
+                        <div className="w-full flex flex-col items-center justify-center">
+                          <div className="noresult w-40 h-40"></div>
+                          <p className=" text-yellowText">{orderWarning}</p>
+                        </div>
                       ) : (
                         <tbody>
                           {orders.map((order, index) => (
@@ -413,7 +547,7 @@ const CusDetails = () => {
                       )}
                     </table>
                   ) : (
-                    <table className="orderOfCusTable min-w-full bg-white table-fixed rounded-md">
+                    <table className="requestOfCusTable min-w-full bg-white table-fixed rounded-md">
                       {/* Title từng cột */}
                       <thead>
                         <tr>
@@ -469,9 +603,10 @@ const CusDetails = () => {
                             Đang tải dữ liệu...
                           </p>
                         </div>
-                      ) : warning ? (
-                        <div className="w-full flex items-center justify-center">
-                          <p className="mt-6 text-yellowText">{warning}</p>
+                      ) : requestWarning ? (
+                        <div className="w-full flex flex-col items-center justify-center">
+                          <div className="noresult w-40 h-40"></div>
+                          <p className=" text-yellowText">{requestWarning}</p>
                         </div>
                       ) : (
                         <tbody>
@@ -494,7 +629,7 @@ const CusDetails = () => {
                               </td>
                               <td className="h-[42px] items-center break-words  p-3 text-left truncate">
                                 <div className="flex flex-row gap-[6px] items-center h-full">
-                                  <p>{request.Request_Date}</p>
+                                  <p>{formatDate(request.Request_Date)}</p>
                                 </div>
                               </td>
                               <td className="h-[42px] items-center break-words  p-3 text-left truncate">
@@ -512,13 +647,17 @@ const CusDetails = () => {
                               </td>
                               <td className="h-[42px] items-center break-words  p-3 text-left truncate">
                                 <div className="flex flex-row gap-[6px] items-center h-full">
-                                  <p>{request.Request_Picture}</p>
+                                  <p className="overflow-hidden text-ellipsis">
+                                    {request.Request_Picture}
+                                  </p>
                                 </div>
                               </td>
                               <td className="h-[42px] items-center break-words  p-3 text-left truncate">
                                 <div className="flex flex-row gap-[6px] items-center h-full overflow-hidden text-ellipsis">
                                   <p className="overflow-hidden text-ellipsis">
-                                    {request.Request_Status}
+                                    {request.Request_Status === "Pending"
+                                      ? "Chờ xử lý"
+                                      : "Đã xử lý"}
                                   </p>
                                 </div>
                               </td>

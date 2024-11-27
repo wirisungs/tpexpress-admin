@@ -1,17 +1,18 @@
 "use client";
 import Navbar from "@/components/CommonComponents/Layout/Navbar";
-import { usePathname } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
+import React, { useEffect, useRef, useState } from "react";
 import TitleBar from "@/components/CommonComponents/Layout/bars/TitleBar";
-import EditIC from "@/Svg/editIC";
 import InfoBox from "@/components/CommonComponents/Box/InfoBox";
 import { ButtonBorder } from "@/components/CommonComponents/Buttons/Button";
-import "@/Style/MTri/Loading.css";
 import { useRouter } from "next/navigation";
 import Input, {
   InputSelection,
 } from "@/components/CommonComponents/Inputs/Inputs";
+import "@/Style/MTri/Loading.css";
 import "@/Style/MTri.css";
+import { toast } from "react-toastify";
+import Image from "next/image";
 
 interface vehicleDetails {
   vehicleLicenseBSX: string;
@@ -37,6 +38,7 @@ interface DriverType {
   driverViolation: number;
   driverStatus: string;
   driverNationality: string;
+  driverAvatar: string;
   activeOrderCount: number;
   vehicleDetails: vehicleDetails;
   userID: string;
@@ -54,31 +56,13 @@ const DriverDetails = () => {
   const handleGenderChange = (value: string) => {
     setDriverGender(Number(value));
   };
-  const handleLicenseChange = (value: string) => {
-    setDriverLicenseType(value);
-  };
-
-  const vehicleTypeOptions: { [key: string]: string } = {
-    "Xe gắn máy": "XGM",
-    "Xe mô tô": "XMT",
-    "Xe ô tô": "XOT",
-  };
-  const licenseTypeOptions: { [key: string]: string } = {
-    "Bằng lái A1": "A1",
-    "Bằng lái A2": "A2",
-  };
-  const xylanhOptions: { [key: string]: number } = {
-    "50cc": 50,
-    "125cc": 125,
-  };
-
   const [warning, setWarning] = useState<string>("");
   const [driverName, setDriverName] = useState<string>("");
   const [driverEmail, setDriverEmail] = useState<string>("");
   const [driverPhone, setDriverPhone] = useState<string>("");
   const [driverAddress, setDriverAddress] = useState<string>("");
-  const [driverBirth, setDriverBirth] = useState<Date>();
-  const [driverCCCDDate, setDriverCCCDDate] = useState<Date>();
+  const [driverBirth, setDriverBirth] = useState<string>("");
+  const [driverCCCDDate, setDriverCCCDDate] = useState<string>("");
   const [driverCCCD, setDriverCCCD] = useState<string>("");
   const [driverLicenseId, setDriverLicenseId] = useState<string>("");
   const [driverVehicleBSX, setDriverVehicleBSX] = useState<string>("");
@@ -86,52 +70,134 @@ const DriverDetails = () => {
   const [driverGender, setDriverGender] = useState<number>(0);
   const [driverNationality, setDriverNationality] = useState<string>("");
   const [userId, setUserId] = useState<string>("");
+  const fileInputRef = useRef(null);
+  const [previewImage, setPreviewImage] = useState(driver?.driverAvatar || "");
 
-  const pathName = usePathname();
-  const id = pathName.split("/").pop();
+  const searchParams = useSearchParams();
+  const id = searchParams.get("id")?.replace(/'/g, "");
+  const email = searchParams.get("email")?.replace(/'/g, "");
+  const phone = searchParams.get("phone")?.replace(/'/g, "");
   const router = useRouter();
 
-  const formatDate = (datetime: Date) => {
-    const date = new Date(datetime);
-    console.log(datetime);
-    const formattedDate = `${date.getDate().toString().padStart(2, "0")}/${(
-      date.getMonth() + 1
-    )
-      .toString()
-      .padStart(2, "0")}/${date.getFullYear()}`;
+  const formatDate = (datetime: Date): string => {
+    const date = new Date(datetime); // Chuyển đối tượng vào Date nếu nó không phải là đối tượng Date
+    const day = date.getDate().toString().padStart(2, "0"); // Lấy ngày và đảm bảo có 2 chữ số
+    const month = (date.getMonth() + 1).toString().padStart(2, "0"); // Lấy tháng và cộng thêm 1 (do tháng bắt đầu từ 0)
+    const year = date.getFullYear(); // Lấy năm
 
-    console.log(formattedDate);
+    const formattedDate = `${day}-${month}-${year}`; // Kết hợp các giá trị thành định dạng dd-mm-yyyy
+
     return formattedDate;
+  };
+
+  const [image, setImage] = useState(null);
+
+  // Xử lý thay đổi file (khi người dùng chọn ảnh)
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      // Hiển thị ảnh preview
+      const imageUrl = URL.createObjectURL(file);
+      setPreviewImage(imageUrl);
+      setImage(file);
+    }
+  };
+
+  const handleSubmit = async () => {
+    if (!image) {
+      alert("Please select an image");
+      return;
+    }
+
+    setIsLoading(true);
+
+    const formData = new FormData();
+    formData.append("file", image);
+    formData.append("upload_preset", "thrisx");
+    formData.append("cloud_name", "dwxm1hn0b");
+
+    try {
+      // Gửi ảnh lên Cloudinary
+      const response = await fetch(
+        "https://api.cloudinary.com/v1_1/dwxm1hn0b/image/upload",
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
+
+      const data = await response.json();
+
+      if (response.ok) {
+        const uploadedImageUrl = data.secure_url || data.url;
+        // Gửi URL ảnh đến backend
+        const addToDB = await fetch(
+          `http://localhost:5000/api/driver/updateAvatar/${driver?.driverId}`, // Thay "12345" bằng ID thực tế
+          {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ driverAvatar: uploadedImageUrl }),
+          }
+        );
+
+        const result = await addToDB.json();
+
+        if (addToDB.ok) {
+          toast.success("Cập nhật thành công");
+        } else {
+          toast.error("Đã có lỗi xảy ra: ", result.message);
+        }
+      } else {
+        toast.success("Cập nhật thất bại");
+      }
+    } catch (error) {
+      console.error("Error uploading image:", error);
+      toast.success("Cập nhật thất bại");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   useEffect(() => {
     const fetchDriverData = async () => {
       setIsLoading(true);
       try {
-        const response = await fetch(`http://localhost:5000/api/driver/${id}`);
-        console.log(id, response);
+        let queryParam = "";
+        if (id !== undefined && id !== null) {
+          queryParam = `id=${id}`;
+        } else if (email !== undefined && email !== null) {
+          queryParam = `email=${email}`;
+        } else if (phone !== undefined && phone !== null) {
+          queryParam = `phone=${phone}`;
+        }
+        const response = await fetch(
+          `http://localhost:5000/api/driver/dri?${queryParam}`
+        );
         if (!response.ok) {
           throw new Error("Driver not found");
         }
         const result = await response.json();
         console.log(result);
-        setDriver(result[0]);
+        setDriver(result);
       } catch (error) {
         console.log(error);
       } finally {
         setIsLoading(false);
       }
     };
-    if (id) {
-      fetchDriverData();
-    }
-  }, [id]);
+    fetchDriverData();
+  }, [id, email, phone]);
 
   const onClickToEdit = () => {
     setIsEditing(true);
   };
 
   const saveUpdate = async () => {
+    if (image) {
+      handleSubmit();
+    }
     try {
       const response = await fetch(
         `http://localhost:5000/api/driver/update/${id}`,
@@ -158,10 +224,13 @@ const DriverDetails = () => {
       );
       const updatedDriver = await response.json();
       if (!response.ok) {
-        console.log(updatedDriver.message);
+        toast.info(updatedDriver.message);
         throw new Error("Error updating driver");
       }
-      console.log("Cập nhật thành công:", updatedDriver);
+      toast.success("Cập nhật thành công!");
+      setTimeout(() => {
+        window.location.reload();
+      }, 1000);
     } catch (error) {
       console.log(error);
     } finally {
@@ -224,27 +293,83 @@ const DriverDetails = () => {
               <div className="boxHeader flex flex-row">
                 <div className="basicDetail flex flex-row bg-white w-full p-6 rounded-md gap-4 ">
                   <div className="detail flex flex-row flex-1 gap-4">
-                    <div className="profileAvt w-[92px] h-[92px] rounded-full" />
+                    <div
+                      className="relative cursor-pointer"
+                      onClick={() => fileInputRef.current.click()}
+                    >
+                      {previewImage ? (
+                        <Image
+                          src={previewImage}
+                          alt="avt"
+                          width={92}
+                          height={92}
+                          className="rounded-full"
+                        />
+                      ) : driver && driver.driverAvatar ? (
+                        <Image
+                          src={driver.driverAvatar}
+                          alt="avt"
+                          width={92}
+                          height={92}
+                          className="rounded-full"
+                        />
+                      ) : (
+                        <div className="profileAvt w-[92px] h-[92px] rounded-full bg-gray-300" />
+                      )}
+                      <input
+                        type="file"
+                        ref={fileInputRef}
+                        style={{ display: "none" }}
+                        accept="image/*"
+                        onChange={handleImageChange}
+                      />
+                    </div>
+
                     <div className="flex flex-col justify-center gap-1">
                       <div className="textIcon flex flex-row items-center justify-between gap-3">
-                        <p className="Gmail text-xs text-navbarText">
+                        <p className="Name text-base text-navbarText font-bold">
                           {driver ? driver.driverName : ""}
                         </p>
-                        <EditIC width={16} height={16} stroke={"#007AFF"} />
                       </div>
                       <div className="textIcon flex flex-row items-center justify-between gap-3">
-                        <p className="Sdt text-xs text-navbarText">
-                          {driver?.driverPhone}
-                        </p>
-                        <EditIC width={16} height={16} stroke={"#007AFF"} />
+                        {isEditing ? (
+                          <input
+                            className="placeholder:text-xs outline-none text-xs text-normalText"
+                            placeholder={
+                              driver && driver.driverPhone
+                                ? String(driver.driverPhone)
+                                : "Bổ sung"
+                            }
+                            value={driverPhone}
+                            onChange={(e) => setDriverPhone(e.target.value)}
+                          />
+                        ) : (
+                          <p className="Address text-xs text-navbarText text-wrap">
+                            {driver && driver.driverPhone !== null
+                              ? driver.driverPhone
+                              : "Bổ sung"}
+                          </p>
+                        )}
                       </div>
                       <div className="textIcon flex flex-row items-center justify-between gap-3">
-                        <p className="Address text-xs text-navbarText text-wrap">
-                          {driver && driver.driverAddress !== null
-                            ? driver.driverAddress
-                            : "Bổ sung"}
-                        </p>
-                        <EditIC width={16} height={16} stroke={"#007AFF"} />
+                        {isEditing ? (
+                          <input
+                            className="placeholder:text-xs outline-none text-xs text-normalText"
+                            placeholder={
+                              driver && driver.driverAddress
+                                ? driver.driverAddress
+                                : "Bổ sung"
+                            }
+                            value={driverAddress}
+                            onChange={(e) => setDriverAddress(e.target.value)}
+                          />
+                        ) : (
+                          <p className="Address text-xs text-navbarText text-wrap">
+                            {driver && driver.driverAddress !== null
+                              ? driver.driverAddress
+                              : "Bổ sung"}
+                          </p>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -282,7 +407,7 @@ const DriverDetails = () => {
 
               {/* Body */}
               {/* Thông tin cá nhân */}
-              <div className="px-6 detailsBox bg-white pb-6 flex flex-col w-full gap-6 items-center">
+              <div className="px-6 detailsBox h-full bg-white pb-6 flex flex-col w-full gap-6 items-center">
                 <div className="driverInfo flex flex-col gap-6 w-full">
                   <p className="text-2xl">Thông tin cá nhân</p>
                   <div className="detailsBox flex flex-row w-full gap-6">
@@ -293,17 +418,30 @@ const DriverDetails = () => {
                       />
                       {isEditing ? (
                         <>
-                          <Input
-                            border={true}
-                            label="Ngày sinh"
-                            placeholder={
-                              driver.driverBirth !== null
-                                ? driver?.driverBirth
-                                : "dd-mm-yyyy"
-                            }
-                            value={driverBirth}
-                            onChange={(e) => setDriverBirth(e.target.value)}
-                          />
+                          <div className="flex flex-col gap-[6px] w-full">
+                            <label className="text-sm text-navbarText">
+                              Ngày sinh ({" "}
+                              <span className="text-primaryText300">
+                                Tháng / Ngày / Năm
+                              </span>{" "}
+                              )
+                            </label>
+                            <div
+                              className="Input flex flex-row h-[42px] w-full rounded-md px-4 py-3 bg-transparent
+          border-solid border-[1px] border-boxOuline items-center"
+                            >
+                              <input
+                                className="w-full bg-transparent outline-none  text-navbarText text-xs placeholder:text-xs"
+                                value={driverBirth}
+                                onChange={(e) => setDriverBirth(e.target.value)}
+                                placeholder={formatDate(
+                                  new Date(
+                                    driver ? driver.driverBirth : "mm-dd-yyyy"
+                                  )
+                                )}
+                              />
+                            </div>
+                          </div>
                           <InputSelection
                             options={genderOptions}
                             onChange={handleGenderChange}
@@ -359,17 +497,30 @@ const DriverDetails = () => {
                             value={driverCCCD}
                             onChange={(e) => setDriverCCCD(e.target.value)}
                           />
-                          <Input
-                            border={true}
-                            label="Ngày cấp"
-                            placeholder={
-                              driver?.driverCCCDDate !== null
-                                ? driver?.driverCCCDDate
-                                : "dd-mm-yyyy"
-                            }
-                            value={driverCCCDDate}
-                            onChange={(e) => setDriverCCCDDate(e.target.value)}
-                          />
+                          <div className="flex flex-col gap-[6px] w-full">
+                            <label className="text-sm text-navbarText">
+                              Ngày cấp ({" "}
+                              <span className="text-primaryText300">
+                                Tháng / Ngày / Năm
+                              </span>{" "}
+                              )
+                            </label>
+                            <div
+                              className="Input flex flex-row h-[42px] w-full rounded-md px-4 py-3 bg-transparent
+          border-solid border-[1px] border-boxOuline items-center"
+                            >
+                              <input
+                                className="w-full bg-transparent outline-none  text-navbarText text-xs placeholder:text-xs"
+                                value={driverCCCDDate}
+                                onChange={(e) =>
+                                  setDriverCCCDDate(e.target.value)
+                                }
+                                placeholder={formatDate(
+                                  new Date(driver ? driver.driverCCCDDate : "")
+                                )}
+                              />
+                            </div>
+                          </div>
                           <Input
                             border={true}
                             label="Số bằng lái"
@@ -545,7 +696,7 @@ const DriverDetails = () => {
                     )}
                   </div>
                 </div> */}
-                <div className="flex flex-row gap-6">
+                <div className="flex flex-row h-full gap-6">
                   <div className="flex items-center w-[342px]">
                     {isEditing ? (
                       <button

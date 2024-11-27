@@ -1,7 +1,7 @@
 /* Kích thước cột */
 .driverTable th:nth-child(1),
 .driverTable td:nth-child(1) {
-  width: 5%; /* Cột STT */
+  width: 50px; /* Cột STT */
 }
 
 .driverTable th:nth-child(2),
@@ -11,45 +11,46 @@
 
 .driverTable th:nth-child(3),
 .driverTable td:nth-child(3) {
-  width: 10%; /* Status */
+  width: 10%; /* Trạng thái */
 }
 
 .driverTable th:nth-child(4),
 .driverTable td:nth-child(4) {
-  width: 10%; /* Họ */
+  width: 15%; /* Họ */
 }
 
 .driverTable th:nth-child(5),
 .driverTable td:nth-child(5) {
-  width: 7%; /* Tên */
+  width: 10%; /* Tên */
 }
 
 .driverTable th:nth-child(6),
 .driverTable td:nth-child(6) {
-  width: 10%; /* Giới tính */
+  width: auto; /* Giới tính */
 }
 
 .driverTable th:nth-child(7),
 .driverTable td:nth-child(7) {
-  width: 10%; /* SĐT */
+  width: auto; /* Số điện thoại */
 }
 
 .driverTable th:nth-child(8),
 .driverTable td:nth-child(8) {
-  width: 8%; /* Khu vực */
+  width: 10%; /* Khu vực */
 }
+
 .driverTable th:nth-child(9),
 .driverTable td:nth-child(9) {
-  width: 10%; /* Biển số */
+  width: auto; /* Đơn nhận */
 }
+
 .driverTable th:nth-child(10),
 .driverTable td:nth-child(10) {
-  width: 10%; /* Cảnh cáo */
+  width: auto; /* Cảnh cáo */
 }
 
 tbody {
   display: block; /* Để kích hoạt scroll cho tbody */
-  max-height: 500px; /* Giới hạn chiều cao tối đa */
   overflow-y: auto; /* Cho phép cuộn khi vượt quá chiều cao */
 }
 

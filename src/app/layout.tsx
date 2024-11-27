@@ -4,6 +4,8 @@ import "./globals.css";
 import Head from "next/head";
 import AppProvider from "./AppProvider";
 import { cookies } from "next/headers";
+import { RoleProvider } from "@/contexts/RoleContext";
+import { UsernameProvider } from "@/contexts/UsernameContext";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -33,14 +35,15 @@ export default function RootLayout({
     <html lang="en">
       <Head>
         <meta httpEquiv="Content-Language" content="en" />{" "}
-        {/* Thay 'en' bằng ngôn ngữ của bạn */}
         <meta name="google" content="notranslate" /> {/* Ngăn Google dịch */}
       </Head>
       <body
         className={`min-h-[100vh] ${geistSans.variable} ${geistMono.variable} antialiased `}
       >
         <AppProvider inititalSessionToken={sessionToken?.value}>
-          {children}
+          <RoleProvider>
+            <UsernameProvider>{children}</UsernameProvider>
+          </RoleProvider>
         </AppProvider>
       </body>
     </html>

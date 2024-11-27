@@ -20,8 +20,8 @@
   font-size: 12px;
 }
 
-table {
-  width: full;
+.cusTable {
+  width: 100%;
   border-collapse: collapse;
   box-sizing: border-box;
   font-family: "Lato", sans-serif;
@@ -57,7 +57,7 @@ tbody::before {
   display: block;
   line-height: 6px;
   text-indent: -99999px;
-  background-color: #f9faff;
+  background-color: #f9f9f9;
 }
 tbody tr {
   border-bottom: thin solid #f9faff;
@@ -97,7 +97,6 @@ tbody tr {
 
 tbody {
   display: block;
-  max-height: 500px;
   overflow-y: auto;
 }
 
@@ -129,7 +128,7 @@ tbody tr:hover {
 
 .right-bottom {
   padding: 24px;
-  background-color: #f9faff;
+  background-color: #cbcbcbcb;
 }
 
 .nav {
@@ -140,17 +139,17 @@ tbody tr:hover {
 /* Kích thước cột */
 .cusTable th:nth-child(1),
 .cusTable td:nth-child(1) {
-  width: 5%; /* Cột STT */
+  width: 50px; /* Cột STT */
 }
 
 .cusTable th:nth-child(2),
 .cusTable td:nth-child(2) {
-  width: 12%; /* Mã khách hàng */
+  width: 10%; /* Mã khách hàng */
 }
 
 .cusTable th:nth-child(3),
 .cusTable td:nth-child(3) {
-  width: 10%; /* Họ */
+  width: auto; /* Họ */
 }
 
 .cusTable th:nth-child(4),
@@ -165,14 +164,14 @@ tbody tr:hover {
 
 .cusTable th:nth-child(6),
 .cusTable td:nth-child(6) {
-  width: 10%; /* Số điện thoại */
+  width: auto; /* Số điện thoại */
 }
 .cusTable th:nth-child(7),
 .cusTable td:nth-child(7) {
-  width: 13%; /* Gmail */
+  width: auto; /* Gmail */
 }
 
 .cusTable th:nth-child(8),
 .cusTable td:nth-child(8) {
-  width: 22%; /* Địa chỉ */
+  width: auto; /* Địa chỉ */
 }

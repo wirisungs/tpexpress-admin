@@ -1,7 +1,7 @@
 /* Kích thước cột */
 .orderOfCusTable th:nth-child(1),
 .orderOfCusTable td:nth-child(1) {
-  width: 5%; /* Cột STT */
+  width: 50px; /* Cột STT */
 }
 
 .orderOfCusTable th:nth-child(2),
@@ -31,17 +31,53 @@
 
 .orderOfCusTable th:nth-child(7),
 .orderOfCusTable td:nth-child(7) {
-  width: 15%; /* Địa chỉ */
+  width: auto; /* Địa chỉ */
 }
 
 .orderOfCusTable th:nth-child(8),
 .orderOfCusTable td:nth-child(9) {
-  width: auto; /* Trạng thái */
+  width: 15%; /* Trạng thái */
+}
+
+/* RequestTable */
+/* Kích thước cột */
+.requestOfCusTable th:nth-child(1),
+.requestOfCusTable td:nth-child(1) {
+  width: 50px; /* Cột STT */
+}
+
+.requestOfCusTable th:nth-child(2),
+.requestOfCusTable td:nth-child(2) {
+  width: auto; /* Mã yêu cầu */
+}
+
+.requestOfCusTable th:nth-child(3),
+.requestOfCusTable td:nth-child(3) {
+  width: auto; /* Mã đơn */
+}
+
+.requestOfCusTable th:nth-child(4),
+.requestOfCusTable td:nth-child(4) {
+  width: auto; /* Ngày yêu cầu */
+}
+
+.requestOfCusTable th:nth-child(5),
+.requestOfCusTable td:nth-child(5) {
+  width: auto; /* Loại yêu cầu */
+}
+
+.requestOfCusTable th:nth-child(6),
+.requestOfCusTable td:nth-child(6) {
+  width: auto; /* Đính kèm */
+}
+
+.requestOfCusTable th:nth-child(7),
+.requestOfCusTable td:nth-child(7) {
+  width: auto; /* Địa chỉ */
 }
 
 tbody {
   display: block; /* Để kích hoạt scroll cho tbody */
-  max-height: 500px; /* Giới hạn chiều cao tối đa */
   overflow-y: auto; /* Cho phép cuộn khi vượt quá chiều cao */
 }
 
@@ -93,8 +129,8 @@ tbody tr:hover {
   font-size: 12px;
 }
 
-table {
-  width: full;
+.cusTable {
+  width: 100%;
   border-collapse: collapse;
   box-sizing: border-box;
   font-family: "Lato", sans-serif;
