@@ -70,7 +70,11 @@ export const RankingChart = () => {
         <ResponsiveContainer width="100%" height="100%">
           <BarChart layout="vertical" data={rankings}>
             <CartesianGrid strokeDasharray="3 3" />
-            <XAxis tick={{ fontSize: 12 }} type="number" />
+            <XAxis
+              tick={{ fontSize: 12 }}
+              type="number"
+              allowDecimals={false}
+            />
             <YAxis
               interval={0}
               tick={{ fontSize: 12 }}

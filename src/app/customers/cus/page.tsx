@@ -9,6 +9,8 @@ import "@/Style/MTri/TableSetupOrderCus.css";
 import "@/Style/MTri.css";
 
 import SortIC from "@/Svg/sortIC";
+import AcceptIC from "@/Svg/accept";
+import { toast } from "react-toastify";
 type customerType = {
   cusId: string;
   cusName: string;
@@ -81,11 +83,51 @@ const CusDetails = () => {
   // const id = pathName.split("/").pop();
 
   const [customer, setCustomer] = useState<customerType | null>(null);
+  const [cusEmail, setCusEmail] = useState<string>("");
+  const [cusPhone, setCusPhone] = useState<string>("");
+  const [cusAddress, setCusAddress] = useState<string>("");
   const [requests, setRequests] = useState<CSKHType[]>([]);
   const [tab, setTab] = useState<string>("LSD"); // LSD: Lịch sử đơn, LSYC: Lịch sử yêu cầu
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [orderWarning, setOrderWarning] = useState<string>("");
   const [requestWarning, setRequestWarning] = useState<string>("");
+  const [isEditing, setIsEditing] = useState<boolean>(false);
+
+  const handleEdit = () => {
+    setIsEditing(true);
+  };
+
+  const handleUpdate = async () => {
+    try {
+      const response = await fetch(
+        `http://localhost:5000/api/customer/update/${customer?.cusId}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            cusEmail,
+            cusPhone,
+            cusAddress,
+          }),
+        }
+      );
+      const updatedCustomer = await response.json();
+      if (!response.ok) {
+        toast.info(updatedCustomer.message);
+        throw new Error("Error updating driver");
+      }
+      toast.success("Cập nhật thành công!");
+      setTimeout(() => {
+        window.location.reload();
+      }, 1000);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsEditing(false);
+    }
+  };
 
   const handleClick = (tabName: string) => {
     setTab(tabName);
@@ -218,26 +260,93 @@ const CusDetails = () => {
                   <div className="detail flex flex-row flex-1 gap-4">
                     <div className="profileAvt w-[92px] h-[92px] rounded-full bg-slate-300" />
                     <div className="flex flex-col justify-center gap-1">
-                      <p className="Name font-bold text-base">
-                        {customer ? customer.cusName : ""}
-                      </p>
-                      <div className="textIcon flex flex-row items-center justify-between gap-3">
-                        <p className="Gmail text-xs text-navbarText">
-                          {customer ? customer.cusEmail : ""}
+                      <div className="flex flex-row gap-3 items-center">
+                        <p className="Name font-bold text-base">
+                          {customer ? customer.cusName : ""}
                         </p>
-                        <EditIC width={16} height={16} stroke={"#007AFF"} />
+                        {isEditing ? (
+                          <button type="button" onClick={() => handleUpdate()}>
+                            <AcceptIC width={16} height={16} fill="#0da651" />
+                          </button>
+                        ) : (
+                          <button type="button" onClick={() => handleEdit()}>
+                            <EditIC width={16} height={16} stroke="#1c1c1c" />
+                          </button>
+                        )}
                       </div>
-                      <div className="textIcon flex flex-row items-center justify-between gap-3">
-                        <p className="Sdt text-xs text-navbarText">
-                          0383478483
-                        </p>
-                        <EditIC width={16} height={16} stroke={"#007AFF"} />
+
+                      {/* Trường email khách hàng */}
+                      <div className="textIcon flex flex-row ">
+                        {isEditing ? (
+                          <div className="flex flex-row w-full items-center justify-between">
+                            <input
+                              className="placeholder:text-xs outline-none text-xs text-normalText"
+                              placeholder={
+                                customer && customer.cusEmail
+                                  ? customer.cusEmail
+                                  : "Bổ sung"
+                              }
+                              value={cusEmail}
+                              onChange={(e) => setCusEmail(e.target.value)}
+                            />
+                          </div>
+                        ) : (
+                          <div className="flex flex-row w-full items-center justify-between gap-3">
+                            <p className="Gmail text-xs text-navbarText">
+                              {customer ? customer.cusEmail : ""}
+                            </p>
+                          </div>
+                        )}
                       </div>
-                      <div className="textIcon flex flex-row items-center justify-between gap-3">
-                        <p className="Address text-xs text-navbarText text-wrap">
-                          {customer ? customer.cusAddress : ""}
-                        </p>
-                        <EditIC width={16} height={16} stroke={"#007AFF"} />
+                      {/* Trường sđt khách hàng */}
+                      <div className="textIcon flex flex-row ">
+                        {isEditing ? (
+                          <div className="flex flex-row w-full items-center justify-between">
+                            <input
+                              className="placeholder:text-xs outline-none text-xs text-normalText"
+                              placeholder={
+                                customer && customer?.cusPhone
+                                  ? String(customer.cusPhone)
+                                  : "Bổ sung"
+                              }
+                              value={cusPhone}
+                              onChange={(e) => setCusPhone(e.target.value)}
+                            />
+                          </div>
+                        ) : (
+                          <div className="flex flex-row w-full items-center justify-between gap-3">
+                            <p className="Gmail text-xs text-navbarText">
+                              {customer && customer.cusPhone
+                                ? customer.cusPhone
+                                : "Bổ sung"}
+                            </p>
+                          </div>
+                        )}
+                      </div>
+                      {/* Trường địa chỉ khách hàng */}
+                      <div className="textIcon flex flex-row ">
+                        {isEditing ? (
+                          <div className="flex flex-row w-full items-center justify-between">
+                            <input
+                              className="placeholder:text-xs outline-none text-xs text-normalText"
+                              placeholder={
+                                customer && customer?.cusAddress
+                                  ? customer.cusAddress
+                                  : "Bổ sung"
+                              }
+                              value={cusAddress}
+                              onChange={(e) => setCusAddress(e.target.value)}
+                            />
+                          </div>
+                        ) : (
+                          <div className="flex flex-row w-full items-center justify-between gap-3">
+                            <p className="Gmail text-xs text-navbarText">
+                              {customer && customer.cusAddress
+                                ? customer.cusAddress
+                                : "Bổ sung"}
+                            </p>
+                          </div>
+                        )}
                       </div>
                     </div>
                   </div>

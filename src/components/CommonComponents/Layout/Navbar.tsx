@@ -4,7 +4,7 @@ import NavbarTab from "./Items/NavbarTab";
 import GetToken from "@/app/libs/GetToken";
 import RemoveToken from "@/app/libs/RemoveToken";
 import { useRouter } from "next/navigation";
-import { ToastContainer } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 import { useRole } from "@/contexts/RoleContext";
 import { useUserName } from "@/contexts/UsernameContext";
 
@@ -15,6 +15,7 @@ interface LayoutProps {
 const Navbar: React.FC<LayoutProps> = React.memo(({ children }) => {
   const [userName, setUserName] = useState<string | null>(null);
   const [userRole, setUserRole] = useState<string | null>(null);
+  const [userPhone, setUserPhone] = useState<string>("");
 
   const { role } = useRole();
   const { fullName } = useUserName();
@@ -60,13 +61,14 @@ const Navbar: React.FC<LayoutProps> = React.memo(({ children }) => {
       }
 
       const gettedData = await res.json();
-      console.log(gettedData);
+      console.log("data:", gettedData);
       const userNameFromAPI = gettedData.data?.userName;
       const userRoleFromAPI = gettedData.data?.userRole;
-
+      const userPhoneFromAPI = gettedData.data?.userPhone;
       // Lưu thông tin vào state và localStorage
       setUserName(userNameFromAPI);
       setUserRole(userRoleFromAPI);
+      setUserPhone(userPhoneFromAPI);
       localStorage.setItem("userName", userNameFromAPI);
       localStorage.setItem("userRole", userRoleFromAPI);
       console.log(userRole);
@@ -75,10 +77,26 @@ const Navbar: React.FC<LayoutProps> = React.memo(({ children }) => {
     }
   };
 
-  const logout = () => {
+  const logout = async () => {
     localStorage.removeItem("userName");
     localStorage.removeItem("userRole");
     RemoveToken();
+    try {
+      const response = await fetch(
+        `http://localhost:5000/api/user/logout/${userPhone}`,
+        { method: "POST" }
+      );
+      if (!response.ok) {
+        const dataError = await response.json();
+        toast.error(dataError.message);
+      }
+      const result = await response.json();
+      if (result) {
+        toast.success("Đăng xuất thành công!");
+      }
+    } catch (error) {
+      console.log(error);
+    }
     router.push("/");
   };
 

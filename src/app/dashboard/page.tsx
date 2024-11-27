@@ -36,7 +36,7 @@ const Dashboard = () => {
     const getData = async () => {
       try {
         const response = await fetch(
-          "http://localhost:5000/api/order/getOrder5Days"
+          "http://localhost:5000/api/order/getOrder7Days"
         );
         if (!response.ok) {
           throw new Error("Lỗi mạng. Kiểm tra đường truyền!");
@@ -60,18 +60,19 @@ const Dashboard = () => {
             return dateA.getTime() - dateB.getTime(); // So sánh thời gian để sắp xếp
           }
         );
+        console.log(sortedResult);
 
         // Log sau khi sắp xếp
         // console.log("Sorted Result:", sortedResult);
 
         // Ánh xạ dữ liệu vào xLabels và orderTotalPrice
-        const xLabels = sortedResult.map((item: { _id: string }) => item._id);
+        const xLabels = sortedResult.map((item: { date: Date }) => item.date);
         const orderTotalPrice = sortedResult.map(
           (item: { deliverPrice: number }) => item.deliverPrice
         );
 
         // Log dữ liệu đã ánh xạ
-        // console.log("Mapped Data:", { xLabels, orderTotalPrice });
+        console.log("Mapped Data:", { xLabels, orderTotalPrice });
 
         // Cập nhật state
         setOrderPriceOfDate({ xLabels, orderTotalPrice });
@@ -119,21 +120,15 @@ const Dashboard = () => {
         ]}
         xAxis={[{ scaleType: "point", data: orderPriceOfDate.xLabels }]}
         sx={{
-          [`.${lineElementClasses.root}, .${markElementClasses.root}`]: {
-            strokeWidth: 1,
+          [`& .${lineElementClasses.root}`]: {
+            stroke: "#8884d8",
+            strokeWidth: 2,
           },
-          ".MuiLineElement-series-pvId": {
-            strokeDasharray: "5 5",
-          },
-          ".MuiLineElement-series-uvId": {
-            strokeDasharray: "3 4 5 2",
-          },
-          [`.${markElementClasses.root}:not(.${markElementClasses.highlighted})`]:
-            {
-              fill: "#fff",
-            },
-          [`& .${markElementClasses.highlighted}`]: {
-            stroke: "none",
+          [`& .${markElementClasses.root}`]: {
+            stroke: "#8884d8",
+            scale: "0.6",
+            fill: "#fff",
+            strokeWidth: 2,
           },
         }}
       />
@@ -162,13 +157,13 @@ const Dashboard = () => {
             <CommonSpecifications
               fluctuationType="price"
               fluctuationValue={
-                orderPriceOfDate.orderTotalPrice[4] -
-                orderPriceOfDate.orderTotalPrice[3]
+                orderPriceOfDate.orderTotalPrice[6] -
+                orderPriceOfDate.orderTotalPrice[5]
               }
               color="#81E7A5"
               quantity={
-                orderPriceOfDate.orderTotalPrice[4]
-                  ? orderPriceOfDate.orderTotalPrice[4]
+                orderPriceOfDate.orderTotalPrice[6]
+                  ? orderPriceOfDate.orderTotalPrice[6]
                   : 0
               }
               subtitle="Doanh thu hôm nay"

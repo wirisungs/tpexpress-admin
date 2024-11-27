@@ -6,17 +6,17 @@
 
 .driverTable th:nth-child(2),
 .driverTable td:nth-child(2) {
-  width: 10%; /* Mã tài khoản */
+  width: 10%; /* Mã tài xế */
 }
 
 .driverTable th:nth-child(3),
 .driverTable td:nth-child(3) {
-  width: 10%; /* Số điện thoại */
+  width: 10%; /* Trạng thái */
 }
 
 .driverTable th:nth-child(4),
 .driverTable td:nth-child(4) {
-  width: auto; /* Họ */
+  width: 15%; /* Họ */
 }
 
 .driverTable th:nth-child(5),
@@ -26,17 +26,27 @@
 
 .driverTable th:nth-child(6),
 .driverTable td:nth-child(6) {
-  width: 15%; /* Email */
+  width: auto; /* Giới tính */
 }
 
 .driverTable th:nth-child(7),
 .driverTable td:nth-child(7) {
-  width: auto; /* Trạng thái */
+  width: auto; /* Số điện thoại */
 }
 
 .driverTable th:nth-child(8),
 .driverTable td:nth-child(8) {
-  width: 10%; /* Vai trò */
+  width: 10%; /* Khu vực */
+}
+
+.driverTable th:nth-child(9),
+.driverTable td:nth-child(9) {
+  width: auto; /* Đơn nhận */
+}
+
+.driverTable th:nth-child(10),
+.driverTable td:nth-child(10) {
+  width: auto; /* Cảnh cáo */
 }
 
 tbody {

@@ -153,3 +153,47 @@ input[type="number"] {
   background-image: url("../Pictures/Image_MT/NoResult.png");
   background-size: cover;
 }
+
+
+/* Loading bar */
+/* Container giữ thanh loading */
+.loading-bar-container {
+  width: 50px; /* Chiều rộng của khung */
+  height: 2px; /* Chiều cao của khung */
+  background-color: #e0e0e0; /* Màu nền khung */
+  border-radius: 5px; /* Bo góc cho khung */
+  overflow: hidden; /* Ẩn phần vượt ra ngoài */
+  position: relative; /* Đặt tương đối để thanh loading di chuyển trong khung */
+}
+
+/* Thanh loading */
+.loading-bar {
+  width: 100%; /* Chiều rộng ban đầu của thanh loading */
+  height: 100%; /* Chiều cao của thanh bằng với khung */
+  background-color: #2FA087; /* Màu của thanh */
+  border-radius: 5px; /* Bo góc thanh */
+  position: absolute; /* Đặt vị trí tuyệt đối để di chuyển */
+  animation: move-bar 2s linear infinite; /* Hiệu ứng di chuyển lặp lại vô hạn */
+}
+
+.loading-bar-success {
+  height: 100%; /* Chiều cao của thanh bằng với khung */
+  background-color: #2FA087; /* Màu của thanh */
+  border-radius: 5px; /* Bo góc thanh */
+}
+
+.loading-bar-notyet {
+  height: 100%; /* Chiều cao của thanh bằng với khung */
+  background-color: #e0e0e0; /* Màu của thanh */
+  border-radius: 5px; /* Bo góc thanh */
+}
+
+/* Hiệu ứng thanh di chuyển */
+@keyframes move-bar {
+  0% {
+    transform: translateX(-100%); /* Bắt đầu ngoài khung */
+  }
+  100% {
+    transform: translateX(100%); /* Di chuyển hết khung */
+  }
+}

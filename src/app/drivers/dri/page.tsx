@@ -3,14 +3,13 @@ import Navbar from "@/components/CommonComponents/Layout/Navbar";
 import { useSearchParams } from "next/navigation";
 import React, { useEffect, useRef, useState } from "react";
 import TitleBar from "@/components/CommonComponents/Layout/bars/TitleBar";
-import EditIC from "@/Svg/editIC";
 import InfoBox from "@/components/CommonComponents/Box/InfoBox";
 import { ButtonBorder } from "@/components/CommonComponents/Buttons/Button";
-import "@/Style/MTri/Loading.css";
 import { useRouter } from "next/navigation";
 import Input, {
   InputSelection,
 } from "@/components/CommonComponents/Inputs/Inputs";
+import "@/Style/MTri/Loading.css";
 import "@/Style/MTri.css";
 import { toast } from "react-toastify";
 import Image from "next/image";
@@ -57,24 +56,6 @@ const DriverDetails = () => {
   const handleGenderChange = (value: string) => {
     setDriverGender(Number(value));
   };
-  const handleLicenseChange = (value: string) => {
-    setDriverLicenseType(value);
-  };
-
-  const vehicleTypeOptions: { [key: string]: string } = {
-    "Xe gắn máy": "XGM",
-    "Xe mô tô": "XMT",
-    "Xe ô tô": "XOT",
-  };
-  const licenseTypeOptions: { [key: string]: string } = {
-    "Bằng lái A1": "A1",
-    "Bằng lái A2": "A2",
-  };
-  const xylanhOptions: { [key: string]: number } = {
-    "50cc": 50,
-    "125cc": 125,
-  };
-
   const [warning, setWarning] = useState<string>("");
   const [driverName, setDriverName] = useState<string>("");
   const [driverEmail, setDriverEmail] = useState<string>("");
@@ -110,7 +91,6 @@ const DriverDetails = () => {
   };
 
   const [image, setImage] = useState(null);
-  const [imageUrl, setImageUrl] = useState("");
 
   // Xử lý thay đổi file (khi người dùng chọn ảnh)
   const handleImageChange = (e) => {
@@ -150,8 +130,6 @@ const DriverDetails = () => {
 
       if (response.ok) {
         const uploadedImageUrl = data.secure_url || data.url;
-        setImageUrl(uploadedImageUrl);
-        console.log(uploadedImageUrl);
         // Gửi URL ảnh đến backend
         const addToDB = await fetch(
           `http://localhost:5000/api/driver/updateAvatar/${driver?.driverId}`, // Thay "12345" bằng ID thực tế
@@ -341,8 +319,8 @@ const DriverDetails = () => {
                       <input
                         type="file"
                         ref={fileInputRef}
-                        style={{ display: "none" }} // Ẩn input
-                        accept="image/*" // Chỉ cho phép chọn ảnh
+                        style={{ display: "none" }}
+                        accept="image/*"
                         onChange={handleImageChange}
                       />
                     </div>

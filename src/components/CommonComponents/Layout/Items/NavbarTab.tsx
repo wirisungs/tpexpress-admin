@@ -98,7 +98,7 @@ const NavbarTab: React.FC<navbarTabProps> = ({ userRole }) => {
             } flex flex-row pl-8 pr-4 items-center gap-3 py-3`}
           >
             <div className="Icon">
-              <KeyIC stroke={"#696969"} width={16} height={16} />
+              <OrderIC stroke={"#696969"} width={16} height={16} />
             </div>
             <div className={`Text text-[12px] text-navbarText`}>Đơn hàng</div>
           </Link>
@@ -116,7 +116,7 @@ const NavbarTab: React.FC<navbarTabProps> = ({ userRole }) => {
             } flex flex-row pl-8 pr-4 items-center gap-3 py-3`}
           >
             <div className="Icon">
-              <KeyIC stroke={"#696969"} width={16} height={16} />
+              <RequestIC fill={"#696969"} width={16} height={16} />
             </div>
             <div className={`Text text-[12px] text-navbarText`}>
               Yêu cầu hỗ trợ

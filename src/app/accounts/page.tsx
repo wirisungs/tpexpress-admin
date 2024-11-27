@@ -6,7 +6,7 @@ import Navbar from "@/components/CommonComponents/Layout/Navbar";
 // Icons && CSS
 import SortIC from "@/Svg/sortIC";
 import AddEmployeeIC from "@/Svg/addEmployee";
-import "@/Style/MTri/TableSetup.css";
+import "@/Style/MTri/AccountTable.css";
 import "@/Style/MTri/Loading.css";
 
 import Button from "@/components/CommonComponents/Buttons/Button";
@@ -17,8 +17,7 @@ type UserAccountType = {
   userPhone: string;
   userRole: string;
   userEmail: string;
-  userVerify: boolean;
-  driverDetail: DriverType;
+  userStatus: string;
   employeeDetail: EmployeeType;
 };
 
@@ -30,33 +29,15 @@ type EmployeeType = {
   employeeStatus: string;
   userID: string;
 };
-type DriverType = {
-  driverId: string;
-  driverName: string;
-  driverEmail: string;
-  driverPhone: number;
-  driverAddress: string;
-  driverBirthday: string;
-  driverCCCDDate: string;
-  driverCCCD: string;
-  driverLicense: string;
-  driverVehicleBSX: string;
-  driverLicenseType: string;
-  driverGender: number;
-  driverViolation: number;
-  driverStatus: string;
-  driverNationality: string;
-  activeOrderCount: number;
-  userID: string;
-};
 
 const AccountTable: React.FC = () => {
   const [users, setUsers] = useState<UserAccountType[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [searchValue, setSearchValue] = useState<string>("");
 
   const router = useRouter();
   const handleClick = (driverId: string) => {
-    router.push(`/drivers/${driverId}`);
+    router.push(`/accounts/accountdetails?id=${driverId}`);
   };
 
   const fetchData = async () => {
@@ -92,22 +73,41 @@ const AccountTable: React.FC = () => {
     return fullname.split(" ").slice(-1).join(" ");
   };
 
+  const getUserRole = (role: string) => {
+    switch (role) {
+      case "Admin": {
+        return "Quản trị viên";
+      }
+      case "Support": {
+        return "Nhân viên CSKH";
+      }
+      case "Saleman": {
+        return "Nhân viên kinh doanh";
+      }
+      default: {
+        return "---";
+      }
+    }
+  };
+
   const [sortState, setSortState] = useState<{
     phone: boolean;
     lastName: boolean;
     firstMiddleName: boolean;
     email: boolean;
     role: boolean;
+    status: boolean;
   }>({
     phone: false,
     lastName: false,
     firstMiddleName: false,
     email: false,
     role: false,
+    status: false,
   });
 
   const sortUsers = (
-    key: "phone" | "lastName" | "firstMiddleName" | "email" | "role"
+    key: "phone" | "lastName" | "firstMiddleName" | "email" | "role" | "status"
   ) => {
     const sortedUsers = [...users].sort(
       (a: UserAccountType, b: UserAccountType): number => {
@@ -119,21 +119,21 @@ const AccountTable: React.FC = () => {
             return sortState.phone ? -comparison : comparison;
           case "lastName":
             const driverLastNameA =
-              getLastName(a.driverDetail?.driverName) || "";
+              getLastName(a.employeeDetail.employeeName) || "";
             const driverLastNameB =
-              getLastName(b.driverDetail?.driverName) || "";
+              getLastName(b.employeeDetail?.employeeName) || "";
             comparison = driverLastNameA.localeCompare(driverLastNameB);
             return sortState.lastName ? -comparison : comparison;
           case "firstMiddleName":
             const driverA =
-              getFirstAndMiddleName(a.driverDetail?.driverName) || "";
+              getFirstAndMiddleName(a.employeeDetail?.employeeName) || "";
             const driverB =
-              getFirstAndMiddleName(b.driverDetail?.driverName) || "";
+              getFirstAndMiddleName(b.employeeDetail?.employeeName) || "";
             comparison = driverA.localeCompare(driverB);
             return sortState.firstMiddleName ? -comparison : comparison;
           case "email":
-            const emailA = a.driverDetail?.driverEmail || "";
-            const emailB = b.driverDetail?.driverEmail || "";
+            const emailA = a.employeeDetail?.employeeEmail || "";
+            const emailB = b.employeeDetail?.employeeEmail || "";
             console.log(emailA, emailB);
             comparison = emailA.localeCompare(emailB);
             return sortState.email ? -comparison : comparison;
@@ -142,6 +142,11 @@ const AccountTable: React.FC = () => {
             const userRoleB = b.userRole || "";
             comparison = userRoleA.localeCompare(userRoleB);
             return sortState.role ? -comparison : comparison;
+          case "status":
+            const statusA = a.userStatus || "";
+            const statusB = b.userStatus || "";
+            comparison = statusA.localeCompare(statusB);
+            return sortState.status ? -comparison : comparison;
           default:
             return 0;
         }
@@ -160,9 +165,12 @@ const AccountTable: React.FC = () => {
             <div className="w-[342px]">
               <InputWithIcon
                 purpose="search"
-                placeholder="Nhập số điện thoại để tìm kiếm"
+                placeholder="Nhập số điện thoại hoặc mã tài khoản để tìm kiếm"
                 background={true}
+                value={searchValue}
+                onChange={(e) => setSearchValue(e.target.value)}
                 border={false}
+                pageOfAPI="accDetails"
               />
             </div>
             <div className="w-[168px]">
@@ -181,7 +189,7 @@ const AccountTable: React.FC = () => {
               </p>
             </div>
             <div className="table-container h-full">
-              <table className="driverTable min-w-full h-full bg-white table-fixed rounded-md">
+              <table className="accountTable min-w-full h-full bg-white table-fixed rounded-md">
                 {/* Title từng cột */}
                 <thead>
                   <tr>
@@ -265,67 +273,69 @@ const AccountTable: React.FC = () => {
                         onClick={() => handleClick(user.userId)}
                         className="cursor-pointer"
                       >
-                        {user.employeeDetail && (
-                          <>
-                            <td className="h-[42px] break-words p-3 text-left truncate">
-                              <div className="flex flex-row gap-[6px] items-center h-full w-full justify-end">
-                                <p>{index + 1}</p>
-                              </div>
-                            </td>
-                            <td className="h-[42px] items-center break-words  p-3 text-left truncate">
-                              <div className="flex flex-row gap-[6px] items-center h-full">
-                                <p>{user.userId}</p>
-                              </div>
-                            </td>
-                            <td className="h-[42px] items-center break-words  p-3 text-left truncate">
-                              <div className="flex flex-row gap-[6px] items-center h-full">
-                                <p>{user.userPhone}</p>
-                              </div>
-                            </td>
-                            <td className="h-[42px] items-center break-words  p-3 text-left truncate">
-                              <div className="flex flex-row gap-[6px] items-center h-full">
-                                <p>
-                                  {getFirstAndMiddleName(
-                                    user.employeeDetail.employeeName
-                                  )}
-                                </p>
-                              </div>
-                            </td>
-                            <td className="h-[42px] items-center break-words  p-3 text-left truncate">
-                              <div className="flex flex-row gap-[6px] items-center h-full">
-                                <p>
-                                  {getLastName(
-                                    user.employeeDetail.employeeName
-                                  )}
-                                </p>
-                              </div>
-                            </td>
-                            <td className="h-[42px] items-center break-words  p-3 text-left truncate">
-                              <div className="flex flex-row gap-[6px] items-center h-full  ">
-                                <p className=" overflow-hidden text-ellipsis">
-                                  {user.employeeDetail.employeeEmail}
-                                </p>
-                              </div>
-                            </td>
-                            <td className="h-[42px] items-center break-words  p-3 text-left truncate">
-                              <div className="flex flex-row gap-[6px] items-center h-full">
-                                <p>
-                                  {user.employeeDetail.employeeStatus
-                                    ? "Hoạt động"
-                                    : "Không hoạt động"}
-                                </p>
-                              </div>
-                            </td>
+                        <td className="h-[42px] break-words p-3 text-left truncate">
+                          <div className="flex flex-row gap-[6px] items-center h-full w-full justify-end">
+                            <p>{index + 1}</p>
+                          </div>
+                        </td>
+                        <td className="h-[42px] items-center break-words  p-3 text-left truncate">
+                          <div className="flex flex-row gap-[6px] items-center h-full">
+                            <p>{user.userId}</p>
+                          </div>
+                        </td>
+                        <td className="h-[42px] items-center break-words  p-3 text-left truncate">
+                          <div className="flex flex-row gap-[6px] items-center h-full">
+                            <p>{user.userPhone}</p>
+                          </div>
+                        </td>
+                        <td className="h-[42px] items-center break-words  p-3 text-left truncate">
+                          <div className="flex flex-row gap-[6px] items-center h-full">
+                            <p>
+                              {getFirstAndMiddleName(
+                                user.employeeDetail.employeeName
+                              )}
+                            </p>
+                          </div>
+                        </td>
+                        <td className="h-[42px] items-center break-words  p-3 text-left truncate">
+                          <div className="flex flex-row gap-[6px] items-center h-full">
+                            <p>
+                              {getLastName(user.employeeDetail.employeeName)}
+                            </p>
+                          </div>
+                        </td>
+                        <td className="h-[42px] items-center break-words  p-3 text-left truncate">
+                          <div className="flex flex-row gap-[6px] items-center h-full  ">
+                            <p className=" overflow-hidden text-ellipsis">
+                              {user.employeeDetail.employeeEmail}
+                            </p>
+                          </div>
+                        </td>
+                        <td className="h-[42px] items-center break-words  p-3 text-left truncate">
+                          <div className="flex flex-row gap-[6px] items-center h-full">
+                            <p
+                              style={{
+                                color: `${
+                                  user.userStatus === "deactive"
+                                    ? "#f61317"
+                                    : "#0da651"
+                                }`,
+                              }}
+                            >
+                              {user.userStatus === "deactive"
+                                ? "Không hoạt động"
+                                : "Đang hoạt động"}
+                            </p>
+                          </div>
+                        </td>
 
-                            <td className="h-[42px] items-center break-words  p-3 text-center truncate">
-                              <div className="flex flex-row gap-[6px] items-center h-full">
-                                <p className="overflow-hidden text-ellipsis whitespace-nowrap">
-                                  {user.userRole === "Admin" && "Quản trị viên"}
-                                </p>
-                              </div>
-                            </td>
-                          </>
-                        )}
+                        <td className="h-[42px] items-center break-words  p-3 text-center truncate">
+                          <div className="flex flex-row gap-[6px] items-center h-full">
+                            <p className="overflow-hidden text-ellipsis whitespace-nowrap">
+                              {getUserRole(user.userRole)}
+                            </p>
+                          </div>
+                        </td>
                       </tr>
                     ))}
                   </tbody>

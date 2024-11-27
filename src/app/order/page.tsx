@@ -4,14 +4,20 @@ import "@/components/CommonComponents/Buttons/Button";
 import Navbar from "@/components/CommonComponents/Layout/Navbar";
 import SortIC from "@/Svg/sortIC";
 import WarehouseIC from "@/Svg/warehouseIC";
-import BuildingIC from "@/Svg/buildingIC";
+import SuccessIC from "@/Svg/success";
 import FlagIC from "@/Svg/flagIC";
 import OrderIC from "@/Svg/orderIC";
+import ShippingIC from "@/Svg/shippingIC";
 import "@/Style/MTri/TableSetupOrder.css";
 import "@/Style/MTri/Loading.css";
 
-import { InputDatePicker } from "@/components/CommonComponents/Inputs/Inputs";
+import {
+  InputDatePicker,
+  InputWithIcon,
+} from "@/components/CommonComponents/Inputs/Inputs";
 import CommonSpecifications from "@/components/DashboardComponents/CommonSpecifications";
+import { useRouter } from "next/navigation";
+import useFetch from "@/hooks/useFetch";
 
 const formatDong = (price: number | undefined) => {
   if (price === undefined || isNaN(price)) {
@@ -69,11 +75,41 @@ interface DeliveryServices {
   dservicesTime: string;
 }
 
+interface OrderStatusCount {
+  Pending: number;
+  Delivering: number;
+  Success: number;
+  Canceled: number;
+}
+
 const OrderPage = () => {
+  const router = useRouter();
   const [orders, setOrders] = useState<OrderType[]>([]);
+  const [orderByStatus, setOrderByStatus] = useState<OrderStatusCount>({
+    Pending: 0,
+    Delivering: 0,
+    Success: 0,
+    Canceled: 0,
+  });
   const [warning, setWarning] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const fetchData = async () => {
+  const [searchValue, setSearchValue] = useState<string>("");
+  const { data, fetchData } = useFetch(`http://localhost:5000/api/order/count`);
+  const handleClick = (orderId: string) => {
+    router.push(`/order/orderdetails?id=${orderId}`);
+  };
+  // Fetch lấy số đơn theo trạng thái
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]);
+  useEffect(() => {
+    if (data) {
+      setOrderByStatus(data);
+    }
+  }, [data]);
+
+  // Fetch lấy danh sách đơn
+  const fetchData2 = async () => {
     setIsLoading(true);
     try {
       const response = await fetch("http://localhost:5000/api/order/", {
@@ -98,7 +134,7 @@ const OrderPage = () => {
     }
   };
   useEffect(() => {
-    fetchData();
+    fetchData2();
   }, []);
 
   // Hàm định dạng ngày giờ
@@ -116,41 +152,119 @@ const OrderPage = () => {
     return formattedDate;
   };
 
+  // Sort
+  const [sortState, setSortState] = useState<{
+    sender: boolean;
+    receiver: boolean;
+    address: boolean;
+    driver: boolean;
+    status: boolean;
+    price: boolean;
+  }>({
+    sender: false,
+    receiver: false,
+    address: false,
+    driver: false,
+    status: false,
+    price: false,
+  });
+
+  const sortOrder = (
+    key: "sender" | "receiver" | "address" | "driver" | "status" | "price"
+  ) => {
+    const sortedDrivers = [...orders].sort(
+      (a: OrderType, b: OrderType): number => {
+        let comparison = 0;
+
+        switch (key) {
+          case "sender":
+            comparison = a.customerDetails.cusName.localeCompare(
+              b.customerDetails.cusName
+            );
+            return sortState.sender ? -comparison : comparison;
+          case "receiver":
+            comparison = a.receiverName.localeCompare(b.receiverName);
+            return sortState.receiver ? -comparison : comparison;
+          case "address":
+            comparison = a.receiverAddress.localeCompare(b.receiverAddress);
+            return sortState.address ? -comparison : comparison;
+          case "driver":
+            comparison = a.driverDetails.driverName.localeCompare(
+              b.driverDetails.driverName
+            );
+            return sortState.driver ? -comparison : comparison;
+          case "status":
+            comparison = a.deliveryStatus.statusId.localeCompare(
+              b.deliveryStatus.statusId
+            );
+            return sortState.status ? -comparison : comparison;
+          case "price":
+            comparison = a.deliverPrice - b.deliverPrice;
+            return sortState.price ? -comparison : comparison;
+          default:
+            return 0;
+        }
+      }
+    );
+
+    setOrders(sortedDrivers);
+    setSortState((prev) => ({ ...prev, [key]: !prev[key] }));
+  };
+
   return (
     <div className="all">
       <Navbar>
         <div className="right h-full flex flex-col gap-4 justify-start items-start">
-          <div className="w-[168px]">
-            <InputDatePicker background={true} border={false} />
+          <div className="inputright w-[342px]">
+            <InputWithIcon
+              purpose="search"
+              placeholder="Nhập mã đơn hàng để tìm"
+              background={true}
+              value={searchValue}
+              onChange={(e) => setSearchValue(e.target.value)}
+              pageOfAPI="orderDetails"
+            />
           </div>
           <div className="flex flex-row w-full justify-between gap-6">
             <CommonSpecifications
               fluctuationType="none"
               color="#FBECDA"
-              quantity={12}
-              subtitle="Đơn trong kho"
+              quantity={
+                orderByStatus.Delivering +
+                orderByStatus.Canceled +
+                orderByStatus.Pending +
+                orderByStatus.Success
+              }
+              subtitle="Tổng đơn hàng"
               icon={<WarehouseIC fill="#FBA333" />}
             />
             <CommonSpecifications
               fluctuationType="none"
               color="#FDF7B9"
-              quantity={56}
-              subtitle="Đơn đang giao"
+              quantity={orderByStatus.Pending}
+              subtitle="Đơn đang chờ giao"
               icon={<OrderIC stroke="#F1E01D" />}
             />
             <CommonSpecifications
               fluctuationType="none"
               color="#B8DDFF"
-              quantity={37}
-              subtitle="Đơn thành phố"
-              icon={<BuildingIC fill="#007AFF" />}
+              quantity={orderByStatus.Delivering}
+              subtitle="Đơn đang giao"
+              icon={<ShippingIC stroke="#007AFF" />}
             />
             <CommonSpecifications
               fluctuationType="none"
-              color="#9DEEB9"
-              quantity={2}
-              subtitle="Đơn ngoại thành"
-              icon={<FlagIC fill="#0DA651" />}
+              color="#FFB5C0"
+              quantity={orderByStatus.Canceled}
+              subtitle="Đơn đã hủy"
+              icon={<FlagIC fill="#EB455F" />}
+            />
+            <CommonSpecifications
+              fluctuationType="none"
+              color="#81E7A5"
+              quantity={orderByStatus.Success}
+              subtitle="Đơn đã giao"
+              icon={<SuccessIC fill="#0DA651" />}
             />
           </div>
 
@@ -174,51 +288,77 @@ const OrderPage = () => {
                     <th className="h-[42px] items-center break-words  p-3 text-left truncate">
                       <div className="flex flex-row gap-[6px] items-center h-full">
                         <p>Mã đơn</p>
-                        <div className="Sort">
-                          <SortIC />
-                        </div>
                       </div>
                     </th>
                     <th className="h-[42px] items-center break-words  p-3 text-left truncate">
                       <div className="flex flex-row gap-[6px] items-center h-full">
                         <p>Người gửi</p>
-                        <SortIC />
+                        <button
+                          type="button"
+                          onClick={() => sortOrder("sender")}
+                        >
+                          <SortIC />
+                        </button>
                       </div>
                     </th>
                     <th className="h-[42px] items-center break-words  p-3 text-left truncate">
                       <div className="flex flex-row gap-[6px] items-center h-full">
                         <p>Người nhận</p>
-                        <SortIC />
+                        <button
+                          type="button"
+                          onClick={() => sortOrder("receiver")}
+                        >
+                          <SortIC />
+                        </button>
                       </div>
                     </th>
                     <th className="h-[42px] items-center break-words  p-3 text-left truncate">
                       <div className="flex flex-row gap-[6px] items-center h-full">
                         <p>Địa chỉ giao</p>
-                        <SortIC />
+                        <button
+                          type="button"
+                          onClick={() => sortOrder("address")}
+                        >
+                          <SortIC />
+                        </button>
                       </div>
                     </th>
                     <th className="h-[42px] items-center break-words  p-3 text-left truncate">
                       <div className="flex flex-row gap-[6px] items-center h-full">
                         <p>Ngày đặt</p>
-                        <SortIC />
                       </div>
                     </th>
                     <th className="h-[42px] items-center break-words  p-3 text-left truncate">
                       <div className="flex flex-row gap-[6px] items-center h-full">
                         <p>Tài xế</p>
-                        <SortIC />
+                        <button
+                          type="button"
+                          onClick={() => sortOrder("driver")}
+                        >
+                          <SortIC />
+                        </button>
                       </div>
                     </th>
                     <th className="h-[42px] items-center break-words  p-3 text-left truncate">
                       <div className="flex flex-row gap-[6px] items-center h-full">
                         <p>Trạng thái</p>
-                        <SortIC />
+                        <button
+                          type="button"
+                          onClick={() => sortOrder("status")}
+                        >
+                          <SortIC />
+                        </button>
                       </div>
                     </th>
                     <th className="h-[42px] items-center break-words  p-3 text-left truncate">
                       <div className="flex flex-row gap-[6px] items-center h-full">
                         <p>Tiền vận chuyển</p>
-                        <SortIC />
+                        <button
+                          type="button"
+                          onClick={() => sortOrder("price")}
+                        >
+                          <SortIC />
+                        </button>
                       </div>
                     </th>
                   </tr>
@@ -237,7 +377,10 @@ const OrderPage = () => {
                 ) : (
                   <tbody className="h-full">
                     {orders.map((order, index) => (
-                      <tr key={index}>
+                      <tr
+                        key={index}
+                        onClick={() => handleClick(order.orderId)}
+                      >
                         <td className="h-[42px] break-words p-3 text-left truncate">
                           <div className="flex flex-row gap-[6px] items-center h-full w-full justify-end">
                             <p>{index + 1}</p>

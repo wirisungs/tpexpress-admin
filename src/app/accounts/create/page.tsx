@@ -6,6 +6,7 @@ import Input, {
 import Navbar from "@/components/CommonComponents/Layout/Navbar";
 import TitleBar from "@/components/CommonComponents/Layout/bars/TitleBar";
 import React, { FormEvent, useState } from "react";
+import { toast } from "react-toastify";
 
 const UserEnroll = () => {
   const [userFullname, setUserFullname] = useState<string>("");
@@ -46,14 +47,13 @@ const UserEnroll = () => {
           userRole: userRole,
         }),
       });
-      const result = await response.json();
       if (!response.ok) {
-        if (result.message) {
-          setWarning(result.message);
-        }
+        const errorData = await response.json();
+        toast.error(errorData.message);
         throw new Error(`HTTP error! status: ${response.status}`);
       }
-      setWarning(result.message);
+      const result = await response.json();
+      toast.success(result.message);
     } catch (error) {
       console.error("Error collecting data:", error);
     }

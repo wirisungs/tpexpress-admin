@@ -148,6 +148,18 @@ const InputWithIcon: React.FC<InputIconProps> = ({
             );
             break;
           }
+          case "accDetails": {
+            response = await fetch(
+              `http://localhost:5000/api/user/acc?${queryParam}`
+            );
+            break;
+          }
+          case "orderDetails": {
+            response = await fetch(
+              `http://localhost:5000/api/order/orderdetails?${queryParam}`
+            );
+            break;
+          }
         }
         if (response) {
           const result = await response.json();
@@ -161,6 +173,14 @@ const InputWithIcon: React.FC<InputIconProps> = ({
               }
               case "driDetails": {
                 router.push(`/drivers/dri?${queryParam}`);
+                break;
+              }
+              case "accDetails": {
+                router.push(`/accounts/accountdetails?${queryParam}`);
+                break;
+              }
+              case "orderDetails": {
+                router.push(`/order/orderdetails?${queryParam}`);
                 break;
               }
               default: {

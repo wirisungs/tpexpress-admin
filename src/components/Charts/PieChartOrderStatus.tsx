@@ -8,7 +8,7 @@ import WarningIC from "@/Svg/warning";
 export const PieChartOrderStatus = () => {
   const { data, loading, error, fetchData } = useFetch(
     "http://localhost:5000/api/order/count"
-  ); // Cung cấp URL đúng
+  );
 
   const [orderStatus, setOrderStatus] = useState({
     Pending: 0,
