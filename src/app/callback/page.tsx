@@ -21,7 +21,7 @@ const CallbackPage: React.FC = () => {
       // Chuyển hướng về trang dashboard sau một khoảng thời gian
       setTimeout(() => {
         router.push('/dashboard');
-      }, 8000);
+      }, 2000);
     } else {
       console.error("No token found in the URL");
       setLoading(false);

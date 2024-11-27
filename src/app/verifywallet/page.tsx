@@ -1,113 +1,176 @@
-'use client'; // Add this line to make the component a Client Component
+'use client';
 
-import React, { useState, useEffect } from 'react';
-import { OrderResponse, WoWoWallet } from '@htilssu/wowo';
+import React, { useState, useEffect } from "react";
+import { OrderResponse, WoWoWallet, CreateOrderProps } from "@htilssu/wowo";
 import TPLogo from "@/Svg/LogoDog"; // Import logo component
 
-const VerifyWallet = () => {
-    const [orderResponse, setOrderResponse] = useState<OrderResponse | null>(null);
-    const [error, setError] = useState<string | null>(null);
-    const [items, setItems] = useState([]);
-    const subtitle = "Tinh thần tốc độ - Dịch vụ hoàn hảo";
-    const wowoWallet = new WoWoWallet("ngthuythienphuc2002@gmail.com");
+const VerifyWallet: React.FC = () => {
+  const [orderResponse, setOrderResponse] = useState<OrderResponse | null>(null);
+  const [createOrderProps, setCreateOrderProps] = useState<CreateOrderProps | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [items, setItems] = useState<any[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [token, setToken] = useState<string | null>(null); 
+  const subtitle = "Tinh thần tốc độ - Dịch vụ hoàn hảo";
+  const wowoWallet = new WoWoWallet("78bebbc1a225514c510c39ebbad0bfacea598596c0b4a50552554b018d8f91fd");
 
-    // Get items and totalPrice from window object passed from React Native
-    useEffect(() => {
-        if (window.items) {
-            setItems(window.items); // Set items from React Native
-        }
-    }, []);
+  // Lấy token từ URL nếu có
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const tokenFromUrl = urlParams.get('Token');
+    if (tokenFromUrl) {
+      setToken(tokenFromUrl); 
+    } else {
+      console.error("Không tìm thấy token trong URL.");
+    }
 
-    const orderProps = {
-        money: window.totalPrice || 0,
-        serviceName: "Dịch vụ giao hàng TPE",
-        items: items.map(item => ({
-            name: item.Item_Name,
-            amount: item.amount || 1,
-            unitPrice: item.Item_AllValue
-        })),
-        callback: {
-            successUrl: "http://tpexpress.ddns.net:4000/callbackW",
-            returnUrl: "http://tpexpress.ddns.net:4000/walletsuccess"
-        }
-    };
+    // Lấy items và totalPrice từ window object
+    if (window.items) {
+      setItems(window.items); // Set items được truyền từ React Native
+    }
+  }, []);
 
-    const handleCreateOrder = async () => {
-        try {
-            const response = await wowoWallet.createOrder(orderProps);
-            setOrderResponse(response);
-            console.log("Đơn hàng đã được tạo:", response);
+  const orderProps = {
+    // orderId: window.orderId,
+    money: window.totalPrice || 0,
+    serviceName: "TPE",
+    items: items.map((item) => ({
+      name: item.Item_Name,
+      amount: item.amount || 1,
+      unitPrice: item.Item_AllValue,
+    })),
+    callback: {
+      successUrl: "http://tpexpress.ddns.net:4000/callbackW",
+      returnUrl: "http://tpexpress.ddns.net:4000/walletsuccess",
+    },
+  };
+
+  const handleCreateOrder = async () => {
+    setLoading(true);
+    try {
+      const response = await wowoWallet.createOrder(orderProps);
+      setOrderResponse(response);
+      setCreateOrderProps(response); 
     
-            // Lưu checkoutUrl vào sessionStorage
-            if (response?.checkoutUrl) {
-                sessionStorage.setItem("checkoutUrl", response.checkoutUrl); // Lưu vào sessionStorage
-                window.location.href = response.checkoutUrl; // Chuyển hướng đến trang thanh toán
-            }
-        } catch (err) {
-            console.error("Lỗi khi tạo đơn hàng:", err.message);
-            setError(err.message);
-        }
-    };
+      if (response?.checkoutUrl) {
+        // Lưu các thông tin cần thiết vào localStorage
+        localStorage.setItem("checkoutUrl", response.checkoutUrl);
+        localStorage.setItem("returnUrl", orderProps.callback.returnUrl);
+        localStorage.setItem("tiken", response.id);
+  
+        // Chuyển hướng đến checkoutUrl
+        window.location.href = response.checkoutUrl;
+      } else {
+        console.error("Không tìm thấy checkoutUrl trong phản hồi đơn hàng.");
+        setError("Đã xảy ra lỗi khi tạo đơn hàng. Vui lòng thử lại.");
+      }
+    } catch (err: any) {
+      console.error("Lỗi khi tạo đơn hàng:", err.message);
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+  
+  
 
-    return (
-        <div 
-            style={{
-                backgroundImage: `url('https://images.pexels.com/photos/164527/pexels-photo-164527.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2')`,
-                backgroundSize: "cover", // Bao phủ toàn bộ khu vực
-                backgroundPosition: "center", // Căn giữa hình ảnh
-                width: "100vw", // Đảm bảo chiều rộng bằng 100% màn hình
-                height: "100vh", // Đảm bảo chiều cao bằng 100% màn hình
-                display: "flex", // Căn giữa nội dung form
-                justifyContent: "center", // Căn giữa theo chiều ngang
-                alignItems: "center", // Căn giữa theo chiều dọc
-                overflow: "hidden", // Ẩn mọi phần thừa
-            }}
-        >
-            <form 
-                onSubmit={(e) => e.preventDefault()} 
-                method="POST" 
-                style={{
-                    boxShadow: "0px 0px 12px rgba(0, 0, 0, 0.2)",
-                    padding: "16px",
-                    borderRadius: "12px",
-                    margin: "0 auto",
-                    maxWidth: "400px",
-                    width: "90%",
-                    backgroundColor: "rgba(255, 255, 255, 0.9)", // Nền trắng mờ cho form
-                    display: "flex", // Sử dụng flex để căn giữa nội dung trong form
-                    flexDirection: "column", // Đặt logo và các phần tử khác theo chiều dọc
-                    alignItems: "center", // Căn giữa các phần tử theo chiều ngang
-                }}
-            >
-                {/* Đặt TPLogo vào form và căn giữa */}
-                <TPLogo style={{ marginBottom: "20px" }} /> {/* Khoảng cách giữa logo và các phần tử bên dưới */}
+  return (
+    <div
+      style={{
+        backgroundImage: `url('https://images.pexels.com/photos/164527/pexels-photo-164527.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2')`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        width: "100vw",
+        height: "100vh",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
+      <form
+        onSubmit={(e) => e.preventDefault()}
+        method="POST"
+        style={{
+          boxShadow: "0px 0px 12px rgba(0, 0, 0, 0.2)",
+          padding: "16px",
+          borderRadius: "12px",
+          margin: "0 auto",
+          maxWidth: "400px",
+          width: "90%",
+          backgroundColor: "rgba(255, 255, 255, 0.9)",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+        }}
+      >
+        {/* Logo */}
+        <TPLogo style={{ marginBottom: "20px" }} />
 
-                <div className="title flex flex-col gap-[6px] text-center">
-                    <p className="titleText text-[24px] font-bold text-primaryText300">THIEN PHUC EXPRESS</p>
-                    <p className="subtitle text-yellowText font-medium">{subtitle}</p>
-                </div>
-
-                <button 
-                    type="button" 
-                    onClick={handleCreateOrder} 
-                    style={{
-                        width: "100%",
-                        backgroundColor: "#EB455F",
-                        color: "white",
-                        padding: "12px",
-                        borderRadius: "8px",
-                        border: "none",
-                        cursor: "pointer",
-                        fontSize: "16px",
-                        marginTop: "12px"
-                    }}
-                >
-                    Thanh toán bằng WoWo wallet
-                </button>
-            </form>
-            {error && <p>Lỗi: {error}</p>}
+        <div className="title flex flex-col gap-[6px] text-center">
+          <p className="titleText text-[24px] font-bold text-primaryText300">
+            THIEN PHUC EXPRESS
+          </p>
+          <p className="subtitle text-yellowText font-medium">{subtitle}</p>
         </div>
-    );
+       
+
+        <button
+          type="button"
+          onClick={handleCreateOrder}
+          disabled={loading}
+          style={{
+            width: "100%",
+            backgroundColor: loading ? "#ccc" : "#EB455F",
+            color: "white",
+            padding: "12px",
+            borderRadius: "8px",
+            border: "none",
+            cursor: loading ? "not-allowed" : "pointer",
+            fontSize: "16px",
+            marginTop: "12px",
+          }}
+        >
+          {loading ? "Đang xử lý..." : "Thanh toán bằng WoWo wallet"}
+        </button>
+      </form>
+
+      {orderResponse && (
+      <div
+        style={{
+          position: "absolute",
+          bottom: "10%",
+          backgroundColor: "rgba(255, 255, 255, 0.9)",
+          padding: "12px",
+          borderRadius: "8px",
+          boxShadow: "0px 0px 12px rgba(0, 0, 0, 0.2)",
+          maxWidth: "600px",
+          width: "90%",
+          wordWrap: "break-word",
+          overflow: "auto",
+        }}
+      >
+        <h4>Phản hồi từ WoWo Wallet:</h4>
+        <pre style={{ whiteSpace: "pre-wrap", wordWrap: "break-word" }}>
+          {JSON.stringify(orderResponse.id, null, 2)}
+        </pre>
+      </div>
+    )}
+
+      {/* Hiển thị lỗi nếu có */}
+      {error && (
+        <p
+          style={{
+            position: "absolute",
+            bottom: "20px",
+            color: "red",
+            fontSize: "14px",
+          }}
+        >
+          {error}
+        </p>
+      )}
+    </div>
+  );
 };
 
 export default VerifyWallet;
