@@ -13,7 +13,7 @@ const Form = () => {
   return (
     <div
       style={{
-        backgroundImage: `url('https://images.pexels.com/photos/1323550/pexels-photo-1323550.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2')`,
+        backgroundImage: `url('https://opengameart.org/sites/default/files/10_17.png')`,
         backgroundSize: "cover", // Bao phủ toàn bộ khu vực
         backgroundPosition: "center", // Căn giữa hình ảnh
         width: "100vw", // Đảm bảo chiều rộng bằng 100% màn hình
@@ -66,7 +66,7 @@ const Form = () => {
             marginTop: "12px"
           }}
         >
-          Đăng nhập với WoWo
+          Đăng nhập bằng SSO
         </button>
       </form>
     </div>
